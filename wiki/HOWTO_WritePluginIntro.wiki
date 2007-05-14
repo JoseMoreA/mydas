@@ -1,0 +1,16 @@
+#summary This page describes how to build a mydas plugin using the mydas API.
+
+= Introduction =
+
+To be written...
+
+
+= Details =
+
+Details of which interfaces can be implemented to create a plugin
+
+Details of how to configure the plugin
+
+
+
+
