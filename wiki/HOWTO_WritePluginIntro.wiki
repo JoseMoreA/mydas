@@ -18,4 +18,6 @@ This page describes how to get started with implementing a data source, specific
 
 The data source interfaces are located in the `uk.ac.ebi.mydas.datasource` package.  There are four of these that should be selected from as described in the following diagram:
 
+http://mydas.googlecode.com/svn/trunk/mydas/server_core/src/main/java/uk/ac/ebi/mydas/datasource/Selecting-an-interface.png
+
 http://www.ebi.ac.uk/~pjones/mydas/images/Selecting-an-interface.png               
