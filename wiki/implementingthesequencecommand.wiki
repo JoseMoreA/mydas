@@ -7,8 +7,4 @@ This page describes how to implement the sequence command.  This is based upon t
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
+http://www.ebi.ac.uk/~pjones/mydas/images/sequence-command-model-class-diagram.png
