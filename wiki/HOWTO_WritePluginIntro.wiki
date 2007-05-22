@@ -1,6 +1,6 @@
 #summary HOWTO: build a mydas plugin using the mydas API.
 
-[HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
+[http://code.google.com/p/mydas/ <- mydas Home Page] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
 
 = Getting Started: Building a mydas Data Source Plugin Using the mydas API =
 
