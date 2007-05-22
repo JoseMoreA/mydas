@@ -11,7 +11,7 @@ The `ReferenceDataSource` class defines the method:
 `public DasSequence getSequence (String segmentReference) throws BadReferenceObjectException, DataSourceException` that returns a `DasSequence` object.  This `DasSequence` object is constructed with the complete sequence of the requested segment id.  The mydas servlet then does the work of returning only the requested sequence, where the request has specified restrictive coordinates.
 
 If you are implementing a reference server data source that is able to restrict the sequence returned to specified coordinates, you may instead implement the `RangeHandlingReferenceDataSource` interface that also defines the method:
-`public DasRestrictedSequence getSequence (String segmentReference, int start, int stop) throws CoordinateErrorException, BadReferenceObjectException, DataSourceException`.  This method returns a DasRestrictedSequence object.  The sequence included in this object includes only the requested sequence, not the entire sequence of the requested segment.
+`public DasRestrictedSequence getSequence (String segmentReference, int start, int stop) throws CoordinateErrorException, BadReferenceObjectException, DataSourceException`.  This method returns a `DasRestrictedSequence` object.  The sequence included in this object includes only the requested sequence, not the entire sequence of the requested segment.
 
 Both the `DasSequence` and the `DasRestrictedSequence` classes are illustrated in the following diagram:
 
