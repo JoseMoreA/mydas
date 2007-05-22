@@ -1,7 +1,9 @@
 #summary HOWTO: implement the getSequence methods for reference server data sources.
 #labels Phase-Implementation,command,howto,sequence
 
-= Implementing the sequence command =
+[<- HOWTO_WritePluginIntro Selecting the Best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Features_Command Implementing the features command ->]
+
+= Implementing the sequence command (DAS Reference Server Sources Only) =
 
 This page describes how to implement the sequence command.  This is based upon the assumption that you are implementing a DAS reference server and are therefore implementing either the `ReferenceDataSource` interface or the `RangeHandlingReferenceDataSource` interface.  (See [HOWTO_WritePluginIntro] to find out which of these interfaces you should use).
 
