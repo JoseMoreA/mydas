@@ -1,0 +1,8 @@
+#summary Index to Help Documentation
+
+= Index =
+
+  # [http://code.google.com/p/mydas/ mydas Home Page]
+
+  # [HOWTO_WritePluginIntro Introduction to writing a mydas data source plugin]
+  # [HOWTO_Implement_Sequence_Command How to implement the sequence command]
