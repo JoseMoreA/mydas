@@ -1,0 +1,14 @@
+#summary This page describes how to implement the getSequence methods for reference server data sources.
+
+= Implementing the sequence command =
+
+This page describes how to implement the sequence command.  This is based upon the assumption that you are implementing a DAS reference server and are therefore implementing either the `ReferenceDataSource` interface or the `RangeHandlingReferenceDataSource` interface.  (See [HOWTO_WritePluginIntro] to find out which of these interfaces you should use).
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
