@@ -1,0 +1,10 @@
+#summary HOWTO: Build Sequence Assemblies using DasComponentFeature objects.
+
+= Build Sequence Assemblies using DasComponentFeature objects =
+
+One of the more complex requirements of the DAS 1.53 specification is the ability for DAS reference servers to serve assembly information. (See [http://biodas.org/documents/spec.html#assemblies DAS 1.53: Fetching Sequence Assemblies] for details).
+
+This page describes how this can be achieved relatively easily using the mydas API.
+
+
+= Details =
