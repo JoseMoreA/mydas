@@ -3,8 +3,8 @@
 = Getting Started: Building a mydas Data Source Plugin Using the mydas API =
 
 The [http://biodas.org/documents/spec.html DAS 1.53 Specification] describes two different kinds of DAS server:
-* annotation servers which are able to provide feature annotation on nucleic acid or protein sequences;
-* reference servers can provide annotation and also sequence information for proteins and nucleic acids.
+  * annotation servers which are able to provide feature annotation on nucleic acid or protein sequences;
+  * reference servers can provide annotation and also sequence information for proteins and nucleic acids.
 
 Annotation servers are expected to refer to a specific reference server for sequence information.
 
@@ -23,5 +23,4 @@ The `ReferenceDataSource` class defines the method:
 
 If you are implementing a reference server data source that is able to restrict the sequence returned to specified coordinates, you may instead implement the `RangeHandlingReferenceDataSource` interface that also defines the method:
 `public DasRestrictedSequence getSequence (String segmentReference, int start, int stop) throws CoordinateErrorException, BadReferenceObjectException, DataSourceException`.  This method returns a `DasRestrictedSequence` object.  The sequence included in this object includes only the requested sequence, not the entire sequence of the requested segment.
-
 
