@@ -1,8 +1,8 @@
-#summary HOWTO: build a mydas plugin using the mydas API.
+#summary HOWTO: Introduction: Selecting the best Interface to Implement
 
 [http://code.google.com/p/mydas/ <- mydas Home Page] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
 
-= Getting Started: Building a mydas Data Source Plugin Using the mydas API =
+= Getting Started: Selecting the best Interface to Implement =
 
 The [http://biodas.org/documents/spec.html DAS 1.53 Specification] describes two different kinds of DAS server:
   * annotation servers which are able to provide feature annotation on nucleic acid or protein sequences;
