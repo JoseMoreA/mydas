@@ -1,7 +1,7 @@
 #summary HOWTO: implement the getSequence methods for reference server data sources.
 #labels Phase-Implementation,command,howto,sequence
 
-[HOWTO_WritePluginIntro <- Selecting the Best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Features_Command Implementing the features command ->]
+[HOWTO_WritePluginIntro <- Introduction: Selecting the Best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Features_Command Implementing the features command ->]
 
 = Implementing the sequence command (DAS Reference Server Sources Only) =
 
