@@ -1,4 +1,4 @@
-#summary This page describes how to implement the getSequence methods for reference server data sources.
+#summary HOWTO: implement the getSequence methods for reference server data sources.
 
 = Implementing the sequence command =
 
@@ -6,5 +6,8 @@ This page describes how to implement the sequence command.  This is based upon t
 
 
 = Details =
+
+The `ReferenceDataSource` class defines the method:
+`public DasSequence getSequence (String segmentReference) throws BadReferenceObjectException, DataSourceException` that returns a DasSequence object as illustrated in the following class diagram:
 
 http://www.ebi.ac.uk/~pjones/mydas/images/sequence-command-model-class-diagram.png
