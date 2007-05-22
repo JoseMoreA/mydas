@@ -18,4 +18,4 @@ If you are implementing a reference server data source that is able to restrict 
 
 Both the `DasSequence` and the `DasRestrictedSequence` classes are illustrated in the following diagram:
 
-http://www.ebi.ac.uk/~pjones/mydas/images/sequence-command-model-class-diagram.png
+http://mydas.googlecode.com/svn/trunk/mydas/server_core/docs/UML/sequence-command-model-class-diagram.png
