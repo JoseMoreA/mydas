@@ -1,16 +1,27 @@
-#summary This page describes how to build a mydas plugin using the mydas API.
+#summary HOWTO: build a mydas plugin using the mydas API.
 
-= Introduction =
+= Getting Started: Building a mydas Data Source Plugin Using the mydas API =
 
-To be written...
+The [http://biodas.org/documents/spec.html DAS 1.53 Specification] describes two different kinds of DAS server:
+* annotation servers which are able to provide feature annotation on nucleic acid or protein sequences;
+* reference servers can provide annotation and also sequence information for proteins and nucleic acids.
 
+Annotation servers are expected to refer to a specific reference server for sequence information.
+
+This API allows the development of both annotation and reference data sources.  It is possible to create one mydas server with multiple data sources that might be a mixture of annotation and reference sources.
+
+This page describes how to get started with implementing a data source, specifically by selecting the correct interface to implement.
 
 = Details =
 
-Details of which interfaces can be implemented to create a plugin
+The data source interfaces are located in the `uk.ac.ebi.mydas.datasource` package.  There are four of these that should be selected from as follows:
 
-Details of how to configure the plugin
+               
 
+The `ReferenceDataSource` class defines the method:
+`public DasSequence getSequence (String segmentReference) throws BadReferenceObjectException, DataSourceException` that returns a `DasSequence` object.  This `DasSequence` object is constructed with the complete sequence of the requested segment id.  The mydas servlet then does the work of returning only the requested sequence, where the request has specified restrictive coordinates.
 
+If you are implementing a reference server data source that is able to restrict the sequence returned to specified coordinates, you may instead implement the `RangeHandlingReferenceDataSource` interface that also defines the method:
+`public DasRestrictedSequence getSequence (String segmentReference, int start, int stop) throws CoordinateErrorException, BadReferenceObjectException, DataSourceException`.  This method returns a `DasRestrictedSequence` object.  The sequence included in this object includes only the requested sequence, not the entire sequence of the requested segment.
 
 
