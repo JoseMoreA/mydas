@@ -8,3 +8,4 @@
   # [HOWTO_WritePluginIntro Introduction to writing a mydas data source plugin: Selecting the best interface to implement]
   # [HOWTO_Implement_Sequence_Command How to implement the sequence command]
   # [HOWTO_Implement_Features_Command How to implement the features command]
+  # [HOWTO_Build_Sequence_Assemblies How to build sequence assemblies]
