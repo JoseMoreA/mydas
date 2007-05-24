@@ -10,7 +10,7 @@ Please take a look at the [http://maven.apache.org/ Apache Maven Project Home Pa
 
 
 == Building the mydas Server Code ==
-When final testing and documentation have been completed, the mydas core server will be released as a jar file from the 'downloads' page, together with a template project for developing data sources and a zip or jar file containing the JavaDocs for the project.
+When final testing and documentation have been completed, the mydas core server will be released as a jar file from the 'downloads' page, together with a template project for developing data sources and a zip or jar file containing the Java Docs for the project.
 
 In the meantime, you should download the entire project from Subversion which will necessitate compiling the core code.  This is however, very simple.
 
@@ -18,4 +18,10 @@ The project in subversion is split into two modules, each with their own Maven P
 
 To assist you with managing this build process, a parent Maven POM file exists in the folder above the two modules.  You may use this to build and test the entire project in one command.  This will compile the core jar, install it to your local Maven repository and then build the war file using this newly compiled jar.
 
+Assuming that you have checked out the source code to a folder called `mydas` and have successfully installed both Java 1.5 and Maven2 (You should be able to successfully run the commands `java -version` and `mvn --version` in any directory):
 
+  # cd to the `mydas` folder.
+  # Check that this folder contains a file `pom.xml`.
+  # Run the command `mvn install`.
+  # This will compile the mydas core jar file, run some junit tests on it and install it to your local maven repository (by default, located in `HOME_DIRECTORY]/.mvn/repository/`).
+  # cd to the `example_server_installation` folder
