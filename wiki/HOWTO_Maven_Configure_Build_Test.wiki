@@ -1,4 +1,5 @@
 #summary HOWTO: Use and Configure Maven2 to Build and Test Your DAS Server
+#labels Maven,Build,Compile,test,Phase-Deploy,Jetty,junit
 
 = Maven2: Using and Configuring Maven2 to Build and Test Your DAS Server =
 
@@ -27,10 +28,26 @@ To confirm that your environment is set up correctly, you should be able to succ
 
 Once this is confirmed, follow the following to build the complete project:
 
-  # cd to the `mydas` folder.
-  # Check that this folder contains a file `pom.xml`.
-  # Run the command `mvn install`.
-  # This will do the following: 
-  ** compile the mydas core jar file
-  ** run some junit tests on it and install it to your local maven repository (by default, located in `HOME_DIRECTORY]/.mvn/repository/`).
-  # cd to the `example_server_installation` folder
+  * cd to the `mydas` folder.
+  * Check that this folder contains a file `pom.xml`.
+  * Run the command `mvn install`.
+  * This will do the following: 
+    * compile the mydas core jar file
+    * run junit tests on the core jar
+    * install the new jar to your local maven repository (by default, located in `HOME_DIRECTORY]/.mvn/repository/`)
+    * compile the test data source and / or your new data source including the new core jar as a dependency
+    * run any junit tests that have been included for the data sources
+    * finally package the data sources in a war file, together with all required dependencies.
+
+After you have done this, you may wish to run your new server using jetty.  To do this, follow these steps:
+
+  * cd to the example_server_installation folder
+  * Run the command `mvn jetty:run-war`.
+
+The jetty server will be started, by default at localhost:8080.
+
+You should the be able to open an internet browser and access your server, e.g. at:
+
+http://localhost:8080/das/dsn
+
+to view the XML listing the available data sources.  If instead a java exception is displayed in the browser, this indicates a fatal problem in one or more of the data sources or in the configuration XML file, that has prevented the mydas server from initializing correctly.  
