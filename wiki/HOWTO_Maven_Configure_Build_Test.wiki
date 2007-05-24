@@ -1,0 +1,21 @@
+#summary HOWTO: Use and Configure Maven2 to Build and Test Your DAS Server
+
+= Maven2: Using and Configuring Maven2 to Build and Test Your DAS Server =
+
+Maven 2 is a powerful project management, build and test tool that makes managing projects very easy.  
+
+Please take a look at the [http://maven.apache.org/ Apache Maven Project Home Page] for further details.  (This page includes a link to [http://maven.apache.org/download.html download Maven 2]).  This project has been developed using Maven 2.0.6, so this or any later version should work well.
+
+(You will also of course need Java 1.5 or later installed on your machine, with the JAVA_HOME environment variable set correctly).
+
+
+== Building the mydas Server Code ==
+When final testing and documentation have been completed, the mydas core server will be released as a jar file from the 'downloads' page, together with a template project for developing data sources and a zip or jar file containing the JavaDocs for the project.
+
+In the meantime, you should download the entire project from Subversion which will necessitate compiling the core code.  This is however, very simple.
+
+The project in subversion is split into two modules, each with their own Maven POM files.  The core project builds the mydas jar file and the example server project builds a complete war file that can be deployed to a servlet container.
+
+To assist you with managing this build process, a parent Maven POM file exists in the folder above the two modules.  You may use this to build and test the entire project in one command.  This will compile the core jar, install it to your local Maven repository and then build the war file using this newly compiled jar.
+
+
