@@ -1,6 +1,6 @@
 #summary HOWTO: Use and Configure Maven2 to Build and Test Your DAS Server
 #labels Maven,Build,Compile,test,Phase-Deploy,Jetty,junit
- || ||http://mydas.googlecode.com/svn/trunk/mydas/server_core/src/main/resources/mydas_logo_small.png||
+ 
 = Maven2: Using and Configuring Maven2 to Build and Test Your DAS Server =
 
 Maven 2 is a powerful project management, build and test tool that makes managing projects very easy.  
