@@ -1,6 +1,6 @@
 #summary HOWTO: configure XSLT transformation of DAS response XML files.
 
-[HOWTO_WritePluginIntro <- Introduction: Selecting the Best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Features_Command Implementing the features command ->]
+[HOWTO_Build_Sequence_Assemblies <- How to build sequence assemblies] | [HELP_INDEX Index]
 
 = Configuring XSLT Transformation =
 
