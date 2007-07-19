@@ -1,9 +1,12 @@
 #summary A description of how to get started with setting up a MyDas Server, including prerequisites.
 #labels Phase-Implementation
 
+[http://code.google.com/p/mydas/ <- mydas Home Page] | [HELP_INDEX Index] | [HOWTO_WritePluginIntro Selecting an interface to implement ->]
+
+
 = Introduction =
 
-This page describes how to set up the environment needed to create a !MyDas DAS server and how to obtain the necessary source code and binaries for starting development.
+This page describes how to set up the environment needed to create a MyDas DAS server and how to obtain the necessary source code and binaries for starting development.
 
 = Details =
 
@@ -12,9 +15,9 @@ This page describes how to set up the environment needed to create a !MyDas DAS 
 To create a MyDas server, you should ensure that you have the following installed and configured on your computer:
 
   * Sun Java SDK 1.5 (or later) available from http://java.sun.com
-  * Ensure the JAVA_HOME environment variable is set correctly and JAVA_HOME/bin is included in your PATH environment variable.  Run {{{java -version}}} to ensure that the correct version of Java is available on the command line.
+  * Ensure the JAVA_HOME environment variable is set correctly and JAVA_HOME/bin is included in your PATH environment variable.  Run `java -version` to ensure that the correct version of Java is available on the command line.
   * Maven 2 Project Management / Build tool available from http://maven.apache.org/
-  * View the [http://maven.apache.org/download.html#installation Instructions for downloading and installing Maven 2] to ensure that you have a complete setup.  Run {{{mvn --version}}} on the command line to ensure that Maven 2 is correctly installed.
+  * View the [http://maven.apache.org/download.html#installation Instructions for downloading and installing Maven 2] to ensure that you have a complete setup.  Run `mvn --version` on the command line to ensure that Maven 2 is correctly installed.
 
 == Obtaining and configuring the project source and dependencies. ==
 
@@ -25,8 +28,8 @@ Thanks to Maven 2, you do not need to worry about obtaining the dependencies for
   * Download the latest MyDAS server core: Binary jar file from the Downloads page on this site.  
   * Install this jar file into your local Maven repository using the following command, substituting the correct path / name of the binary jar that you have downloaded for the -Dfile= parameter:
 
-  * {{{mvn install:install-file -Dfile=<path-to-mydas-jar-file> -DgroupId=uk.ac.ebi.mydas  -DartifactId=mydas -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true}}}
+  * `mvn install:install-file -Dfile=<path-to-mydas-jar-file> -DgroupId=uk.ac.ebi.mydas  -DartifactId=mydas -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true`
 
 === Download the template project ===
 
- 
+  * Download `MyDasTemplate.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
