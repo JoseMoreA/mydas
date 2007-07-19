@@ -20,6 +20,13 @@ To create a MyDas server, you should ensure that you have the following installe
 
 Thanks to Maven 2, you do not need to worry about obtaining the dependencies for this project, with the exception of the latest version of the core MyDas jar file (binary) that can be obtained from the [http://code.google.com/p/mydas/downloads/list Downloads tab] above.
 
+=== Download and install the MyDas server core binary jar file. ===
+
   * Download the latest MyDAS server core: Binary jar file from the Downloads page on this site.  
   * Install this jar file into your local Maven repository using the following command, substituting the correct path / name of the binary jar that you have downloaded for the -Dfile= parameter:
+
   * {{{mvn install:install-file -Dfile=<path-to-mydas-jar-file> -DgroupId=uk.ac.ebi.mydas  -DartifactId=mydas -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true}}}
+
+=== Download the template project ===
+
+ 
