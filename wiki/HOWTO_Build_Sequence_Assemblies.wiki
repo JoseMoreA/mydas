@@ -1,6 +1,6 @@
 #summary HOWTO: Build Sequence Assemblies using DasComponentFeature objects.
 
-[HOWTO_Implement_Features_Command <- Implementing the Features Command] | [HELP_INDEX Index] | [HOWTO_Build_Sequence_Assemblies Building Sequence Assemblies ->]
+[HOWTO_Implement_Features_Command <- Implementing the Features Command] | [HELP_INDEX Index] | [HOWTO_Configure_XSLT_Transformation How to configure XSLT transformation of DAS XML ->]
 
 = Build Sequence Assemblies using DasComponentFeature objects =
 
