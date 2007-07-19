@@ -11,3 +11,7 @@
   # [HOWTO_Implement_Features_Command How to implement the features command]
   # [HOWTO_Build_Sequence_Assemblies How to build sequence assemblies]
   # [HOWTO_Configure_XSLT_Transformation How to configure XSLT transformation of DAS XML]
+
+= Annexe =
+
+  * [HOWTO_Maven_Configure_Build_Test How to compile and build the MyDas project from scratch (not necessary to use MyDas to build your own DAS server).]
