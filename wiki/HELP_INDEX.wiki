@@ -14,4 +14,4 @@
 
 = Annexe =
 
-  * [HOWTO_Maven_Configure_Build_Test How to compile and build the MyDas project from scratch (not necessary to use MyDas to build your own DAS server).]
+  * [HOWTO_Maven_Configure_Build_Test How to compile and build the MyDas project from scratch]  (Not necessary to use MyDas to build your own DAS server).
