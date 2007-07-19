@@ -1,6 +1,6 @@
 #summary HOWTO: Introduction: Selecting the best Interface to Implement
 
-[http://code.google.com/p/mydas/ <- mydas Home Page] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
+[ObtainingMyDas <- Getting Started: Obtaining and Installing the MyDas code] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
 
 = Getting Started: Selecting the best Interface to Implement =
 
