@@ -1,4 +1,5 @@
 #summary A description of how to get started with setting up a MyDas Server, including prerequisites.
+#labels Phase-Implementation
 
 = Introduction =
 
@@ -10,10 +11,10 @@ This page describes how to set up the environment needed to create a MyDas DAS s
 
 To create a MyDas server, you should ensure that you have the following installed and configured on your computer:
 
-* Sun Java SDK 1.5 (or later) available from http://java.sun.com
-* Ensure the JAVA_HOME environment variable is set correctly and JAVA_HOME/bin is included in your PATH environment variable.  Run {{{java -version}}} to ensure that the correct version of Java is available on the command line.
-* Maven 2 Project Management / Build tool available from http://maven.apache.org/
-* View the [http://maven.apache.org/download.html#installation Instructions for downloading and installing Maven 2] to ensure that you have a complete setup.  Run {{{mvn --version}}} on the command line to ensure that Maven 2 is correctly installed.
+  * Sun Java SDK 1.5 (or later) available from http://java.sun.com
+  * Ensure the JAVA_HOME environment variable is set correctly and JAVA_HOME/bin is included in your PATH environment variable.  Run {{{java -version}}} to ensure that the correct version of Java is available on the command line.
+  * Maven 2 Project Management / Build tool available from http://maven.apache.org/
+  * View the [http://maven.apache.org/download.html#installation Instructions for downloading and installing Maven 2] to ensure that you have a complete setup.  Run {{{mvn --version}}} on the command line to ensure that Maven 2 is correctly installed.
 
 == Obtaining the configuring the project source and dependencies. ==
 
