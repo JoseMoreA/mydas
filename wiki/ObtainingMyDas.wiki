@@ -32,4 +32,4 @@ Thanks to Maven 2, you do not need to worry about obtaining the dependencies for
 
 === Download the template project ===
 
-  * Download `MyDasTemplate.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
+  * Download `MyDasTemplate-1.0.1.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
