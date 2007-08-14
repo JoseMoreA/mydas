@@ -28,8 +28,8 @@ Thanks to Maven 2, you do not need to worry about obtaining the dependencies for
   * Download the latest MyDAS server core: Binary jar file from the Downloads page on this site.  
   * Install this jar file into your local Maven repository using the following command, substituting the correct path / name of the binary jar that you have downloaded for the -Dfile= parameter:
 
-  * `mvn install:install-file -Dfile=<path-to-mydas-jar-file> -DgroupId=uk.ac.ebi.mydas  -DartifactId=mydas -Dversion=1.0.1 -Dpackaging=jar -DgeneratePom=true`
+  * `mvn install:install-file -Dfile=<path-to-mydas-jar-file> -DgroupId=uk.ac.ebi.mydas  -DartifactId=mydas -Dversion=1.0.2 -Dpackaging=jar -DgeneratePom=true`
 
 === Download the template project ===
 
-  * Download `MyDasTemplate-1.0.1.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
+  * Download `MyDasTemplate-1.0.2.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
