@@ -21,11 +21,11 @@ To create a MyDas server, you should ensure that you have the following installe
 
 == Obtaining and configuring the project source and dependencies. ==
 
-Thanks to Maven 2, you do not need to worry about obtaining the dependencies for this project, with the exception of the latest version of the core MyDas jar file (binary) that can be obtained from the [http://code.google.com/p/mydas/downloads/list Downloads tab] above.
+Thanks to Maven 2, you do not need to worry about obtaining the dependencies for this project.
 
 === The MyDas server core binary jar file ===
 
-A previous version of this documentation indicated that you should install this jar into your local maven repository manually.  *This is now deprecated and should not be done - the MyDas core jar is available from the public maven repository, including the correct pom file that is required for successful compilation*.
+A previous version of this documentation indicated that you should install this jar into your local maven repository manually.  *This instruction is now deprecated and should not be done - the MyDas core jar is available directly from the public maven repository and will automatically be downloaded by maven when you build the template project, along with all of the core MyDas dependencies.*.
 
 If you have manually installed the core jar and are experiencing problems with compilation as a consequence, please delete the following folder and its contents prior to building the template project:
 
@@ -33,8 +33,8 @@ If you have manually installed the core jar and are experiencing problems with c
 
 === Download the template project ===
 
-  * Download `MyDasTemplate-1.0.2.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  To get you started, so you can compile for the first time:
-  * Edit the location for caching in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
+  * Download `MyDasTemplate-1.0.2.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  To get you started, so you can compile for the first time, do the following:
+  * Edit the location for data caching in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
   ** Set the property `cache.path` to a valid, writable folder on your filesystem.
   * Assuming Maven2 and Java are correctly configured, you should now be able to compile successfully:
   ** cd to the [MyDasTemplate] folder that contains the pom.xml file.
