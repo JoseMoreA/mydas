@@ -35,7 +35,7 @@ If you have manually installed the core jar and are experiencing problems with c
 
   * *Download* `MyDasTemplate-N.N.N.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  To get you started, so you can compile for the first time, do the following:
   * *Edit the location for data caching* in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
-  ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
+    ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
   * Assuming Maven2 and Java are correctly configured, you should now be able to compile successfully using Maven2 as follows:
   ** cd to the [MyDasTemplate] folder where you should find the `pom.xml` file.
   ** Run the command `mvn clean package` to create a valid war file, *OR*
