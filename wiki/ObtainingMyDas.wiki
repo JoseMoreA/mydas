@@ -37,10 +37,10 @@ If you have manually installed the core jar and are experiencing problems with c
   * *Edit the location for data caching* in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
     ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
   * Assuming Maven2 and Java are correctly configured, you should now be able to compile successfully using Maven2 as follows:
-  ** cd to the [MyDasTemplate] folder where you should find the `pom.xml` file.
-  ** Run the command `mvn clean package` to create a valid war file, *OR*
-  ** Run the command `mvn clean jetty:run` to run the server using Jetty on `http://localhost:8080/das`.  Once Jetty is up and running, navigating to this URL in your browser should return a page listing the single data source named 'template'.
+    ** cd to the [MyDasTemplate] folder where you should find the `pom.xml` file.
+    ** Run the command `mvn clean package` to create a valid war file, *OR*
+    ** Run the command `mvn clean jetty:run` to run the server using Jetty on `http://localhost:8080/das`.  Once Jetty is up and running, navigating to this URL in your browser should return a page listing the single data source named 'template'.
  
   * If this is successful, you have a valid configuration that you can use as a basis for developing your DAS data source.  The files you are most likely to want to edit immediately include:
-  ** `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` to configure your DAS server and DAS source.  (You should specify the fully-qualified class name for your data source in this file, if different from the TemplateAnnotationDataSource.java file provided in the template project).
-  ** `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/template/TemplateAnnotationDataSource.java`.  You will probably wish to refactor this class to a different package and classname and then configure this in the MydasServerConfig.xml file mentioned above.  You can also change the interface that you are implementing as described on the HOWTO_WritePluginIntro page.  You should then implement the required methods for your class.
+    ** `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` to configure your DAS server and DAS source.  (You should specify the fully-qualified class name for your data source in this file, if different from the TemplateAnnotationDataSource.java file provided in the template project).
+    ** `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/template/TemplateAnnotationDataSource.java`.  You will probably wish to refactor this class to a different package and classname and then configure this in the MydasServerConfig.xml file mentioned above.  You can also change the interface that you are implementing as described on the HOWTO_WritePluginIntro page.  You should then implement the required methods for your class.
