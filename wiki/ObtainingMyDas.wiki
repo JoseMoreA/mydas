@@ -31,7 +31,7 @@ If you have manually installed the core jar and are experiencing problems with c
 
 `[HOME_FOLDER]/.m2/repository/uk/ac/ebi/mydas`
 
-=== Download the template project ===
+=== Download and Configure the Template Project ===
 
   * *Download* `MyDasTemplate-N.N.N.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  To get you started, so you can compile for the first time, do the following:
 
