@@ -1,13 +1,5 @@
-#summary One-sentence summary of this page.
+#summary HOWTO: Implementing a DataSource
 
-= Introduction =
+[HOWTO_WritePluginIntro  <- Selecting the best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
 
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Getting Started: Selecting the best Interface to Implement =
