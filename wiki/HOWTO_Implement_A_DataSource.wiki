@@ -2,4 +2,6 @@
 
 [HOWTO_WritePluginIntro  <- Selecting the best Interface to Implement] | [HELP_INDEX Index] | [HOWTO_Implement_Sequence_Command Implementing the sequence command ->]
 
-= Getting Started: Selecting the best Interface to Implement =
+= Implementing a DataSource =
+
+http://mydas.googlecode.com/svn/trunk/mydas/server_core/docs/UML/datasource-interfaces-class-diagram.png
