@@ -2,11 +2,12 @@
 <metadata>
   <groupId>uk.ac.ebi.mydas</groupId>
   <artifactId>mydas_master</artifactId>
-  <version>1.0.6</version>
+  <version>1.6.0</version>
   <versioning>
     <versions>
       <version>1.0.6</version>
+      <version>1.6.0</version>
     </versions>
-    <lastUpdated>20100215142029</lastUpdated>
+    <lastUpdated>20100317143029</lastUpdated>
   </versioning>
 </metadata>
