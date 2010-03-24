@@ -1,6 +1,6 @@
 =MyDAS 1.6 Tutorial=
 
-== First Part: Getting MyDas to work and checking the example data source == 
+== First Part: Getting !MyDas to work and checking the example data source == 
 
 === Download and Configure the Template Project ===
 
@@ -72,7 +72,14 @@
       ** This source has an extra property which specifies the gff file that is been loaded to be publish as a DAS source. in this case the [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]
 
 === Exploring the Example Data Source ===
- 
+Now that the data source is working we can start using the available capabilities. Try the next commands:
+ * Source: [http://localhost:8080/das/examplegff]
+ * Types: [http://localhost:8080/das/examplegff/types]
+ * Features: [http://localhost:8080/das/examplegff/features?segment=L47615.1]
+ * Feature-by-id: [http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1]
+ * Stylesheet: [http://localhost:8080/das/examplegff/stylesheet]
+ * Unknown-feature: [http://localhost:8080/das/examplegff/features?feature_id=xxxxx]
+
   * If this is successful, you have a valid configuration that you can use as a basis for developing your DAS data source.  The files you are most likely to want to edit immediately include:
     ** `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` to configure your DAS server and DAS source.  (You should specify the fully-qualified class name for your data source in this file, if different from the TemplateAnnotationDataSource.java file provided in the template project).
     ** `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/template/TemplateAnnotationDataSource.java`.  You will probably wish to refactor this class to a different package and classname and then configure this in the MydasServerConfig.xml file mentioned above.  You can also change the interface that you are implementing as described on the HOWTO_WritePluginIntro page.  You should then implement the required methods for your class.
