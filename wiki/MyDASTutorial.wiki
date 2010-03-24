@@ -1,0 +1,78 @@
+=MyDAS 1.6 Tutorial=
+
+== First Part: Getting MyDas to work and checking the example data source == 
+
+=== Download and Configure the Template Project ===
+
+  * *Download* `MyDasTemplate-N.N.N.zip` from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  To get you started, so you can compile for the first time, do the following:
+
+  * *Edit the location for data caching* in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
+    ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
+
+  * Assuming [http://maven.apache.org/download.html Maven2] and [http://java.sun.com/javase/downloads/index.jsp Java] are correctly configured, you should now be able to compile successfully using Maven2 as follows:
+    ** cd to the [MyDasTemplate] folder where you should find the `pom.xml` file.
+    ** Run the command `mvn clean jetty:run` to run the server using Jetty. 
+
+=== The Server is Running ===
+
+  * Once Jetty is up and running, navigating to `http://localhost:8080/das/sources` in your browser should return a XML listing the DAS sources of this server, similar to:
+{{{
+<?xml version="1.0" standalone="no"?>
+<SOURCES>
+  <SOURCE	uri="template" 
+		doc_href="http://code.google.com/p/mydas/" 
+		title="template" description="Template Annotation Data Source">
+    <MAINTAINER email="template@template.com" />
+    <VERSION uri="template" created="2010-03-17">
+      <COORDINATES	uri="http://uritocoordinatesystem.com" 
+			source="typeOfReference" 
+			authority="organisationResponsible" 
+			test_range="P00280">UniProt,Protein Sequence
+      </COORDINATES>
+      <CAPABILITY	type="das1:capability_name" 
+			query_uri="http://actualDASURLusedtoexecuteacommand.com" />
+    </VERSION>
+    <PROPERTY name="templateexamplekey" value="templateexamplevalue" />
+
+  </SOURCE>
+  <SOURCE	uri="examplegff" 
+		doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/resources/fickett-tss.gff" 
+		title="fickett-tss" 
+		description="GFF2 Example Annotation Data Source">
+    <MAINTAINER email="gsalazar@ebi.ac.uk" />
+    <VERSION uri="examplegff" created="2010-03-19">
+      <COORDINATES	uri="CS_DS94"
+			source="Gene_ID" 
+			authority="Ensembl" 
+			taxid="9606" 
+			test_range="ENSG00000160916">Ensembl, Genome Information
+      </COORDINATES>
+      <CAPABILITY	type="das1:sources" 
+			query_uri="http://localhost:8080/das/examplegff" />
+      <CAPABILITY	type="das1:types" 
+			query_uri="http://localhost:8080/das/examplegff/types" />
+      <CAPABILITY	type="das1:features" 
+			query_uri="http://localhost:8080/das/examplegff/features?segment=U29912.1" />
+      <CAPABILITY	type="das1:feature-by-id" 
+			query_uri="http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1" />
+      <CAPABILITY	type="das1:stylesheet" 
+			query_uri="http://localhost:8080/das/examplegff/stylesheet" />
+      <CAPABILITY	type="das1:unknown-feature" />
+    </VERSION>
+    <PROPERTY name="gff_file" value="fickett-tss.gff" />
+  </SOURCE>
+</SOURCES>
+}}}
+
+ * The DAS 'sources' command for this server show us two data sources named 'template' and 'examplegff'.
+    ** The data source 'template' is a blank project that can be use as an start point to create a new database. This will be useful in the Second part of this tutorial.
+    ** The second data source 'examplegff' is a ready-to-use data source that load a gff file and uses its content as the segments and features that can be queried.
+      ** From the response of the command sources is possible to known that the examplegff source has implemented the next capabilities: sources, types, features, feature-by-id, stylesheet and unknown-feature.
+      ** That response is also providing information about the coordinate system used. In this case the authority is Ensmbl, the type is Gene_id and the tax id is 9606 which correspond to Homo Sapiens in the NCBI taxonomy.
+      ** This source has an extra property which specifies the gff file that is been loaded to be publish as a DAS source. in this case the [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]
+
+=== Exploring the Example Data Source ===
+ 
+  * If this is successful, you have a valid configuration that you can use as a basis for developing your DAS data source.  The files you are most likely to want to edit immediately include:
+    ** `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` to configure your DAS server and DAS source.  (You should specify the fully-qualified class name for your data source in this file, if different from the TemplateAnnotationDataSource.java file provided in the template project).
+    ** `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/template/TemplateAnnotationDataSource.java`.  You will probably wish to refactor this class to a different package and classname and then configure this in the MydasServerConfig.xml file mentioned above.  You can also change the interface that you are implementing as described on the HOWTO_WritePluginIntro page.  You should then implement the required methods for your class.
