@@ -1,3 +1,4 @@
+#labels Tutorial,DAS1.6
 =MyDAS 1.6 Tutorial=
 
 == First Part: Getting !MyDas to work and checking the example data source == 
@@ -72,7 +73,7 @@
       ** This source has an extra property which specifies the gff file that is been loaded to be publish as a DAS source. in this case the [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]
 
 === Exploring the Example Data Source ===
-Now that the data source is working we can start using the available capabilities. Try the next commands:
+Now that the data source is working we can start using the available capabilities. Try the next commands and compare the results with the original file ([http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]):
  * Source: [http://localhost:8080/das/examplegff]
  * Types: [http://localhost:8080/das/examplegff/types]
  * Features: [http://localhost:8080/das/examplegff/features?segment=L47615.1]
