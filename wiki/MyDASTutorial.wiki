@@ -11,7 +11,7 @@
     ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
 
   * Assuming [http://maven.apache.org/download.html Maven2] and [http://java.sun.com/javase/downloads/index.jsp Java] are correctly configured, you should now be able to compile successfully using Maven2 as follows:
-    ** cd to the [MyDasTemplate] folder where you should find the `pom.xml` file.
+    ** cd to the `[MyDasTemplate]` folder where you should find the `pom.xml` file.
     ** Run the command `mvn clean jetty:run` to run the server using Jetty. 
 
 === The Server is Running ===
@@ -85,12 +85,14 @@ Now that the data source is working we can start using the available capabilitie
 === Reconfiguring the Example Data Source ===
 As you can see the gff file used in this example is quite simple with very few annotations, the next tasks will allow you to reconfigure this data source to use data from a real biological source.
   * Get the gff file. In this example we will use the mitocondrial DNA annotations of the C. elegans given that the implementation of this data source is running in memory and using a Full genome or even a full chromosome can be too demanding for the resources of your local Machine.(More sophisticated implementations can be created for this goal).
-    ** Go to [ftp://ftp.sanger.ac.uk/pub/wormbase/live_release/genomes/c_elegans/genome_feature_tables/GFF2/] and save the file CHROMOSOME_MtDNA.gff in the folder
-
-
-  * Stop the running jetty server by pressing 'ctrl+c'.
+    ** Go to [ftp://ftp.sanger.ac.uk/pub/wormbase/live_release/genomes/c_elegans/genome_feature_tables/GFF2/] 
+    ** Save the file CHROMOSOME_MtDNA.gff in the folder `[MyDasTemplate]/src/main/webapp/`
+  * Stop the jetty server by pressing 'ctrl+c' on the terminal that is running.
   * Open the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` with your favorite editor.
-
+  * Locate the data source with uri = "examplegff"
+  * Change the value of the attribute email in the tag `<maintainer>` for your own email
+  * Look for the line {{{<property key="gff_file" value="fickett-tss.gff" />}}} and change it for {{{<property key="gff_file" value="CHROMOSOME_MtDNA.gff" />}}}
+  * Save the changes and start the jetty servers by the maven command at the console: `mvn clean jetty:run`
 
 
 
