@@ -93,6 +93,11 @@ As you can see the gff file used in this example is quite simple with very few a
   * Change the value of the attribute email in the tag `<maintainer>` for your own email
   * Look for the line {{{<property key="gff_file" value="fickett-tss.gff" />}}} and change it for {{{<property key="gff_file" value="CHROMOSOME_MtDNA.gff" />}}}
   * Save the changes and start the jetty servers by the maven command at the console: `mvn clean jetty:run`
+  * Try the next DAS commands:
+    ** Source: [http://localhost:8080/das/examplegff]
+    ** Types: [http://localhost:8080/das/examplegff/types]
+    ** Feature-by-id: [http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1]
+    ** Features: [http://localhost:8080/das/examplegff/features?segment=CHROMOSOME_MtDNA] - Note that this can take some minutes depending of your system, because is basically asking for the whole data source.
 
 
 
