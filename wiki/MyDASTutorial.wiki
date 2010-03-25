@@ -98,13 +98,3 @@ As you can see the gff file used in this example is quite simple with very few a
     ** Types: [http://localhost:8080/das/examplegff/types]
     ** Feature-by-id: [http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1]
     ** Features: [http://localhost:8080/das/examplegff/features?segment=CHROMOSOME_MtDNA] - Note that this can take some minutes depending of your system, because is basically asking for the whole data source.
-
-
-
-
-  * If this is successful, you have a valid configuration that you can use as a basis for developing your DAS data source.  
-
-
-The files you are most likely to want to edit immediately include:
-    ** `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` to configure your DAS server and DAS source.  (You should specify the fully-qualified class name for your data source in this file, if different from the TemplateAnnotationDataSource.java file provided in the template project).
-    ** `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/template/TemplateAnnotationDataSource.java`.  You will probably wish to refactor this class to a different package and classname and then configure this in the MydasServerConfig.xml file mentioned above.  You can also change the interface that you are implementing as described on the HOWTO_WritePluginIntro page.  You should then implement the required methods for your class.
