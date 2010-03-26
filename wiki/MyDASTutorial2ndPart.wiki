@@ -1,5 +1,6 @@
-#summary One-sentence summary of this page.
-
+#summary Tutorial for MyDAS - Intermediate level
+#labels Phase-Support
 = MyDAS 1.6 Tutorial =
 
 == Second Part: Developing your own Data Source ==
+Now that you have been a real DAS source working on MyDAS lets get closer to a more interesting example: what if you have your data in an in-house format? and therefore the templates/examples don't apply for your data source?
