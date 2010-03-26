@@ -4,3 +4,30 @@
 
 == Second Part: Developing your own Data Source ==
 Now that you have been a real DAS source working on MyDAS lets get closer to a more interesting example: what if you have your data in an in-house format? and therefore the templates/examples don't apply for your data source?
+
+=== Example File ===
+The file of this example was built using information from the ensembl database homo_sapiens_core_56_37a. The file gives positional information of genes, transcripts and exons in the chromosome 5 organized in a separated by pipes `|` like this:
+{{{
+|chr|gene_id|gene_start|gene_end|trascript_id|transcript_start|transcript_end|exon_id|exon_start|exon_end|
+}}}
+You can see a sample of this file below.
+{{{
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001648483|156888|157131|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001135995|156186|156325|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001136002|155460|155558|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001136007|154990|155106|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001136016|151628|151714|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001136025|144942|145035|
+|5|ENSG00000153404|140373|190087|ENST00000398036|140373|157131|ENSE00001136029|143495|143618|
+}}}
+
+
+=== Analyzing the Data ===
+Firstly, we know from this file the information that our data source has to provide and from them that there will be just four types of features in this data source:
+  * chromosome: In our example will be always the same(5) however we can create our source to support files with information from more than one chromosome. This type should look in DAS like: 
+{{{ 
+<TYPE id="Chromosome" cvId="SO:0000340">Chromosome</TYPE> 
+}}}
+  * genes: The file give us information about the start and end of the genes plus its ID
+  * transcripts: 
+  * exons:
