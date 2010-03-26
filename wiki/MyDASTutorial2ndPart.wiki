@@ -28,6 +28,17 @@ Firstly, we know from this file the information that our data source has to prov
 {{{ 
 <TYPE id="Chromosome" cvId="SO:0000340">Chromosome</TYPE> 
 }}}
-  * genes: The file give us information about the start and end of the genes plus its ID
-  * transcripts: 
-  * exons:
+  * genes: The file give us information about the start and end of the genes plus its ID. From there we have another type in our data source:
+{{{
+<TYPE id="Gene" cvId="SO:0000704">Gene</TYPE>
+}}}
+  But also we have the id field of each feature of this type and the tags start and end can be also deduced from there.
+  * transcripts: As in the case of genes the information provided is the id, start and stop. So we will need a new DAS type:
+{{{
+<TYPE id="Transcript" cvId="SO:0000673">Transcript</TYPE>
+}}}
+  * exons: Same analysis as above:
+{{{
+<TYPE id="Exon" cvId="SO:0000147">Exon</TYPE>
+}}}
+Note that the numbers at cvId are valid Ontology Ids from the Sequence Ontology.
