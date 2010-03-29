@@ -160,3 +160,47 @@ public class SeparatedByPipesParser {
 		return newSegment;
 	}
 }}} 
+  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean we first look in the current feature for tis subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
+{{{
+	private DasComponentFeature getExon(String exonID, String start, String stop, DasComponentFeature transcript) throws DataSourceException {
+		for (DasComponentFeature feature:transcript.getReportableSubComponents())
+			if(feature.getFeatureId().equals(exonID))
+				return feature;
+		int startI=0,stopI=0;
+		try {
+			startI=Integer.parseInt(start);
+			stopI=Integer.parseInt(stop);
+		}catch (NumberFormatException nfe){
+			throw new DataSourceException("PARSE ERROR: The coordinates for the exon "+exonID+" should be numeric",nfe);
+		}
+		return transcript.addSubComponent(exonID, startI, stopI, startI, stopI, exonID, this.exonType, exonID, exonID, method, null, null, null, null, null);
+	}
+	private DasComponentFeature getTranscript(String transcriptID, String start, String stop, DasComponentFeature gene) throws DataSourceException {
+		for (DasComponentFeature feature:gene.getReportableSubComponents())
+			if(feature.getFeatureId().equals(transcriptID))
+				return feature;
+		int startI=0,stopI=0;
+		try {
+			startI=Integer.parseInt(start);
+			stopI=Integer.parseInt(stop);
+		}catch (NumberFormatException nfe){
+			throw new DataSourceException("PARSE ERROR: The coordinates for the transcript "+transcriptID+" should be numeric",nfe);
+		}
+		return gene.addSubComponent(transcriptID, startI, stopI, startI, stopI, transcriptID, this.transcriptType, transcriptID, transcriptID, method, null, null, null, null, null);
+	}
+	private DasComponentFeature getGene(String geneID,String start,String stop, DasAnnotatedSegment segment) throws DataSourceException {
+		for (DasFeature feature:segment.getFeatures())
+			if(feature.getFeatureId().equals(geneID))
+				return (DasComponentFeature)feature;
+		int startI=0,stopI=0;
+		try {
+			startI=Integer.parseInt(start);
+			stopI=Integer.parseInt(stop);
+		}catch (NumberFormatException nfe){
+			throw new DataSourceException("PARSE ERROR: The coordinates for the gene "+geneID+" should be numeric",nfe);
+		}
+		return segment.getSelfComponentFeature().addSubComponent(geneID, startI, stopI, startI, stopI, geneID, geneType, geneID, geneID, method, null, null, null, null, null);
+	}
+}}}
+
+==== Implement one of the MyDAS Data Sources Interfaces ====
