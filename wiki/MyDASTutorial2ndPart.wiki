@@ -65,9 +65,17 @@ Pros and cons? the whole file in memory will response quicker but the bigger the
 
 Maybe an intermediate approach with a preprocessing stage, and subsequents specialized processes per query, can be a better way, however it will require to focus in details that are not in the scope of this tutorial.
 
-The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the files on `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples` before to start coding.
+The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the files on `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` before to start coding.
 
 So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
 
 ==== Implement a parser of the file ====
-  # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
+  # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
+
+
+<div class="NavFrame">
+  <div class="NavHead">[... This is the title of your collapsible content ...]</div>
+  <div class="NavContent">
+    [... The content you want to hide goes here ...]
+  </div>
+</div>
