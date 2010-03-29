@@ -102,7 +102,61 @@ public class SeparatedByPipesParser {
 	private Scanner scanner;
 	private ArrayList<DasAnnotatedSegment> segments;
 	private ArrayList<DasType> types;
-	private DasType chromosomeType,geneType,trancriptType,exonType;
+	private DasType chromosomeType,geneType,transcriptType,exonType;
 	private DasMethod method;
 }}}
-  # Code the constructor of the class.
+  # Code the constructor of the class. It should receive an InputStream, instantiate the scanner with the stream, create the empty lists for types and segments and create the types and method to use through the source.
+{{{
+	public SeparatedByPipesParser(InputStream gffdoc) throws DataSourceException{
+		scanner= new Scanner(gffdoc);
+		segments= new ArrayList<DasAnnotatedSegment>();
+		types= new ArrayList<DasType>();
+		chromosomeType= new DasType("Chromosome", null, "SO:0000340", "Chromosome");
+		geneType= new DasType("Gene", null, "SO:0000704", "Gene");
+		transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
+		exonType= new DasType("Exon", null, "SO:0000147", "Exon");
+		types.add(chromosomeType);
+		types.add(geneType);
+		types.add(transcriptType);
+		types.add(exonType);
+		method = new DasMethod("not_recorded","not_recorded","ECO:0000037");
+	}
+}}}
+  # Now we have to go though the whole file line by line. To do that you can create the next method:
+{{{
+	public Collection<DasAnnotatedSegment> parse() throws Exception{
+		try {
+			//first use a Scanner to get each line
+			while ( scanner.hasNextLine() ){
+				processLine( scanner.nextLine() );
+			}
+		} finally {
+			//ensure the underlying stream is always closed
+			scanner.close();
+		}
+		return this.segments;
+	}
+}}}
+  # As you can see the previous code makes use of the method `processLine()` which we haven't created, so thats our next step. A line of this file is a a set of fields divided by pipes (`|`) as is described before, so we can process a line by splitting it by pipes. The acquired data is used then, to call the methods to get/create the segment(chromosome) and features(gene, transcript or exon).
+{{{
+	private void processLine(String aLine) throws Exception{
+		String[] parts = aLine.split("\\|");
+		if (parts.length<11)
+			throw new Exception("Parsing Error: A line doesn't have the right number of fields ["+aLine+"]");
+		DasAnnotatedSegment segment = this.getSegment(parts[1]);
+		DasComponentFeature gene= this.getGene(parts[2],parts[3],parts[4],segment);
+		DasComponentFeature transcript= this.getTranscript(parts[5],parts[6],parts[7],gene);
+		this.getExon(parts[8],parts[9],parts[10],transcript);
+	}
+}}}
+  # To get a segment we start by looking in the current list of segments in case this segment has been created already. If is found is returned. If not a new segment is created using the id of the chromosome. And then, added to the list and returned. the file is not giving us too much information about the chromosome, so we are using default values in most of its fields.
+{{{
+	private DasAnnotatedSegment getSegment(String segmentId) throws DataSourceException {
+		for (DasAnnotatedSegment segment:segments)
+			if (segment.getSegmentId().equals(segmentId))
+				return segment;
+		DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,1,"FROM_PIPE_FILE",segmentId, new ArrayList<DasFeature>());
+		segments.add(newSegment);
+		return newSegment;
+	}
+}}} 
