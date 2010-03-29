@@ -71,11 +71,36 @@ So, lets start coding a parser for this file. The goal of the parser is to get t
 
 ==== Implement a parser of the file ====
   # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
+  # Add the empty class declaration wit his package and the classes to import. You can add those imports now or whenever they are required:
+{{{
+package uk.ac.ebi.mydas.examples;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Scanner;
 
-<div class="NavFrame">
-  <div class="NavHead">[... This is the title of your collapsible content ...]</div>
-  <div class="NavContent">
-    [... The content you want to hide goes here ...]
-  </div>
-</div>
+import uk.ac.ebi.mydas.exceptions.DataSourceException;
+import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
+import uk.ac.ebi.mydas.model.DasComponentFeature;
+import uk.ac.ebi.mydas.model.DasFeature;
+import uk.ac.ebi.mydas.model.DasMethod;
+import uk.ac.ebi.mydas.model.DasType;
+
+public class SeparatedByPipesParser {
+}
+}}}
+  # Define the attributes of the class, which in this case are:
+    * scanner: Object used to process the file line by line.
+    * segments: List of the parsed segments.
+    * types: List of the types used in this data source. From a previous analysis: chromosome, gene, transcript, exon. Attributes for each pf those types can be created to facilitate its use.
+    * method: 
+{{{
+	private Scanner scanner;
+	private ArrayList<DasAnnotatedSegment> segments;
+	private ArrayList<DasType> types;
+	private DasType chromosomeType,geneType,trancriptType,exonType;
+	private DasMethod method;
+}}}
