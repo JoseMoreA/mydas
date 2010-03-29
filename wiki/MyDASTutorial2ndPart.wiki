@@ -96,7 +96,8 @@ public class SeparatedByPipesParser {
     * scanner: Object used to process the file line by line.
     * segments: List of the parsed segments.
     * types: List of the types used in this data source. From a previous analysis: chromosome, gene, transcript, exon. Attributes for each pf those types can be created to facilitate its use.
-    * method: 
+    * method: From the analysis of the file(above). we are going to use the same method for all the features.
+    The code for this will be something like:
 {{{
 	private Scanner scanner;
 	private ArrayList<DasAnnotatedSegment> segments;
@@ -104,3 +105,4 @@ public class SeparatedByPipesParser {
 	private DasType chromosomeType,geneType,trancriptType,exonType;
 	private DasMethod method;
 }}}
+  # Code the constructor of the class.
