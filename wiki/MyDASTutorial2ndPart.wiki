@@ -376,7 +376,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		Collection<DasAnnotatedSegment> segmentsResponse =new ArrayList<DasAnnotatedSegment>();
 		for (String featureId:featureIdCollection){
 			boolean found=false;
-			for (DasAnnotatedSegment segment:segments)
+			for (DasAnnotatedSegment segment:segments){
 				for(DasFeature feature:segment.getFeatures())
 					if(feature.getFeatureId().equals(featureId)){
 						segmentsResponse.add(new DasAnnotatedSegment(	segment.getSegmentId(),
@@ -386,13 +386,46 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 												segment.getSegmentLabel(),
 												Collections.singleton(feature)));
 						found=true;
+						break;
+					}else if(this.lookInside((DasComponentFeature)feature, featureId, segmentsResponse, segment)){
+						found= true;
+						break;
 					}
+			}
 			if(!found)
 				segmentsResponse.add(new DasUnknownFeatureSegment(featureId));
 		}
 		return segmentsResponse;
 	}
-}}} 
+}}}
+  Given the fact that our data source deals with subcomponents, parts and parents, this method require to look inside the current feature to check if one of the subcomponents is the requested feature, fro that reason an extra method that recursively check for the feature was created:
+{{{
+	private boolean lookInside(	DasComponentFeature component,
+					String featureId,
+					Collection<DasAnnotatedSegment> segmentsResponse,
+					DasAnnotatedSegment segment) 
+	throws DataSourceException{
+		if (component.hasSubParts()){
+			for (DasComponentFeature subcomponent: component.getReportableSubComponents()){
+				if(subcomponent.getFeatureId().equals(featureId)){
+					segmentsResponse.add(
+					 new DasAnnotatedSegment(segment.getSegmentId(),
+						segment.getStartCoordinate(),
+						segment.getStopCoordinate(),
+						segment.getVersion(),
+						segment.getSegmentLabel(),
+						Collections.singleton((DasFeature)subcomponent)
+					 ));
+					return true;
+				}else
+					if(this.lookInside(subcomponent, featureId, segmentsResponse, segment))
+						return true;
+			}
+		}
+		return false;
+		
+	}
+}}}
   ** *getLinkURL()*: This method has been deprecated in DAS 1.6, so we won't implement it, and just throw an exception indicatiing that is not implemented.
 {{{
 	public URL getLinkURL(String field, String id)
@@ -430,7 +463,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
   * Get the file. In this example we will use the file located at [http://mydas.googlecode.com/files/testGenes.txt]. Download it and saved in the folder `[MyDasTemplate]/src/main/webapp/`
   * Stop the jetty server(if running) by pressing 'ctrl+c' on the terminal that is running.
   * Open the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` with your favorite editor.
-  * Copy and paste the configuration for the data source with uri = "examplegff", it should look like:
+  * The recently created data source is very similar to the GFF example data source, So, copy and paste the configuration for the data source with uri = "examplegff", it should look like:
 {{{
         <datasource uri="examplegff"
                     title="fickett-tss"
@@ -466,9 +499,17 @@ Now lets go from the top down, implementing all the methods of this Data Source.
     ** Tag `<datasource>`, attribute `title`: separatedByPipes
     ** Tag `<datasource>`, attribute `description`: Data source testing a new parser
     ** Tag `<datasource>`, attribute `doc_href`: http://mydas.googlecode.com
-    ** Tag `<maintainer>`, attribute `email`: [Your email]
+    ** Tag `<maintainer>`, attribute `email`: `[Your email]`
+    ** Tag `<version>`, attribute `uri`: examplepipes
+    ** Tag `<version>`, attribute `created`: 2010-03-19
+    ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.SeparatedByPipesDataSource
+    ** Tag `<property>`, attribute `key`: pipes_file
+    ** Tag `<property>`, attribute `value`: testGenes.txt
+    ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/`
 
-    ** Tag `<datasource>`, attribute `uri`: examplepipes
-    ** Tag `<datasource>`, attribute `uri`: examplepipes
-    ** Tag `<datasource>`, attribute `uri`: examplepipes
-    ** Tag `<datasource>`, attribute `uri`: examplepipes
+If everything goes right you have created a new data source from scratch, so now you can start again the server using maven to compile the new files and using the new configuration.
+
+The final files can be directly download from:
+  * [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples/SeparatedByPipesDataSource.java]
+  * [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples/SeparatedByPipesParser.java]
+  * [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/MydasServerConfig.xml]
