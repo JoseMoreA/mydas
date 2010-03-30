@@ -321,4 +321,50 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 
 }}}
 Now lets go from the top down, implementing all the methods of this Data Source.
-  ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. 
+  ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is gonna be the data source property `pipes_file` in the configuration file.
+  The parameters of this method have to be save as attributes of this class(you have to create those attributes). The parser is now invoked and the model(segments and types) is also saved as parameter. Exceptions are catch and throw in case something goes wrong.
+{{{
+	public void init(ServletContext servletContext,
+			Map<String, String> globalParameters,
+			DataSourceConfiguration dataSourceConfig)
+			throws DataSourceException {
+		this.svCon = servletContext;
+		this.globalParameters = globalParameters;
+		this.config = dataSourceConfig;
+		path = config.getDataSourceProperties().get("pipes_file");
+		try {
+			SeparatedByPipesParser parser = new SeparatedByPipesParser(new FileInputStream(servletContext.getRealPath(path)));
+			segments = parser.parse();
+			types = parser.getTypes();
+		} catch (FileNotFoundException e) {
+			throw new DataSourceException("The data source cannot be loaded. The file couldn't be oppened",e);
+		} catch (Exception e) {
+			throw new DataSourceException("The data source cannot be loaded because of parsing problems",e);
+		}
+	}
+}}}
+  ** *destroy()*: the goal of this method is to liberate the resources of the system whenever the data source is turned off. In our case there is not too much to do, maybe be sure the attributes of this class are null. which is not completely necessary cause thats something java is going to do later anyway, however in other cases this method can be important to close databases connections or network sockets.
+{{{
+	public void destroy() {
+		this.svCon=null;
+		this.globalParameters=null;
+		this.config=null;
+		this.path=null;
+		this.segments=null;
+		this.types=null;
+		this.cacheManager = null;
+	}
+}}}
+  ** *getFeatures()*: The first method to get Features, queries for the features of a segment id, giving that we already have an array of segments this method just requires to go though this array looking for the segment with the same id. In case the id is not in the array an exception should be throw it, to let !MyDAS report this in the appropriate way. 
+  The attribute maxbeans is ignored for now, this implies that our data source is not implementing that capability.
+{{{
+	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbeans)
+			throws BadReferenceObjectException, DataSourceException {
+		for(DasAnnotatedSegment segment:segments){
+			if (segment.getSegmentId().equals(segmentId))
+				return segment;
+		}
+		throw new BadReferenceObjectException("The id is not in the file", segmentId);
+	}
+}}}
+  ** *getFeatures()*: the second method to get features queries by the feature id.
