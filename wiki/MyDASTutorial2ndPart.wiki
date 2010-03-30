@@ -69,6 +69,7 @@ The approach to follow here will be parsing the file and keeping a model in memo
 
 So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
 
+
 ==== Implement a parser of the file ====
   # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
   # Add the empty class declaration wit his package and the classes to import. You can add those imports now or whenever they are required:
@@ -367,4 +368,59 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		throw new BadReferenceObjectException("The id is not in the file", segmentId);
 	}
 }}}
-  ** *getFeatures()*: the second method to get features queries by the feature id.
+  ** *getFeatures()*: The second method to get features queries by the feature id. (a set of those to be more specific). to do that we loop though all the ids of the query looking on each segment for features with those Ids. If we found any, we create a copy of the segment, that contains just that feature. If the the feature is not found in any of the segment an `DasUnknownFeatureSegment` is added to the response array.
+{{{
+	public Collection<DasAnnotatedSegment> getFeatures(
+			Collection<String> featureIdCollection, Integer maxbins)
+			throws UnimplementedFeatureException, DataSourceException {
+		Collection<DasAnnotatedSegment> segmentsResponse =new ArrayList<DasAnnotatedSegment>();
+		for (String featureId:featureIdCollection){
+			boolean found=false;
+			for (DasAnnotatedSegment segment:segments)
+				for(DasFeature feature:segment.getFeatures())
+					if(feature.getFeatureId().equals(featureId)){
+						segmentsResponse.add(new DasAnnotatedSegment(	segment.getSegmentId(),
+												segment.getStartCoordinate(),
+												segment.getStopCoordinate(),
+												segment.getVersion(), 
+												segment.getSegmentLabel(),
+												Collections.singleton(feature)));
+						found=true;
+					}
+			if(!found)
+				segmentsResponse.add(new DasUnknownFeatureSegment(featureId));
+		}
+		return segmentsResponse;
+	}
+}}} 
+  ** *getLinkURL()*: This method has been deprecated in DAS 1.6, so we won't implement it, and just throw an exception indicatiing that is not implemented.
+{{{
+	public URL getLinkURL(String field, String id)
+			throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+}}}
+  ** *getTotalCountForType()*: This method is a helper function for the types command to be able to answer eith the number of times a type has been used in this data source. in order to implement we have to go through all the features in all the segments counting how many times the queried type is there.
+{{{
+	public Integer getTotalCountForType(DasType type)
+			throws DataSourceException {
+		int count=0;
+		for (DasAnnotatedSegment segment:segments)
+			for(DasFeature feature:segment.getFeatures())
+				if(type.getId().equals(feature.getType().getId()))
+					count++;
+		return count;
+	}
+}}}
+  ** *getTypes()*: This is really simple cause we already have this info in the model so we just have to return this array:
+{{{
+	public Collection<DasType> getTypes() throws DataSourceException {
+		return types;
+	}
+}}}
+  ** *registerCacheManager()*: The mydas DAS server implements caching within the server.  This method passes your datasource a reference to a `uk.ac.ebi.mydas.controller.CacheManager` object.
+{{{
+	public void registerCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
+}}}
