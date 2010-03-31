@@ -69,12 +69,12 @@
  * The DAS 'sources' command for this server show us two data sources named 'template' and 'examplegff'.
     ** The data source 'template' is a blank project that can be use as an start point to create a new database. This will be useful in the Second part of this tutorial.
     ** The second data source 'examplegff' is a ready-to-use data source that load a gff file and uses its content as the segments and features that can be queried.
-      ** From the response of the command sources is possible to known that the examplegff source has implemented the next capabilities: sources, types, features, feature-by-id, stylesheet and unknown-feature.
+      ** From the response of the command sources is possible to known that the examplegff source has implemented the following capabilities: sources, types, features, feature-by-id, stylesheet and unknown-feature.
       ** That response is also providing information about the coordinate system used. In this case the authority is Ensmbl, the type is Gene_id and the tax id is 9606 which correspond to Homo Sapiens in the NCBI taxonomy.
       ** This source has an extra property which specifies the gff file that is been loaded to be publish as a DAS source. in this case the [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]
 
 === Exploring the Example Data Source ===
-Now that the data source is working we can start using the available capabilities. Try the next commands and compare the results with the original file ([http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]):
+Now that the data source is working we can start using the available capabilities. Try the following commands and compare the results with the original file ([http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/webapp/fickett-tss.gff fickett-tss.gff]):
  * Source: [http://localhost:8080/das/examplegff]
  * Types: [http://localhost:8080/das/examplegff/types]
  * Features: [http://localhost:8080/das/examplegff/features?segment=L47615.1]
@@ -94,7 +94,7 @@ As you can see the gff file used in this example is quite simple with very few a
   * Change the value of the attribute email in the tag `<maintainer>` for your own email
   * Look for the line {{{<property key="gff_file" value="fickett-tss.gff" />}}} and change it for {{{<property key="gff_file" value="CHROMOSOME_MtDNA.gff" />}}}
   * Save the changes and start the jetty servers by the maven command at the console: `mvn clean jetty:run`
-  * Try the next DAS commands:
+  * Try the following DAS commands:
     ** Source: [http://localhost:8080/das/examplegff]
     ** Types: [http://localhost:8080/das/examplegff/types]
     ** Feature-by-id: [http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1]
