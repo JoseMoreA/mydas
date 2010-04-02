@@ -44,3 +44,77 @@ WHERE
 }}}
 
 That query will give us 982190 rows, the file used in the previous example was a subset of the first 1000 rows of this query and just to have a rough idea that file occupied 98Kb, that implies that the whole database in that file can be approximately 100Mb. And therefore and approach of putting the whole model in memory and query it from there is not adequate, moreover, the fact that having the possibility of having programmatic access to it is something to take advantage.
+
+=== Database Manager ===
+
+Now lets create a java class to deal with all the transactions to the Ensembl database.
+  # In the folder `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` create a file called: `EnsemblTestManager.java`.
+  # The initial content of this file is the empty class with the package definition, the packages to import and the attributes of this class.
+{{{
+package uk.ac.ebi.mydas.examples;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import uk.ac.ebi.mydas.exceptions.BadReferenceObjectException;
+import uk.ac.ebi.mydas.exceptions.DataSourceException;
+import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
+import uk.ac.ebi.mydas.model.DasComponentFeature;
+import uk.ac.ebi.mydas.model.DasFeature;
+import uk.ac.ebi.mydas.model.DasMethod;
+import uk.ac.ebi.mydas.model.DasType;
+
+public class EnsemblTestManager {
+	private ArrayList<DasType> types;
+	private DasType geneType,transcriptType,exonType;
+	private DasMethod method;
+	private Connection connection;
+}
+}}}
+  # The constructor should connect to the database and let it open for next queries. As in the previous tutorial we are going create the types here because we already know them.
+{{{
+	public EnsemblTestManager() throws DataSourceException{
+		//Initialize types
+		geneType= new DasType("Gene", null, "SO:0000704", "Gene");
+		transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
+		exonType= new DasType("Exon", null, "SO:0000147", "Exon");
+		types= new ArrayList<DasType>();
+		types.add(geneType);
+		types.add(transcriptType);
+		types.add(exonType);
+		method = new DasMethod("not_recorded","not_recorded","ECO:0000037");
+
+
+		connection = null;
+		String userName = "anonymous";
+		String password = "";
+		String url = "jdbc:mysql://ensembldb.ensembl.org:5306/homo_sapiens_core_56_37a";
+		try {
+			Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+			connection = DriverManager.getConnection (url, userName, password);
+		} catch (InstantiationException e) {
+			throw new DataSourceException("Problems loading the MySql driver",e);
+		} catch (IllegalAccessException e) {
+			throw new DataSourceException("Problems loading the MySql driver",e);
+		} catch (ClassNotFoundException e) {
+			throw new DataSourceException("Problems loading the MySql driver",e);
+		} catch (SQLException e) {
+			throw new DataSourceException("Problems conecting to the ensembl database",e);
+		}
+	}
+
+}}} 
+  # As this connection cannot be open forever we should provide a method to close it
+{{{
+	public void close(){
+		try{
+			connection.close ();
+		} catch (Exception e) { /* ignore close errors */ }
+
+	}
+}}}
