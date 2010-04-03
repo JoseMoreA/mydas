@@ -614,3 +614,5 @@ For this we can make a copy of the configuration created in [MyDASTutorial2ndPar
     ** All query attributes of the capabilities elements should have an url starting for
 `http://localhost:8080/das/`
    * Delete the tag `<property>`
+
+[MyDASTutorial <<1st Tutorial(Beginners level)] | [MyDASTutorial2ndPart <2nd Tutotial(Intermediate level)] | *3rd Tutorial(Advance level) *
