@@ -25,11 +25,8 @@ You can see a sample of this file below.
 
 
 === Analyzing the Data ===
-Firstly, we know from this file the information that our data source has to provide and from them that there will be just four types of features in this data source:
-  * chromosome: In our example will be always the same(5) however we can create our source to support files with information from more than one chromosome. This type should look in DAS like: 
-{{{ 
-<TYPE id="Chromosome" cvId="SO:0000340">Chromosome</TYPE> 
-}}}
+Firstly, we know that our file just contains information for one segment. The chromosome 5, however we can create our source to support files with information from more than one chromosome.
+We also know from this file the information that our data source has to provide, and from there that there will be just three types of features in this data source:
   * genes: The file give us information about the start and end of the genes plus its ID. From there we have another type in our data source:
 {{{
 <TYPE id="Gene" cvId="SO:0000704">Gene</TYPE>
@@ -65,14 +62,14 @@ Pros and cons? the whole file in memory will response quicker but the bigger the
 
 Maybe an intermediate approach with a preprocessing stage, and subsequents specialized processes per query, can be a better way, however it will require to focus in details that are not in the scope of this tutorial.
 
-The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the files on `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` before to start coding.
+The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to start coding.
 
 So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
 
 
 ==== Implement a parser of the file ====
   # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
-  # Add the empty class declaration wit his package and the classes to import. You can add those imports now or whenever they are required:
+  # Add the empty class declaration with his package and the classes to import. You can add those imports now or whenever they are required:
 {{{
 package uk.ac.ebi.mydas.examples;
 
@@ -96,7 +93,7 @@ public class SeparatedByPipesParser {
   # Define the attributes of the class, which in this case are:
     * scanner: Object used to process the file line by line.
     * segments: List of the parsed segments.
-    * types: List of the types used in this data source. From a previous analysis: chromosome, gene, transcript, exon. Attributes for each pf those types can be created to facilitate its use.
+    * types: List of the types used in this data source. From a previous analysis: chromosome, gene, transcript, exon. Attributes for each of those types can be created to facilitate its use.
     * method: From the analysis of the file(above). we are going to use the same method for all the features.
     The code for this will be something like:
 {{{
@@ -112,11 +109,9 @@ public class SeparatedByPipesParser {
 		scanner= new Scanner(gffdoc);
 		segments= new ArrayList<DasAnnotatedSegment>();
 		types= new ArrayList<DasType>();
-		chromosomeType= new DasType("Chromosome", null, "SO:0000340", "Chromosome");
 		geneType= new DasType("Gene", null, "SO:0000704", "Gene");
 		transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
 		exonType= new DasType("Exon", null, "SO:0000147", "Exon");
-		types.add(chromosomeType);
 		types.add(geneType);
 		types.add(transcriptType);
 		types.add(exonType);
@@ -161,7 +156,7 @@ public class SeparatedByPipesParser {
 		return newSegment;
 	}
 }}} 
-  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean we first look in the current feature for tis subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
+  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean, we first look in the current feature for tis subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
 {{{
 	private DasComponentFeature getExon(	String exonID, 
 						String start, 
@@ -260,7 +255,7 @@ public class SeparatedByPipesParser {
 }}}
 
 ==== Implement one of the MyDAS Data Sources Interfaces ====
-For this example we are going to implement the AnnotationDataSource, to start doing create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesDataSource.java`. The content of an empty class that implements this Interface is below, and it contains the classes to import, and the definition of the empty methods force to implement by that interface.
+For this example we are going to implement the AnnotationDataSource, to start doing create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesDataSource.java`. The content of an empty class that implements this Interface is below, and it contains the classes to import, and the definition of the empty methods forced to be implemented by that interface.
 {{{
 package uk.ac.ebi.mydas.examples;
 
@@ -321,7 +316,7 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 }
 
 }}}
-Now lets go from the top down, implementing all the methods of this Data Source.
+Now lets go top down implementing all the methods of this Data Source.
   ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is gonna be the data source property `pipes_file` in the configuration file.
   The parameters of this method have to be save as attributes of this class(you have to create those attributes). The parser is now invoked and the model(segments and types) is also saved as parameter. Exceptions are catch and throw in case something goes wrong.
 {{{
@@ -344,7 +339,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		}
 	}
 }}}
-  ** *destroy()*: the goal of this method is to liberate the resources of the system whenever the data source is turned off. In our case there is not too much to do, maybe be sure the attributes of this class are null. which is not completely necessary cause thats something java is going to do later anyway, however in other cases this method can be important to close databases connections or network sockets.
+  ** *destroy()*: the goal of this method is to liberate the resources of the system whenever the data source is turned off. In our case there is not too much to do, maybe be sure the attributes of this class are null. which is not completely necessary because thats something java is going to do later anyway, however in other cases this method can be important to close databases connections or network sockets.
 {{{
 	public void destroy() {
 		this.svCon=null;
@@ -368,7 +363,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		throw new BadReferenceObjectException("The id is not in the file", segmentId);
 	}
 }}}
-  ** *getFeatures()*: The second method to get features queries by the feature id. (a set of those to be more specific). to do that we loop though all the ids of the query looking on each segment for features with those Ids. If we found any, we create a copy of the segment, that contains just that feature. If the the feature is not found in any of the segment an `DasUnknownFeatureSegment` is added to the response array.
+  ** *getFeatures()*: The second method to get features queries by the feature id. (a set of those to be more specific). to do that we loop though all the ids of the query looking on each segment for features with those Ids. If we found any, we create a copy of the segment, that contains just that feature. If the the feature is not found in any of the segments an `DasUnknownFeatureSegment` is added to the response array.
 {{{
 	public Collection<DasAnnotatedSegment> getFeatures(
 			Collection<String> featureIdCollection, Integer maxbins)
@@ -398,7 +393,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		return segmentsResponse;
 	}
 }}}
-  Given the fact that our data source deals with subcomponents, parts and parents, this method require to look inside the current feature to check if one of the subcomponents is the requested feature, fro that reason an extra method that recursively check for the feature was created:
+  Given the fact that our data source deals with subcomponents, parts and parents, this method require to look inside the current feature to check if one of the subcomponents is the requested feature, for that reason an extra method that recursively check for the feature was created:
 {{{
 	private boolean lookInside(	DasComponentFeature component,
 					String featureId,
@@ -433,7 +428,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 		throw new UnimplementedFeatureException("No implemented");
 	}
 }}}
-  ** *getTotalCountForType()*: This method is a helper function for the types command to be able to answer eith the number of times a type has been used in this data source. in order to implement we have to go through all the features in all the segments counting how many times the queried type is there.
+  ** *getTotalCountForType()*: This method is a helper function for the types command to be able to answer how many times a type has been used in this data source. in order to implement we have to go through all the features in all the segments counting how many times the queried type is there.
 {{{
 	public Integer getTotalCountForType(DasType type)
 			throws DataSourceException {
@@ -469,15 +464,15 @@ Now lets go from the top down, implementing all the methods of this Data Source.
                     title="fickett-tss"
                     description="GFF2 Example Annotation Data Source"
                     doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/resources/fickett-tss.gff">
-			<maintainer email="gsalazar@ebi.ac.uk" />
+			<maintainer email="youremail@server.com" />
 
 			<version uri="examplegff" created="2010-03-19">
 	            <class>uk.ac.ebi.mydas.examples.GFFFileDataSource</class>
-				<coordinates 	uri="http://www.dasregistry.org/dasregistry/coordsys/CS_DS94"
+				<coordinates 	uri="http://www.dasregistry.org/coordsys/CS_DS52"
 								source="Gene_ID"
 								authority="Ensembl"
-								taxid="9606"
-								test_range="ENSG00000160916">Ensembl,Gene_ID,Homo sapiens</coordinates>
+								taxid="6239"
+								test_range="ENSG00000160916">Ensembl,CEL_160,Chromosome,Caenorhabditis elegans</coordinates>
 				<capability	type="das1:sources"
 						query_uri="http://localhost:8080/das/examplegff" />
 				<capability	type="das1:types"
@@ -495,7 +490,7 @@ Now lets go from the top down, implementing all the methods of this Data Source.
             <features-strictly-enclosed>true</features-strictly-enclosed>
             <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
             <include-types-with-zero-count>true</include-types-with-zero-count>
-			<property key="gff_file" value="fickett-tss.gff" />
+	    <property key="gff_file" value="CHROMOSOME_MtDNA.gff" />
         </datasource>
 
 }}}
@@ -508,9 +503,12 @@ Now lets go from the top down, implementing all the methods of this Data Source.
     ** Tag `<version>`, attribute `uri`: examplepipes
     ** Tag `<version>`, attribute `created`: 2010-03-19
     ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.SeparatedByPipesDataSource
+    ** Tag `<coordinates>`, attribute `uri`: `http://www.dasregistry.org/dasregistry/coordsys/CS_DS94`
+    ** Tag `<coordinates>`, attribute `taxid`: 9606
+    ** Tag `<coordinates>`, content: Ensembl,Gene_ID,Homo sapiens
     ** Tag `<property>`, attribute `key`: pipes_file
     ** Tag `<property>`, attribute `value`: testGenes.txt
-    ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/`
+    ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/examplepipes/` instead of `http://localhost:8080/das/examplegff/`
 
 If everything goes right you have created a new data source from scratch, so now you can start again the server using maven to compile the new files and using the new configuration.
 
