@@ -48,6 +48,14 @@ That query will give us 982190 rows, the file used in the previous example was a
 === Database Manager ===
 
 Now lets create a java class to deal with all the transactions to the Ensembl database.
+  # We require the MySQL driver for java. We can add this dependency to the pom file of our maven project, and maven will deal to get the files. This can be done by editing the file `[MyDasTemplate]/pom.xml` and adding the following code nested to the tag `<dependencies>`:
+{{{
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.12</version>
+		</dependency>
+}}}
   # In the folder `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` create a file called: `EnsemblTestManager.java`.
   # The initial content of this file is the empty class with the package definition, the packages to import and the attributes of this class.
 {{{
