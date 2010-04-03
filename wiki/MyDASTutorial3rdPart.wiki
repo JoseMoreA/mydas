@@ -43,7 +43,7 @@ WHERE
  and sr.coord_system_id = 2
 }}}
 
-That query will give us 982190 rows, the file used in the previous example was a subset of the first 1000 rows of this query and just to have a rough idea that file occupied 98Kb, that implies that the whole database in that file can be approximately 100Mb. And therefore and approach of putting the whole model in memory and query it from there is not adequate, moreover, the fact that having the possibility of having programmatic access to it is something to take advantage.
+That query will give us 982190 rows, the file used in the previous example was a subset of the first 1000 rows of this query and just to have a rough idea that file occupied 98Kb, that implies that the whole database in that file can be approximately 100Mb. And therefore an approach of putting the whole model in memory and quering it from there is not adequate, moreover, the fact that counting with the possibility of having programmatic access to it, is something to take advantage of.
 
 === Database Manager ===
 
@@ -76,7 +76,7 @@ public class EnsemblTestManager {
 	private Connection connection;
 }
 }}}
-  # The constructor should connect to the database and let it open for next queries. As in the previous tutorial we are going create the types here because we already know them.
+  # The constructor should connect to the database and let it open for next queries. As in the previous tutorial we are going create the types here, because we already know them.
 {{{
 	public EnsemblTestManager() throws DataSourceException{
 		//Initialize types
@@ -152,23 +152,16 @@ public class EnsemblTestManager {
 		return segments;
 	}
 }}}
-  # The methods `getSegment()`, `getGene()`, `getTranscript()` and `getExon()` are exactly the same as in [MyDASTutorial2ndPart] :
+  # The methods `getSegment()`, `getGene()`, `getTranscript()` and `getExon()` are the same as in [MyDASTutorial2ndPart], or even easier because here we will receive the start and end as integers :
 {{{
 	private DasComponentFeature getExon(	String exonID, 
-						String start, 
-						String stop, 
+						int startI, 
+						int stopI, 
 						DasComponentFeature transcript) 
 	throws DataSourceException {
 		for (DasComponentFeature feature:transcript.getReportableSubComponents())
 			if(feature.getFeatureId().equals(exonID))
 				return feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the exon "+exonID+" should be numeric",nfe);
-		}
 		return transcript.addSubComponent(	exonID, 
 							startI, 
 							stopI, 
@@ -186,21 +179,14 @@ public class EnsemblTestManager {
 							null);
 	}
 	private DasComponentFeature getTranscript(	String transcriptID, 
-							String start,  
-							String stop,  
+							int startI,  
+							int stopI,  
 							DasComponentFeature gene)
  	throws DataSourceException {
 
 		for (DasComponentFeature feature:gene.getReportableSubComponents())
 			if(feature.getFeatureId().equals(transcriptID))
 				return feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the transcript "+transcriptID+" should be numeric",nfe);
-		}
 		return gene.addSubComponent(	transcriptID, 
 						startI, 
 						stopI, 
@@ -218,20 +204,13 @@ public class EnsemblTestManager {
 						null);
 	}
 	private DasComponentFeature getGene(	String geneID,
-						String start,
-						String stop, 
+						int startI,
+						int stopI, 
 						DasAnnotatedSegment segment) 
 	throws DataSourceException {
 		for (DasFeature feature:segment.getFeatures())
 			if(feature.getFeatureId().equals(geneID))
 				return (DasComponentFeature)feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the gene "+geneID+" should be numeric",nfe);
-		}
 		return segment.getSelfComponentFeature().addSubComponent(	geneID, 
 										startI, 
 										stopI, 
@@ -260,7 +239,7 @@ public class EnsemblTestManager {
 	}
 
 }}} 
-  # Now we have to built the SQL for the different kind of queries. For the one that queries a segment we will allow to specify a start and end point to get the features of a part of a chromosome and not necessarily the whole chromosome, so for this we add this extra condition to the `WHERE` clause of the original SQL. In the case that the request is for the whole chromosome, the `start` and `end` parameters should be equal to -1.
+  # Now we have to built the SQL for the different queries. For the one that queries a segment we will allow to specify a start and end point to get the features of a part of a chromosome and not necessarily the whole chromosome, to do this, we add an extra condition to the `WHERE` clause of the original SQL. In the case that the request is for the whole chromosome, we define a condition where the `start` and `end` parameters should be equal to -1.
 {{{
 	public DasAnnotatedSegment getSubmodelBySegmentId(String segmentId, int start, int stop) 
 			throws DataSourceException, BadReferenceObjectException{
@@ -346,7 +325,7 @@ public class EnsemblTestManager {
 		return getSubmodelBySQL(sql);
 	}
 }}}
-  # As in the previous tutorial the list of types is predefined, and therefore, the method to get typer is as simple as returning that array:
+  # As in the previous tutorial the list of types is predefined, and therefore, the method to get types is as simple as returning that array:
 {{{
 	public ArrayList<DasType> getTypes() {
 		return types;
@@ -381,7 +360,7 @@ public class EnsemblTestManager {
 }}}
 
 === The Data Source ===
-You can follow similar steps to create the data source as in [MyDASTutorial2ndPart]. The main differences here is that the model is not generated at the moment of initialization of the data source; instead of that a sub model is requested for every request. The other change is that now we are going to implement the MyDAS interface `RangeHandlingAnnotationDataSource`, to be able to deal with start and end positions of the segment. 
+You can follow similar steps to create the data source as in [MyDASTutorial2ndPart]. The main differences here is that the model is not generated at the moment of initialization of the data source; instead of that, a sub model is generated for every request. The other change is that now we are going to implement the MyDAS interface `RangeHandlingAnnotationDataSource`, to be able to deal with start and end positions of the segment. 
   # In the folder `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` create a file called: `EnsemblTestDataSource.java`.
   # The empty implementation of the interface `RangeHandlingAnnotationDataSource` should be something like:
 {{{
@@ -610,7 +589,7 @@ For this we can make a copy of the configuration created in [MyDASTutorial2ndPar
     ** Tag `<maintainer>`, attribute `email`: `[Your email]`
     ** Tag `<version>`, attribute `uri`: ensemblTest
     ** Tag `<version>`, attribute `created`: 2010-04-07
-    ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.EnsemblTestDataSource
+    ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.!EnsemblTestDataSource
     ** All query attributes of the capabilities elements should have an url starting for
 `http://localhost:8080/das/`
    * Delete the tag `<property>`
