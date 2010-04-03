@@ -1,5 +1,5 @@
 #summary Tutorial for MyDAS - Beginners level
-#labels Tutorial,DAS1.6
+#labels Phase-Support
 =MyDAS 1.6 Tutorial=
 
 == First Part: Getting !MyDas to work and checking the example data source == 
@@ -43,11 +43,11 @@
 		description="GFF2 Example Annotation Data Source">
     <MAINTAINER email="gsalazar@ebi.ac.uk" />
     <VERSION uri="examplegff" created="2010-03-19">
-      <COORDINATES	uri="CS_DS94"
-			source="Gene_ID" 
-			authority="Ensembl" 
-			taxid="9606" 
-			test_range="ENSG00000160916">Ensembl, Genome Information
+      <COORDINATES	uri="http://www.notARealCoordinateSystem.com"
+			source="-" 
+			authority="unknown" 
+			taxid="0000" 
+			test_range="L47615.1">TEST INFO
       </COORDINATES>
       <CAPABILITY	type="das1:sources" 
 			query_uri="http://localhost:8080/das/examplegff" />
@@ -99,3 +99,7 @@ As you can see the gff file used in this example is quite simple with very few a
     ** Types: [http://localhost:8080/das/examplegff/types]
     ** Feature-by-id: [http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1]
     ** Features: [http://localhost:8080/das/examplegff/features?segment=CHROMOSOME_MtDNA] - Note that this can take some minutes depending of your system, because is basically asking for the whole data source.
+
+
+
+[MyDASTutorial2ndPart 2nd Tutorial>>]
