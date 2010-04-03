@@ -473,17 +473,22 @@ Now lets go from the top down, implementing all the methods of this Data Source.
 
 			<version uri="examplegff" created="2010-03-19">
 	            <class>uk.ac.ebi.mydas.examples.GFFFileDataSource</class>
-				<coordinates 	uri="CS_DS94"
+				<coordinates 	uri="http://www.dasregistry.org/dasregistry/coordsys/CS_DS94"
 								source="Gene_ID"
 								authority="Ensembl"
 								taxid="9606"
-								test_range="ENSG00000160916">ENSMBL, Genomic</coordinates>
-				<capability type="das1:sources"		 	query_uri="http://localhost:8080/das/examplegff" />
-				<capability type="das1:types"			query_uri="http://localhost:8080/das/examplegff/types" />
-				<capability type="das1:features"		query_uri="http://localhost:8080/das/examplegff/features?segment=U29912.1" />
-				<capability type="das1:feature-by-id"	query_uri="http://localhost:8080/das/examplegff/features?feature_id=GFF_feature_1" />
-				<capability type="das1:stylesheet"		query_uri="http://localhost:8080/das/examplegff/stylesheet" />
-				<capability type="das1:unknown-feature"	/>
+								test_range="ENSG00000160916">Ensembl,Gene_ID,Homo sapiens</coordinates>
+				<capability	type="das1:sources"
+						query_uri="http://localhost:8080/das/examplegff" />
+				<capability	type="das1:types"
+						query_uri="http://localhost:8080/das/examplegff/types" />
+				<capability	type="das1:features"
+						query_uri="http://localhost:8080/das/examplegff/features" />
+				<capability	type="das1:feature-by-id"
+						query_uri="http://localhost:8080/das/examplegff/features" />
+				<capability	type="das1:stylesheet"
+						query_uri="http://localhost:8080/das/examplegff/stylesheet" />
+				<capability	type="das1:unknown-feature"	/>
 			</version>
 
             <dna-command-enabled>true</dna-command-enabled>
