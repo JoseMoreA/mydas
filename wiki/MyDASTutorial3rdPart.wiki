@@ -118,7 +118,7 @@ public class EnsemblTestManager {
 
 	}
 }}}
-  # To facilitate the work when we will implementing the data source the method of this class will return objects following the model of MyDAS and the strategy to do this is very similar to the one in MyDASTutorial2ndPart, the difference is that now the info is been recover from a database query:
+  # To facilitate the work when we will implementing the data source the method of this class will return objects following the model of MyDAS and the strategy to do this is very similar to the one in [MyDASTutorial2ndPart], the difference is that now the info is been recover from a database query:
 {{{
 	public Collection<DasAnnotatedSegment> getSubmodelBySQL(String sql) 
 			throws DataSourceException{
@@ -152,7 +152,7 @@ public class EnsemblTestManager {
 		return segments;
 	}
 }}}
-  # The methods `getSegment()`, `getGene()`, `getTranscript()` and `getExon()` are exactly the same as in MyDASTutorial2ndPart :
+  # The methods `getSegment()`, `getGene()`, `getTranscript()` and `getExon()` are exactly the same as in [MyDASTutorial2ndPart] :
 {{{
 	private DasComponentFeature getExon(	String exonID, 
 						String start, 
@@ -381,7 +381,7 @@ public class EnsemblTestManager {
 }}}
 
 === The Data Source ===
-You can follow similar steps to create the data source as in MyDASTutorial2ndPart. The main differences here is that the model is not generated at the moment of initialization of the data source; instead of that a sub model is requested for every request. The other change is that now we are going to implement the MyDAS interface `RangeHandlingAnnotationDataSource`, to be able to deal with start and end positions of the segment. 
+You can follow similar steps to create the data source as in [MyDASTutorial2ndPart]. The main differences here is that the model is not generated at the moment of initialization of the data source; instead of that a sub model is requested for every request. The other change is that now we are going to implement the MyDAS interface `RangeHandlingAnnotationDataSource`, to be able to deal with start and end positions of the segment. 
   # In the folder `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` create a file called: `EnsemblTestDataSource.java`.
   # The empty implementation of the interface `RangeHandlingAnnotationDataSource` should be something like:
 {{{
@@ -489,7 +489,7 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 		return ensembl.getSubmodelBySegmentId(segmentId, -1, -1);
 	}
 }}}
-  # In the case that the features are requested by feature_id, the submodel is requested to the ensembl and then processed in the same way of the previous tutorial(MyDASTutorial2ndPart) to extract the features that are subcomponents:
+  # In the case that the features are requested by feature_id, the submodel is requested to the ensembl and then processed in the same way of the previous tutorial([MyDASTutorial2ndPart]) to extract the features that are subcomponents:
 {{{
 	public Collection<DasAnnotatedSegment> getFeatures(Collection<String> featureIdCollection, Integer maxbins)
 			throws UnimplementedFeatureException, DataSourceException {
@@ -544,7 +544,7 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 		
 	}
 }}}
-  # The last 4 methods have nothing special and follow the same reasoning that the previous tutorial(MyDASTutorial2ndPart):
+  # The last 4 methods have nothing special and follow the same reasoning that the previous tutorial([MyDASTutorial2ndPart]):
 {{{
 	public Collection<DasType> getTypes() throws DataSourceException {
 		return ensembl.getTypes();
@@ -564,7 +564,7 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 }}}
 
 === MyDAS configuration ===
-For this we can make a copy of the configuration created in MyDASTutorial2ndPart and change some values for the new Data Source.
+For this we can make a copy of the configuration created in [MyDASTutorial2ndPart] and change some values for the new Data Source.
   # Copy and paste the data source configuration of the data source with uri equal to `"examplepipes"`
 {{{
 
