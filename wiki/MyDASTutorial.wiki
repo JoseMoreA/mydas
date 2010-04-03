@@ -107,5 +107,4 @@ As you can see the gff file used in this example is quite simple with very few a
     ** Features: [http://localhost:8080/das/examplegff/features?segment=CHROMOSOME_MtDNA] - Note that this can take some minutes depending of your system, because is basically asking for the whole data source.
 
 
-
-[MyDASTutorial2ndPart 2nd Tutorial>>]
+*1st Tutorial(Beginners level)* | [MyDASTutorial2ndPart 2nd Tutotial(Intermediate level) >] | [MyDASTutorial3rdPart 3rd Tutorial(Advance level) >>]
