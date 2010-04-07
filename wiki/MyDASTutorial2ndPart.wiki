@@ -503,9 +503,10 @@ Now lets go top down implementing all the methods of this Data Source.
     ** Tag `<version>`, attribute `uri`: examplepipes
     ** Tag `<version>`, attribute `created`: 2010-03-19
     ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.SeparatedByPipesDataSource
-    ** Tag `<coordinates>`, attribute `uri`: `http://www.dasregistry.org/dasregistry/coordsys/CS_DS94`
+    ** Tag `<coordinates>`, attribute `uri`: `http://www.dasregistry.org/coordsys/CS_DS311`
+    ** Tag `<coordinates>`, attribute `source`: Chromosome
     ** Tag `<coordinates>`, attribute `taxid`: 9606
-    ** Tag `<coordinates>`, content: Ensembl,Gene_ID,Homo sapiens
+    ** Tag `<coordinates>`, content: GRCh_37,Chromosome,Homo sapiens
     ** Tag `<property>`, attribute `key`: pipes_file
     ** Tag `<property>`, attribute `value`: testGenes.txt
     ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/examplepipes/` instead of `http://localhost:8080/das/examplegff/`
