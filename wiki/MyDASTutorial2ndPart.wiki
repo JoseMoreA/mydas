@@ -56,7 +56,7 @@ Now lets go to work.  The task of implementing the data source can be divided in
   # Implement one of the MyDAS Data Sources Interfaces.
   # Configure MyDAS with the new Data Source.
 
-Something to consider first is the strategy to deal with the data. It means if  the file is gonna be parsed completely and keep it in memory as a model (As the gff example) or if the file will be processed every time something is requested.
+Something to consider first is the strategy to deal with the data. It means if  the file is going to be parsed completely and keep it in memory as a model (As the gff example) or if the file will be processed every time something is requested.
 
 Pros and cons? the whole file in memory will response quicker but the bigger the file, the more memory the system will require. Opposite situation with the other case; processing the file for each request doesn't require too much memory, but the response time will be proportional to the size of the file.
 
@@ -317,7 +317,7 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 
 }}}
 Now lets go top down implementing all the methods of this Data Source.
-  ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is gonna be the data source property `pipes_file` in the configuration file.
+  ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is going to be the data source property `pipes_file` in the configuration file.
   The parameters of this method have to be save as attributes of this class(you have to create those attributes). The parser is now invoked and the model(segments and types) is also saved as parameter. Exceptions are catch and throw in case something goes wrong.
 {{{
 	public void init(ServletContext servletContext,
