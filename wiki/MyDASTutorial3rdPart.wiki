@@ -4,7 +4,7 @@
 
 == Third Part: Developing a Data Source from a database ==
 
-Now that you have the basis to create a data source in MyDAS, let start with a real  scenario in bioinformatics. Well. actually we are gonna use the same kind of data of the previous tutorial, but now we are gonna take the information from the original source: Ensembl.
+Now that you have the basis to create a data source in MyDAS, let start with a real  scenario in bioinformatics. Well. actually we are going to use the same kind of data of the previous tutorial, but now we are gonna take the information from the original source: Ensembl.
 
 Ensembl uses MySQL relational databases to store its information in the server ensembldb.ensembl.org, which you can access as user `anonymous`. [http://www.ensembl.org/info/data/mysql.html ]
 
