@@ -87,6 +87,7 @@ import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasMethod;
 import uk.ac.ebi.mydas.model.DasType;
 
+
 public class SeparatedByPipesParser {
 }
 }}}
@@ -259,8 +260,12 @@ For this example we are going to implement the AnnotationDataSource, to start do
 {{{
 package uk.ac.ebi.mydas.examples;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -271,8 +276,12 @@ import uk.ac.ebi.mydas.datasource.AnnotationDataSource;
 import uk.ac.ebi.mydas.exceptions.BadReferenceObjectException;
 import uk.ac.ebi.mydas.exceptions.DataSourceException;
 import uk.ac.ebi.mydas.exceptions.UnimplementedFeatureException;
+import uk.ac.ebi.mydas.extendedmodel.DasUnknownFeatureSegment;
 import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
+import uk.ac.ebi.mydas.model.DasComponentFeature;
+import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasType;
+
 
 public class SeparatedByPipesDataSource implements AnnotationDataSource {
 
