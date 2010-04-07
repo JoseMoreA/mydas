@@ -3,7 +3,7 @@
 = MyDAS 1.6 Tutorial =
 
 == Second Part: Developing your own Data Source ==
-Now that you have been a real DAS source working on MyDAS lets get closer to a more interesting example: what if you have your data in an in-house format? and therefore the templates/examples don't apply for your data source?
+Now that you have a real DAS source working on MyDAS lets get closer to a more interesting example: what if you have your data in an in-house format and therefore the templates/examples don't apply for your data source?
 
 Following this tutorial you will parse an in-house formated file, publish its information as a data source in MyDAS using the DAS command feature. You can used the IDE of your choice but the tutorial is done in such a way you can use just a terminal and a text editor.
 
@@ -27,7 +27,7 @@ You can see a sample of this file below.
 === Analyzing the Data ===
 Firstly, we know that our file just contains information for one segment. The chromosome 5, however we can create our source to support files with information from more than one chromosome.
 We also know from this file the information that our data source has to provide, and from there that there will be just three types of features in this data source:
-  * genes: The file give us information about the start and end of the genes plus its ID. From there we have another type in our data source:
+  * genes: The file gives information about the start and end of the genes plus its ID. From there we have another type in our data source:
 {{{
 <TYPE id="Gene" cvId="SO:0000704">Gene</TYPE>
 }}}
@@ -56,13 +56,13 @@ Now lets go to work.  The task of implementing the data source can be divided in
   # Implement one of the MyDAS Data Sources Interfaces.
   # Configure MyDAS with the new Data Source.
 
-Something to consider before to start is the strategy to deal with the data. It means if  the file is gonna be parsed completely and keep it in memory as a model (As the gff example) or if the file will be processed every time something is requested.
+Something to consider first is the strategy to deal with the data. It means if  the file is gonna be parsed completely and keep it in memory as a model (As the gff example) or if the file will be processed every time something is requested.
 
-Pros and cons? the whole file in memory will response quicker but the bigger the file, the most memory the system will require. Opposite situation with the other case; processing the file for each request doesn't require too much memory, but the response time will be proportional to the size of the file.
+Pros and cons? the whole file in memory will response quicker but the bigger the file, the more memory the system will require. Opposite situation with the other case; processing the file for each request doesn't require too much memory, but the response time will be proportional to the size of the file.
 
 Maybe an intermediate approach with a preprocessing stage, and subsequents specialized processes per query, can be a better way, however it will require to focus in details that are not in the scope of this tutorial.
 
-The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to start coding.
+The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to starting coding.
 
 So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
 
@@ -285,7 +285,7 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 	public void destroy() {
 	}
 
-	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbeans)
+	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbins)
 			throws BadReferenceObjectException, DataSourceException {
 		return null;
 	}
@@ -351,10 +351,10 @@ Now lets go top down implementing all the methods of this Data Source.
 		this.cacheManager = null;
 	}
 }}}
-  ** *getFeatures()*: The first method to get Features, queries for the features of a segment id, giving that we already have an array of segments this method just requires to go though this array looking for the segment with the same id. In case the id is not in the array an exception should be throw it, to let !MyDAS report this in the appropriate way. 
-  The attribute maxbeans is ignored for now, this implies that our data source is not implementing that capability.
+  ** *getFeatures()*: The first method to get Features, queries for the features of a segment id, giving that we already have an array of segments this method just requires to go though this array looking for the segment with the same id. In case the id is not in the array an exception should be thrown it, to let !MyDAS report this in the appropriate way. 
+  The attribute maxbins is ignored for now, this implies that our data source is not implementing that capability.
 {{{
-	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbeans)
+	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbins)
 			throws BadReferenceObjectException, DataSourceException {
 		for(DasAnnotatedSegment segment:segments){
 			if (segment.getSegmentId().equals(segmentId))
