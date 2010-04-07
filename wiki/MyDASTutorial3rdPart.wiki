@@ -237,7 +237,7 @@ public class EnsemblTestManager {
 	}
 
 
-	private DasAnnotatedSegment getSegment(String segmentId) throws DataSourceException {
+	private DasAnnotatedSegment getSegment(Collection<DasAnnotatedSegment> segments,String segmentId) throws DataSourceException {
 		for (DasAnnotatedSegment segment:segments)
 			if (segment.getSegmentId().equals(segmentId))
 				return segment;
