@@ -15,6 +15,7 @@
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Type.hbm.xml"/>
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Method.hbm.xml"/>
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Target.hbm.xml"/>
+        <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Users.hbm.xml"/>
 
         
 

@@ -1,12 +1,18 @@
 package uk.ac.ebi.mydas.writeback.datasource.hibernate;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.hibernate.Session;
 
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Target;
 import uk.ac.ebi.mydas.writeback.datasource.model.Type;
+import uk.ac.ebi.mydas.writeback.datasource.model.Users;
 
 public class HibernateManager {
+
 	
 	public Type getType(Type type,boolean addIfnotInDB,boolean updateIfDifferent){
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -66,5 +72,46 @@ public class HibernateManager {
 		}
 		session.getTransaction().commit();		
 		return result;
+	}
+	public Users createUser(String username, String password){
+		password = this.getMD5(password);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Users result = (Users) session.createQuery("FROM Users WHERE login = ?").setString(0, username).uniqueResult();
+		if (result==null){
+			result=new Users();
+			result.setLogin(username);
+			result.setPassword(password);
+			session.save(result);
+		}else{
+			session.getTransaction().commit();		
+			return null;
+		}
+		session.getTransaction().commit();		
+		return result;
+	}
+	public Users authenticate(String username, String password){
+		password = this.getMD5(password);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Users result = (Users) session.createQuery("FROM Users WHERE login = ? AND password =?").setString(0, username).setString(1, password).uniqueResult();
+		session.getTransaction().commit();		
+		return result;
+		
+	}	
+	private String getMD5(String string){
+		MessageDigest m;
+		try {
+			m = MessageDigest.getInstance("MD5");
+			byte[] data = string.getBytes(); 
+			m.update(data,0,data.length);
+			BigInteger i = new BigInteger(1,m.digest());
+			return String.format("%1$032X", i);
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
+
 	}
 }

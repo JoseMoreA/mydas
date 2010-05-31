@@ -13,7 +13,7 @@ public class Feature {
 	private Method method;
 	private Integer start;
 	private Integer stop;
-	private Double score;
+	private Double score; 
 	private Orientation orientation;
 	private Phase phase;
 	private List<String> notes;
@@ -22,7 +22,7 @@ public class Feature {
 	private List<String> parents;
 	private List<String> parts;
 	private Date datecreated;
-	private User user;
+	private Users user; 
 	
 	private Segment segment;
 	
@@ -44,11 +44,11 @@ public class Feature {
 		this.datecreated = datecreated;
 	}
 
-	public User getUser() {
+	public Users getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Users user) {
 		this.user = user;
 	}
 	

@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 31-May-2010 12:32:07 by Hibernate Tools 3.3.0.GA -->
 <hibernate-mapping>
-    <class name="uk.ac.ebi.mydas.writeback.datasource.model.User" table="USER">
+    <class name="uk.ac.ebi.mydas.writeback.datasource.model.Users" table="USERS">
         <id name="id" type="java.lang.Long">
             <column name="ID" />
             <generator class="native" />

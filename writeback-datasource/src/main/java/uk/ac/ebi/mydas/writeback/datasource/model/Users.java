@@ -1,12 +1,12 @@
 package uk.ac.ebi.mydas.writeback.datasource.model;
 
-public class User {
+public class Users {
 	private Long id;
 	private String login;
 	private String password;
 	
-	public User(){}
-	
+	public Users(){}
+	 
 	public Long getId() {
 		return id;
 	}

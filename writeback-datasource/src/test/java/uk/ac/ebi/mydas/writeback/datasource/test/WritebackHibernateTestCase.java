@@ -7,6 +7,7 @@ import uk.ac.ebi.mydas.writeback.datasource.hibernate.HibernateManager;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Target;
 import uk.ac.ebi.mydas.writeback.datasource.model.Type;
+import uk.ac.ebi.mydas.writeback.datasource.model.Users;
 
 
 public class WritebackHibernateTestCase extends TestCase {
@@ -53,6 +54,28 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals(target.getTargetId(), "0987");
 		assertEquals(target.getStart(), new Integer(10));
 		assertEquals(target.getStop(), new Integer(20));
+	}
+	public void testCreateUser() {
+		HibernateManager hibernate = new HibernateManager();
+		Users user = hibernate.createUser("theuser", "thepassword");
+		assertNotNull(user);
+		assertEquals(user.getLogin(), "theuser");
+	}
+	public void testCreateUserWithSameLogin() {
+		HibernateManager hibernate = new HibernateManager();
+		Users user = hibernate.createUser("theuser", "theotherpassword");
+		assertNull(user);
+	}
+	public void testAuthenticateUser() {
+		HibernateManager hibernate = new HibernateManager();
+		Users user = hibernate.authenticate("theuser", "thepassword");
+		assertNotNull(user);
+		assertEquals(user.getLogin(), "theuser");
+	}
+	public void testAuthenticateBadUser() {
+		HibernateManager hibernate = new HibernateManager();
+		Users user = hibernate.authenticate("theuser", "theotherpassword");
+		assertNull(user);
 	}
 
 }
