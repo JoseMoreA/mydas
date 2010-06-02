@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Feature {
 	private Long id;
@@ -16,40 +17,49 @@ public class Feature {
 	private Double score; 
 	private Orientation orientation;
 	private Phase phase;
-	private List<String> notes;
+	private Set<String> notes;
 	private Map<URL,String> links;
 	private List<Target> targets;
-	private List<String> parents;
+	private Set<String> parents;
 	private List<String> parts;
+	private Integer version; 
 	private Date datecreated;
-	private Users user; 
+	private Users users; 
 	
-	private Segment segment;
+//	private Segment segment;
 	
 	public Feature(){}
 
-	public Segment getSegment() {
-		return segment;
-	}
+//	public Segment getSegment() {
+//		return segment;
+//	}
 
-	public void setSegment(Segment segment) {
-		this.segment = segment;
-	}
+//	public void setSegment(Segment segment) {
+//		this.segment = segment;
+//	}
 
 	public Date getDatecreated() {
 		return datecreated;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	public void setDatecreated(Date datecreated) {
 		this.datecreated = datecreated;
 	}
 
-	public Users getUser() {
-		return user;
+	public Users getUsers() {
+		return users;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 	
 	public Long getId() {
@@ -112,10 +122,10 @@ public class Feature {
 	public void setPhase(Phase phase) {
 		this.phase = phase;
 	}
-	public List<String> getNotes() {
+	public Set<String> getNotes() {
 		return notes;
 	}
-	public void setNotes(List<String> notes) {
+	public void setNotes(Set<String> notes) {
 		this.notes = notes;
 	}
 	public Map<URL, String> getLinks() {
@@ -130,10 +140,10 @@ public class Feature {
 	public void setTargets(List<Target> targets) {
 		this.targets = targets;
 	}
-	public List<String> getParents() {
+	public Set<String> getParents() {
 		return parents;
 	}
-	public void setParents(List<String> parents) {
+	public void setParents(Set<String> parents) {
 		this.parents = parents;
 	}
 	public List<String> getParts() {

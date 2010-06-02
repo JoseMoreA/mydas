@@ -3,9 +3,11 @@ package uk.ac.ebi.mydas.writeback.datasource.hibernate;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import org.hibernate.Session;
 
+import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Target;
 import uk.ac.ebi.mydas.writeback.datasource.model.Type;
@@ -90,6 +92,32 @@ public class HibernateManager {
 		}
 		session.getTransaction().commit();		
 		return result;
+	}
+	public Feature addFeature(Feature feature){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Long result = (Long) session.createQuery("SELECT max(id) FROM Feature").uniqueResult();
+		result=(result==null)?0:result++;
+		feature.setFeatureId("http://writeback/"+result);
+		feature.setVersion(1);
+		feature.setDatecreated(new Date());
+		session.save(feature);
+		session.getTransaction().commit();		
+		return feature;
+	}
+	public Feature updateFeature(Feature feature){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Feature result = (Feature) session.createQuery("FROM Feature WHERE featureId = ?").setString(0, feature.getFeatureId()).uniqueResult();
+		if (result==null)
+			feature.setVersion(1);
+		else
+			feature.setVersion(result.getVersion()+1);
+
+		feature.setDatecreated(new Date());
+		session.save(feature);
+		session.getTransaction().commit();		
+		return feature;
 	}
 	public Users authenticate(String username, String password){
 		password = this.getMD5(password);
