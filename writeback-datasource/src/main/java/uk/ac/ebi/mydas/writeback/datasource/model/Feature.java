@@ -2,7 +2,6 @@ package uk.ac.ebi.mydas.writeback.datasource.model;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,24 +18,24 @@ public class Feature {
 	private Phase phase;
 	private Set<String> notes;
 	private Map<URL,String> links;
-	private List<Target> targets;
+	private Set<Target> targets;
 	private Set<String> parents;
-	private List<String> parts;
+	private Set<String> parts;
 	private Integer version; 
 	private Date datecreated;
 	private Users users; 
 	
-//	private Segment segment;
+	private Segment segment;
 	
 	public Feature(){}
 
-//	public Segment getSegment() {
-//		return segment;
-//	}
+	public Segment getSegment() {
+		return segment;
+	}
 
-//	public void setSegment(Segment segment) {
-//		this.segment = segment;
-//	}
+	public void setSegment(Segment segment) {
+		this.segment = segment;
+	}
 
 	public Date getDatecreated() {
 		return datecreated;
@@ -134,10 +133,10 @@ public class Feature {
 	public void setLinks(Map<URL, String> links) {
 		this.links = links;
 	}
-	public List<Target> getTargets() {
+	public Set<Target> getTargets() {
 		return targets;
 	}
-	public void setTargets(List<Target> targets) {
+	public void setTargets(Set<Target> targets) {
 		this.targets = targets;
 	}
 	public Set<String> getParents() {
@@ -146,10 +145,10 @@ public class Feature {
 	public void setParents(Set<String> parents) {
 		this.parents = parents;
 	}
-	public List<String> getParts() {
+	public Set<String> getParts() {
 		return parts;
 	}
-	public void setParts(List<String> parts) {
+	public void setParts(Set<String> parts) {
 		this.parts = parts;
 	}
 }

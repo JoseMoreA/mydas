@@ -3,7 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 	<!-- Generated 31-May-2010 12:40:21 by Hibernate Tools 3.3.0.GA -->
 <hibernate-mapping>
-	<class name="uk.ac.ebi.mydas.writeback.datasource.model.Feature" table="FEATURE">
+	<class name="uk.ac.ebi.mydas.writeback.datasource.model.Feature"
+		table="FEATURE">
 		<id name="id" type="java.lang.Long">
 			<column name="ID" />
 			<generator class="native" />
@@ -18,7 +19,8 @@
 			class="uk.ac.ebi.mydas.writeback.datasource.model.Type" fetch="join">
 			<column name="TYPE" />
 		</many-to-one>
-		<many-to-one name="method" class="uk.ac.ebi.mydas.writeback.datasource.model.Method" fetch="join">
+		<many-to-one name="method"
+			class="uk.ac.ebi.mydas.writeback.datasource.model.Method" fetch="join">
 			<column name="METHOD" />
 		</many-to-one>
 		<property name="start" type="java.lang.Integer">
@@ -30,8 +32,12 @@
 		<property name="score" type="java.lang.Double">
 			<column name="SCORE" />
 		</property>
-		<property name="phase" column="PHASE" type="uk.ac.ebi.mydas.writeback.datasource.model.PhaseUserType" not-null="true" update="false" />
-		<property name="orientation" column="ORIENTATION" type="uk.ac.ebi.mydas.writeback.datasource.model.OrientationUserType" not-null="true" update="false" />
+		<property name="phase" column="PHASE"
+			type="uk.ac.ebi.mydas.writeback.datasource.model.PhaseUserType"
+			not-null="true" update="false" />
+		<property name="orientation" column="ORIENTATION"
+			type="uk.ac.ebi.mydas.writeback.datasource.model.OrientationUserType"
+			not-null="true" update="false" />
 
 		<property name="datecreated" type="java.util.Date">
 			<column name="DATECREATED" />
@@ -39,7 +45,8 @@
 		<property name="version" type="java.lang.Integer">
 			<column name="VERSION" />
 		</property>
-		<many-to-one name="users" class="uk.ac.ebi.mydas.writeback.datasource.model.Users" fetch="join">
+		<many-to-one name="users"
+			class="uk.ac.ebi.mydas.writeback.datasource.model.Users" fetch="join">
 			<column name="USERS" />
 		</many-to-one>
 		<set name="notes" table="NOTES" lazy="true">
@@ -47,9 +54,9 @@
 			<element column="NOTE" type="string" />
 		</set>
 		<map name="links" table="LINKS">
-			<key column="id"/>
-			<map-key column="URI" type="java.net.URL"/>
-			<element column="label" type="string"/>
+			<key column="id" />
+			<map-key column="URI" type="java.net.URL" />
+			<element column="label" type="string" />
 		</map>
 		<set name="parents" table="PARENTS" lazy="true">
 			<key column="FEATURE_ID" />
@@ -59,21 +66,20 @@
 			<key column="FEATURE_ID" />
 			<element column="PART" type="string" />
 		</set>
-
+		<set name="targets" table="FEATURE_TARGET">
+			<key column="FEATURE_ID" />
+			<many-to-many column="TARGET_ID" class="uk.ac.ebi.mydas.writeback.datasource.model.Target" />
+		</set>
+		<many-to-one name="segment"
+			class="uk.ac.ebi.mydas.writeback.datasource.model.Segment" fetch="join">
+			<column name="SEGMENT" />
+		</many-to-one>
 		<!--
 			<list name="targets" inverse="false" table="TARGET" lazy="true">
 			<key> <column name="ID" /> </key> <list-index></list-index>
 			<one-to-many
 			class="uk.ac.ebi.mydas.writeback.datasource.model.Target" /> </list>
-			
-			<list name="parents" inverse="false" table="FEATURE" lazy="true">
-			<key> <column name="ID" /> </key> <list-index></list-index> <element
-			type="java.lang.String"> <column name="PARENTS" /> </element> </list>
-			
-			<list name="parts" inverse="false" table="FEATURE" lazy="true"> <key>
-			<column name="ID" /> </key> <list-index></list-index> <element
-			type="java.lang.String"> <column name="PARTS" /> </element> </list>
-			
+
 			segment??
 		-->
 	</class>

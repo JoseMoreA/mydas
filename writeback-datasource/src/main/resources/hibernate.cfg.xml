@@ -17,6 +17,7 @@
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Target.hbm.xml"/>
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Users.hbm.xml"/>
         <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Feature.hbm.xml"/>
+        <mapping resource="uk/ac/ebi/mydas/writeback/datasource/model/Segment.hbm.xml"/>
 
         
 

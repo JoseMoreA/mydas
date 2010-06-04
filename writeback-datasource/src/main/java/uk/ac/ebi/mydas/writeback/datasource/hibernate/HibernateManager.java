@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
+import uk.ac.ebi.mydas.writeback.datasource.model.Segment;
 import uk.ac.ebi.mydas.writeback.datasource.model.Target;
 import uk.ac.ebi.mydas.writeback.datasource.model.Type;
 import uk.ac.ebi.mydas.writeback.datasource.model.Users;
@@ -141,5 +142,36 @@ public class HibernateManager {
 			return null;
 		}
 
+	}
+	public Segment addFeaturesFromSegment(Segment segment,boolean addIfnotInDB,boolean updateIfDifferent){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Segment result = (Segment) session.createQuery("FROM Segment WHERE idSegment = ?").setString(0, segment.getIdSegment()).uniqueResult();
+		if (result==null){
+			if (addIfnotInDB){
+				result=segment;
+				for(Feature featuretoadd:segment.getFeatures()){
+					this.addFeature(featuretoadd);
+					featuretoadd.setSegment(result);
+					result.getFeatures().add(featuretoadd);
+				}
+				session.save(result);
+			}
+		}else if (updateIfDifferent){
+			
+			result.setIdSegment(segment.getIdSegment());
+			result.setLabel(segment.getLabel());
+			result.setStart(segment.getStart());
+			result.setStop(segment.getStop());
+			result.setVersion(segment.getVersion());
+			for(Feature featuretoadd:segment.getFeatures()){
+				this.addFeature(featuretoadd);
+				featuretoadd.setSegment(result);
+				result.getFeatures().add(featuretoadd);
+			}
+			session.update(result);
+		}
+		session.getTransaction().commit();		
+		return result;
 	}
 }

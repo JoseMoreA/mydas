@@ -1,6 +1,6 @@
 package uk.ac.ebi.mydas.writeback.datasource.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class Segment {
 	private Long id;
@@ -9,7 +9,7 @@ public class Segment {
 	private Integer stop;
 	private String version;
 	private String label;
-	private List<Feature> features;
+	private Set<Feature> features;
 	
 	public Segment(){}
 
@@ -61,11 +61,11 @@ public class Segment {
 		this.label = label;
 	}
 
-	public List<Feature> getFeatures() {
+	public Set<Feature> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(List<Feature> features) {
+	public void setFeatures(Set<Feature> features) {
 		this.features = features;
 	}
 	

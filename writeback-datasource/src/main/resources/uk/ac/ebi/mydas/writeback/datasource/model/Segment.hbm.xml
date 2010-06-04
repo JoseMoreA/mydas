@@ -23,12 +23,9 @@
         <property name="label" type="java.lang.String">
             <column name="LABEL" />
         </property>
-        <list name="features" inverse="false" table="FEATURE" lazy="true">
-            <key>
-                <column name="ID" />
-            </key>
-            <list-index></list-index>
-            <one-to-many class="uk.ac.ebi.mydas.writeback.datasource.model.Feature" />
-        </list>
+		<set name="features" table="SEGMENT_FEATURE" inverse="true">
+			<key column="SEGMENT_ID" />
+			<many-to-many column="FEATURE_ID" class="uk.ac.ebi.mydas.writeback.datasource.model.Feature" />
+		</set>
     </class>
 </hibernate-mapping>

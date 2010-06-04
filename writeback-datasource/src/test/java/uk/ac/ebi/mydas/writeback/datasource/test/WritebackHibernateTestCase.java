@@ -16,6 +16,7 @@ import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Orientation;
 import uk.ac.ebi.mydas.writeback.datasource.model.Phase;
+import uk.ac.ebi.mydas.writeback.datasource.model.Segment;
 import uk.ac.ebi.mydas.writeback.datasource.model.Target;
 import uk.ac.ebi.mydas.writeback.datasource.model.Type;
 import uk.ac.ebi.mydas.writeback.datasource.model.Users;
@@ -100,12 +101,15 @@ public class WritebackHibernateTestCase extends TestCase {
 		feature.setStop(20);
 		
 		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
-//		Target target=new Target();
-//		target.setTargetId("0987");
-//		target.setLabel("TheNewTarget");
-//		target.setStart(10);
-//		target.setStop(20);
-//		target = hibernate.getTarget(target, true, true);
+		Target target=new Target();
+		target.setTargetId("0987");
+		target.setLabel("TheNewTarget");
+		target.setStart(10);
+		target.setStop(20);
+		target = hibernate.getTarget(target, true, true);
+		Set<Target> targets= new HashSet<Target>();
+		targets.add(target);
+		feature.setTargets(targets);
 
 		Method method=new Method();
 		method.setCvId("ECO:12345");
@@ -123,14 +127,8 @@ public class WritebackHibernateTestCase extends TestCase {
 		type = hibernate.getType(type, true, true);
 		feature.setType(type);
 
-//		assertEquals(target.getLabel(), "TheNewTarget");
-//		assertEquals(target.getTargetId(), "0987");
-//		assertEquals(target.getStart(), new Integer(10));
-//		assertEquals(target.getStop(), new Integer(20));
-
 		Set<String> notes= new HashSet<String>();
 		notes.add("first note");
-		notes.add("second note");
 		feature.setNotes(notes);
 		
 		Map<URL,String> links=new HashMap<URL,String>();
@@ -144,15 +142,35 @@ public class WritebackHibernateTestCase extends TestCase {
 
 		Set<String> parents= new HashSet<String>();
 		parents.add("first parent");
-		parents.add("second parent");
 		feature.setParents(parents);
 
-		Feature result=hibernate.addFeature(feature);
+		Set<String> parts= new HashSet<String>();
+		parts.add("first part");
+		feature.setParts(parts);
+
+		Segment segment=new Segment();
+		Set<Feature> features= new HashSet<Feature>();
+		features.add(feature);
+		segment.setFeatures(features);
+		segment.setIdSegment("firstSegment");
+		segment.setLabel("the segment");
+		segment.setStart(1);
+		segment.setStop(1000);
+		segment.setVersion("1234567890");
+		
+		Segment resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
+		
+		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
 		
 		assertEquals("http://writeback/0", result.getFeatureId());
+		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheNewTarget");
+		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
+		assertEquals(result.getType().getLabel(),"JustGuessing");
+		assertEquals((String)result.getNotes().iterator().next(),"first note");
 		try {
 			assertEquals("UCT", result.getLinks().get(new URL("http://www.uct.ac.za")));
 		} catch (MalformedURLException e) {}
+		assertEquals((String)result.getParts().iterator().next(),"first part");
 	}
 
 }
