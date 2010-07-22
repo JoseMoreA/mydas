@@ -26,7 +26,7 @@ public class OrientationUserType implements UserType {
 	throws HibernateException, SQLException {
 
 		String name = resultSet.getString(names[0]);
-		return resultSet.wasNull() ? null : Phase.getInstance(name);
+		return resultSet.wasNull() ? null : Orientation.getInstance(name);
 	}
 
 	public void nullSafeSet(PreparedStatement statement,

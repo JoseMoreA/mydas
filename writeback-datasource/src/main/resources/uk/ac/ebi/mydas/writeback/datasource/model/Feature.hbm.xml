@@ -74,6 +74,9 @@
 			class="uk.ac.ebi.mydas.writeback.datasource.model.Segment" fetch="join">
 			<column name="SEGMENT" />
 		</many-to-one>
+		<property name="deleted" type="boolean">
+			<column name="DELETED" />
+		</property>
 		<!--
 			<list name="targets" inverse="false" table="TARGET" lazy="true">
 			<key> <column name="ID" /> </key> <list-index></list-index>

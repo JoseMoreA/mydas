@@ -23,7 +23,7 @@
         <property name="label" type="java.lang.String">
             <column name="LABEL" />
         </property>
-		<set name="features" table="SEGMENT_FEATURE" inverse="true">
+		<set name="features" table="SEGMENT_FEATURE">
 			<key column="SEGMENT_ID" />
 			<many-to-many column="FEATURE_ID" class="uk.ac.ebi.mydas.writeback.datasource.model.Feature" />
 		</set>

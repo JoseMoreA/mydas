@@ -27,6 +27,8 @@ public class Feature {
 	
 	private Segment segment;
 	
+	private boolean deleted;
+	
 	public Feature(){}
 
 	public Segment getSegment() {
@@ -151,4 +153,12 @@ public class Feature {
 	public void setParts(Set<String> parts) {
 		this.parts = parts;
 	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 }

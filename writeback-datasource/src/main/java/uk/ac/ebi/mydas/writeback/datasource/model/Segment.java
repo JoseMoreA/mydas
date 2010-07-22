@@ -69,5 +69,14 @@ public class Segment {
 		this.features = features;
 	}
 	
+	public void addFeature(Feature feature){
+		this.features.add(feature);
+		feature.setSegment(this);
+	}
+	
+	public void removeFeature(Feature feature){
+		this.features.remove(feature);
+		feature.setSegment(null);
+	}
 	
 }
