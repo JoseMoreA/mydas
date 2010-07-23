@@ -238,7 +238,18 @@ public class WritebackHibernateTestCase extends TestCase {
 
 		Segment resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
 
-		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
+		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
+		
+		Feature result=null;
+		while (iterator.hasNext()){
+			Feature temp=iterator.next();//hibernate.addFeature(feature);
+			if (temp.getFeatureId().equals("http://writeback/5"))
+				result=temp;
+		}
+		if (result==null)
+			fail("there is not an edition of the feature");
+
+//		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
 
 		assertNotSame("http://writeback/0", result.getFeatureId());
 		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheSecondNewTarget");
@@ -523,5 +534,31 @@ public class WritebackHibernateTestCase extends TestCase {
 				fail("Got a feature different to expected. ("+feature.getId()+")");
 			}
 		}
+	}
+	public void testQueringFeatureHistory(){
+		HibernateManager hibernate = new HibernateManager(); 
+		Segment resultSegment = hibernate.getFeatureHistoryFromId("http://writeback/0");
+
+		assertNotNull(resultSegment);
+
+		assertEquals(new Integer(1), resultSegment.getStart());
+		assertEquals(new Integer(1000), resultSegment.getStop());
+		assertEquals("1234567890", resultSegment.getVersion());
+		assertEquals("the segment", resultSegment.getLabel());
+		int times=0;
+		for (Feature feature:resultSegment.getFeatures()){
+			if (feature.getFeatureId().equals("http://writeback/0")){
+				times++;
+				assertEquals(new Integer(10),feature.getStart());
+				assertEquals(new Integer(100),feature.getStop());
+				assertEquals("12345",feature.getType().getTypeId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
+			}else{
+				fail("Got a feature different to expected. ("+feature.getId()+")");
+			}
+		}
+		if(times!=2)
+			fail("Got "+times+" features, and 2 were expected");
 	}
 }

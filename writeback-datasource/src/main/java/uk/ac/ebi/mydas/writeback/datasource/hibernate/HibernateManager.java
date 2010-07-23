@@ -261,20 +261,6 @@ public class HibernateManager {
 		if (result==null){
 			return null;
 		}else{
-//			DetachedCriteria subquery = DetachedCriteria.forClass(Feature.class, "f1");
-//			subquery.setProjection(Projections.groupProperty("featureId"));
-//			subquery.setProjection(Projections.max("version"));
-//			subquery.setProjection(Property.forName("featureId"));
-////			DetachedCriteria subquery2 = DetachedCriteria.forClass(Segment.class, "s");
-////			subquery2.add(Restrictions.eq("s.idsegment", segmentId));
-////			subquery.setProjection(Property.forName("id"));
-//			Criteria criteria = session.createCriteria(Feature.class, "f");
-////			criteria.add(Subqueries.propertyEq("featureid",subquery));
-//			criteria.createAlias("segment", "s").add(Restrictions.eq("s.idSegment", segmentId));
-//			criteria.add(Subqueries.propertyEq("featureId",subquery));
-//			criteria.add(Subqueries.propertyEq("version",subquery));
-//			Iterator<Feature> iterator = criteria.list().iterator();
-			
 			Iterator<Feature> iterator=session.createSQLQuery("SELECT f.* from feature f, (select max(f.version),f.featureid from segment_feature sf, feature f,segment s where sf.feature_id=f.id and sf.segment_id=s.id and s.idsegment=? group by f.featureid) f2 where f.version=f2.max and f.featureid=f2.featureid" ).addEntity(Feature.class).setString(0, segmentId).list().iterator();
 			result.setFeatures(new HashSet<Feature>());
 			while (iterator.hasNext()){
@@ -282,5 +268,19 @@ public class HibernateManager {
 			}
 			return result;
 		}
+	}
+	public Segment getFeatureHistoryFromId(String featureId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Segment result = (Segment) session.createQuery("SELECT s FROM Segment as s JOIN s.features as f WITH f.featureId=?").setString(0, featureId).uniqueResult();
+		if (result!=null){
+			Iterator<Feature> iterator=session.createQuery("SELECT f FROM Segment as s JOIN s.features as f WITH f.featureId=?" ).setString(0, featureId).list().iterator();
+			result.setFeatures(new HashSet<Feature>());
+			while (iterator.hasNext()){
+				result.addFeature((Feature)iterator.next());
+			}
+			
+		}
+		return result;
 	}
 }
