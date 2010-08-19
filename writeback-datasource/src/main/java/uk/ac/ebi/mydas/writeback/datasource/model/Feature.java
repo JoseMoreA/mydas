@@ -24,6 +24,7 @@ public class Feature {
 	private Integer version; 
 	private Date datecreated;
 	private Users users; 
+	private String href;
 	
 	private Segment segment;
 	
@@ -159,6 +160,14 @@ public class Feature {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+	
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
 	}
 
 }

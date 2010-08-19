@@ -12,7 +12,13 @@ import java.net.URL;
 import junit.framework.TestCase;
 
 
+import uk.ac.ebi.mydas.exceptions.DataSourceException;
+import uk.ac.ebi.mydas.exceptions.WritebackException;
+import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
+import uk.ac.ebi.mydas.model.DasFeature;
+import uk.ac.ebi.mydas.writeback.datasource.hibernate.Hibernate2MyDas;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.HibernateManager;
+import uk.ac.ebi.mydas.writeback.datasource.hibernate.MyDas2Hibernate;
 import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Orientation;
@@ -101,7 +107,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		feature.setStart(10);
 		feature.setStop(100);
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 		Target target=new Target();
 		target.setTargetId("0987");
 		target.setLabel("TheNewTarget");
@@ -159,7 +168,13 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setStop(1000);
 		segment.setVersion("1234567890");
 
-		Segment resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
+
+		Segment resultSegment=null;
+		try {
+			resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
 
 		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
 
@@ -185,7 +200,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		feature.setStart(20);
 		feature.setStop(200);
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 		Target target=new Target();
 		target.setTargetId("20987");
 		target.setLabel("TheSecondNewTarget");
@@ -236,10 +254,16 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setStop(1000);
 		segment.setVersion("1234567890");
 
-		Segment resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
+		Segment resultSegment=null;
+		try{
+			resultSegment = hibernate.addFeaturesFromSegment(segment,true,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
+
 
 		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
-		
+
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
@@ -249,7 +273,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		if (result==null)
 			fail("there is not an edition of the feature");
 
-//		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
+		//		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
 
 		assertNotSame("http://writeback/0", result.getFeatureId());
 		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheSecondNewTarget");
@@ -274,7 +298,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		feature.setStart(10);
 		feature.setStop(100);
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 		Target target=new Target();
 		target.setTargetId("0987");
 		target.setLabel("TheNewTarget");
@@ -332,10 +359,15 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setStop(1000);
 		segment.setVersion("1234567890");
 
-		Segment resultSegment = hibernate.updateFeaturesFromSegment(segment,true,true);
+		Segment resultSegment=null;
+		try{
+			resultSegment = hibernate.updateFeaturesFromSegment(segment,true,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
 
 		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
-		
+
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
@@ -368,7 +400,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		feature.setStart(40);
 		feature.setStop(400);
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 		Target target=new Target();
 		target.setTargetId("40987");
 		target.setLabel("TheEditedNewTarget2");
@@ -418,10 +453,15 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setStop(1000);
 		segment.setVersion("1234567890");
 
-		Segment resultSegment = hibernate.updateFeaturesFromSegment(segment,true,true);
+		Segment resultSegment =null;
+		try{
+			resultSegment = hibernate.updateFeaturesFromSegment(segment,true,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
 
 		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
-		
+
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
@@ -446,7 +486,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		Feature feature=new Feature();
 		feature.setFeatureId("http://theserver.com/thefeatureid");
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 
 
 		Segment segment=new Segment();
@@ -455,10 +498,15 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setFeatures(features);
 		segment.setIdSegment("firstSegment");
 
-		Segment resultSegment = hibernate.deleteFeaturesFromSegment(segment,true);
+		Segment resultSegment=null;
+		try{
+			resultSegment = hibernate.deleteFeaturesFromSegment(segment,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
 
 		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
-		
+
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
@@ -476,8 +524,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		Feature feature=new Feature();
 		feature.setFeatureId("http://theotherserver.com/thefeatureid");
 
-		feature.setUsers(hibernate.authenticate("theuser", "thepassword"));
-
+		Users user = new Users();
+		user.setLogin("theuser");
+		user.setPassword("thepassword");
+		feature.setUsers(user);
 
 		Segment segment=new Segment();
 		Set<Feature> features= new HashSet<Feature>();
@@ -485,10 +535,15 @@ public class WritebackHibernateTestCase extends TestCase {
 		segment.setFeatures(features);
 		segment.setIdSegment("anewSegment");
 
-		Segment resultSegment = hibernate.deleteFeaturesFromSegment(segment,true);
+		Segment resultSegment=null;
+		try{
+			resultSegment = hibernate.deleteFeaturesFromSegment(segment,true);
+		} catch (WritebackException e1) {
+			fail("failed because an excpetion was arose:"+e1.toString());
+		}
 
 		Iterator<Feature> iterator = resultSegment.getFeatures().iterator();
-		
+
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
@@ -500,16 +555,16 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("http://theotherserver.com/thefeatureid", result.getFeatureId());
 		assertEquals("DELETED", result.getLabel());
 	}
-	
+
 	public void testQueringSegment(){
 		HibernateManager hibernate = new HibernateManager(); 
 		Segment resultSegment = hibernate.getSegmentFromId("firstSegment");
-		
+
 		assertEquals(new Integer(1), resultSegment.getStart());
 		assertEquals(new Integer(1000), resultSegment.getStop());
 		assertEquals("1234567890", resultSegment.getVersion());
 		assertEquals("the segment", resultSegment.getLabel());
-		
+
 		for (Feature feature:resultSegment.getFeatures()){
 			if (feature.getFeatureId().equals("http://writeback/0")){
 				assertEquals(new Integer(2),feature.getVersion());
@@ -530,6 +585,29 @@ public class WritebackHibernateTestCase extends TestCase {
 			}else if (feature.getFeatureId().equals("http://theserver.com/thefeatureid")){
 				assertEquals(new Integer(2),feature.getVersion());
 				assertEquals("DELETED",feature.getLabel());
+			}else{
+				fail("Got a feature different to expected. ("+feature.getId()+")");
+			}
+		}
+	}
+	public void testQueringSegmentWithRange(){
+		HibernateManager hibernate = new HibernateManager(); 
+		Segment resultSegment = hibernate.getSegmentFromIdAndRange("firstSegment",1,100);
+
+		assertEquals(new Integer(1), resultSegment.getStart());
+		assertEquals(new Integer(1000), resultSegment.getStop());
+		assertEquals("1234567890", resultSegment.getVersion());
+		assertEquals("the segment", resultSegment.getLabel());
+
+		for (Feature feature:resultSegment.getFeatures()){
+			if (feature.getFeatureId().equals("http://writeback/0")){
+				assertEquals(new Integer(2),feature.getVersion());
+				assertEquals("theEditedlabel",feature.getLabel());
+				assertEquals(new Integer(10),feature.getStart());
+				assertEquals(new Integer(100),feature.getStop());
+				assertEquals("12345",feature.getType().getTypeId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
 			}else{
 				fail("Got a feature different to expected. ("+feature.getId()+")");
 			}
@@ -561,4 +639,90 @@ public class WritebackHibernateTestCase extends TestCase {
 		if(times!=2)
 			fail("Got "+times+" features, and 2 were expected");
 	}
+
+	public void testQueringAndTranslating(){
+		HibernateManager hibernate = new HibernateManager(); 
+		Segment resultSegment = hibernate.getSegmentFromId("firstSegment");
+		Hibernate2MyDas h2m=new Hibernate2MyDas();
+		DasAnnotatedSegment seg=null;
+		try {
+			seg = h2m.map(resultSegment);
+		} catch (DataSourceException e) {
+			fail("Error mapping!");
+		}
+		assertEquals(new Integer(1), seg.getStartCoordinate());
+		assertEquals(new Integer(1000), seg.getStopCoordinate());
+		assertEquals("1234567890", seg.getVersion());
+		assertEquals("firstSegment", seg.getSegmentId());
+
+		for (DasFeature feature: seg.getFeatures()){
+			if (feature.getFeatureId().equals("http://writeback/0")){
+				//TODO: Tests notes
+				assertEquals("theEditedlabel",feature.getFeatureLabel());
+				assertEquals(10,feature.getStartCoordinate());
+				assertEquals(100,feature.getStopCoordinate());
+				assertEquals("12345",feature.getType().getId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
+			}else if (feature.getFeatureId().equals("http://writeback/5")){
+				//				assertEquals(new Integer(1),feature.getVersion());
+				assertEquals("thesecondlabel",feature.getFeatureLabel());
+				assertEquals(20,feature.getStartCoordinate());
+				assertEquals(200,feature.getStopCoordinate());
+				assertEquals("12345",feature.getType().getId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
+			}else if (feature.getFeatureId().equals("http://theserver.com/thefeatureid")){
+				//				assertEquals(new Integer(2),feature.getVersion());
+				assertEquals("DELETED",feature.getFeatureLabel());
+			}else{
+				fail("Got a feature different to expected. ("+feature.getFeatureId()+")");
+			}
+		}
+	}
+	public void testQueringAndDoubleTranslating(){
+		HibernateManager hibernate = new HibernateManager(); 
+		Segment originalSegment = hibernate.getSegmentFromId("firstSegment");
+		Segment resultSegment=null;
+		Hibernate2MyDas h2m=new Hibernate2MyDas();
+		DasAnnotatedSegment seg=null;
+		try {
+			seg = h2m.map(originalSegment);
+		} catch (DataSourceException e) {
+			fail("Error in first mapping!");
+		}
+		MyDas2Hibernate m2h = new MyDas2Hibernate();
+		resultSegment = m2h.map(seg);
+
+		assertEquals(new Integer(1), resultSegment.getStart());
+		assertEquals(new Integer(1000), resultSegment.getStop());
+		assertEquals("1234567890", resultSegment.getVersion());
+		assertEquals("the segment", resultSegment.getLabel());
+
+		for (Feature feature:resultSegment.getFeatures()){
+			if (feature.getFeatureId().equals("http://writeback/0")){
+				assertEquals(new Integer(2),feature.getVersion());
+				assertEquals("theEditedlabel",feature.getLabel());
+				assertEquals(new Integer(10),feature.getStart());
+				assertEquals(new Integer(100),feature.getStop());
+				assertEquals("12345",feature.getType().getTypeId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
+			}else if (feature.getFeatureId().equals("http://writeback/5")){
+				assertEquals(new Integer(1),feature.getVersion());
+				assertEquals("thesecondlabel",feature.getLabel());
+				assertEquals(new Integer(20),feature.getStart());
+				assertEquals(new Integer(200),feature.getStop());
+				assertEquals("12345",feature.getType().getTypeId());
+				assertEquals("swissprot",feature.getType().getCategory());
+				assertEquals("JustGuessing",feature.getType().getLabel());
+			}else if (feature.getFeatureId().equals("http://theserver.com/thefeatureid")){
+				assertEquals(new Integer(2),feature.getVersion());
+				assertEquals("DELETED",feature.getLabel());
+			}else{
+				fail("Got a feature different to expected. ("+feature.getId()+")");
+			}
+		}
+	}
+
 }
