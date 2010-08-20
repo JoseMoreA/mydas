@@ -8,11 +8,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
 
 import uk.ac.ebi.mydas.exceptions.WritebackException;
+import uk.ac.ebi.mydas.model.DasType;
 import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Method;
 import uk.ac.ebi.mydas.writeback.datasource.model.Orientation;
@@ -325,6 +327,7 @@ public class HibernateManager {
 
 		return result;
 	}
+	@SuppressWarnings("unchecked")
 	public Segment getSegmentFromId(String segmentId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -340,6 +343,23 @@ public class HibernateManager {
 			return result;
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public Segment getSegmentFromFeatureId(String featureId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Segment result = (Segment) session.createQuery("SELECT s FROM Segment as s JOIN s.features as f WITH f.featureId=?").setString(0, featureId).uniqueResult();
+		if (result!=null){
+			Iterator<Feature> iterator=session.createQuery("SELECT f FROM Segment as s JOIN s.features as f WITH f.featureId=? ORDER by f.version DESC" ).setString(0, featureId).list().iterator();
+			result.setFeatures(new HashSet<Feature>());
+			if (iterator.hasNext()){
+				result.addFeature((Feature)iterator.next());
+			}
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public Segment getSegmentFromIdAndRange(String segmentId,int start, int stop) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -356,6 +376,7 @@ public class HibernateManager {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Segment getFeatureHistoryFromId(String featureId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -370,4 +391,36 @@ public class HibernateManager {
 		}
 		return result;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Segment> getSegments(Integer from, Integer to){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		List<Segment> result = session.createQuery("SELECT s FROM Segment as s").list();
+		return result.subList(from-1, to);		
+	}
+	public int getTotalSegments() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Long result = (Long) session.createQuery("SELECT count(*) FROM Segment").uniqueResult();
+		if (result==null)
+			return 0;	
+		return new Integer(result.toString());
+	}
+	public int getTotalTypes(DasType type) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Long result = (Long) session.createQuery("SELECT count(*) FROM Feature WHERE type.typeId=?").setString(0, type.getId()).uniqueResult();
+		if (result==null)
+			return 0;	
+		return new Integer(result.toString());
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Type> getTypes(){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		return session.createQuery("SELECT t FROM Type as t").list();
+	}
+
 }

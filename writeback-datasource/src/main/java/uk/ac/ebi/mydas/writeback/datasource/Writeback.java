@@ -1,8 +1,10 @@
 package uk.ac.ebi.mydas.writeback.datasource;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,14 +24,17 @@ import uk.ac.ebi.mydas.exceptions.CoordinateErrorException;
 import uk.ac.ebi.mydas.exceptions.DataSourceException;
 import uk.ac.ebi.mydas.exceptions.UnimplementedFeatureException;
 import uk.ac.ebi.mydas.exceptions.WritebackException;
+import uk.ac.ebi.mydas.extendedmodel.DasUnknownFeatureSegment;
 import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
 import uk.ac.ebi.mydas.model.DasEntryPoint;
+import uk.ac.ebi.mydas.model.DasEntryPointOrientation;
 import uk.ac.ebi.mydas.model.DasType;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.Hibernate2MyDas;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.HibernateManager;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.MyDas2Hibernate;
 import uk.ac.ebi.mydas.writeback.datasource.model.Feature;
 import uk.ac.ebi.mydas.writeback.datasource.model.Segment;
+import uk.ac.ebi.mydas.writeback.datasource.model.Type;
 import uk.ac.ebi.mydas.writeback.datasource.model.Users;
 
 public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDataSource, CommandExtender {
@@ -131,8 +136,11 @@ public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDa
 	@Override
 	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop)
 			throws UnimplementedFeatureException, DataSourceException {
-		// TODO Auto-generated method stub
-		return null;
+        List<DasEntryPoint> entryPoints = new ArrayList<DasEntryPoint>();
+        List<Segment> segments = hibernate.getSegments(start, stop);
+        for (Segment segment:segments)
+        	entryPoints.add (new DasEntryPoint(segment.getIdSegment(), segment.getStart(), segment.getStop(), "Protein Sequence",segment.getVersion(), null, "UniProt,Protein Sequence", false));
+        return entryPoints;
 	}
 
 	@Override
@@ -147,8 +155,16 @@ public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDa
 	public Collection<DasAnnotatedSegment> getFeatures(
 			Collection<String> featureIdCollection, Integer maxbins)
 			throws UnimplementedFeatureException, DataSourceException {
-		// TODO Auto-generated method stub
-		return null;
+		Hibernate2MyDas h2m= new Hibernate2MyDas();
+		Collection<DasAnnotatedSegment> segments=new ArrayList<DasAnnotatedSegment>();
+		for(String featureId:featureIdCollection){
+			Segment seg = hibernate.getSegmentFromFeatureId(featureId);
+			if (seg!=null)
+				segments.add(h2m.map(seg));
+			else
+				segments.add(new DasUnknownFeatureSegment(featureId));
+		}
+		return segments;
 	}
 
 	@Override
@@ -160,21 +176,23 @@ public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDa
 	@Override
 	public Integer getTotalCountForType(DasType type)
 			throws DataSourceException {
-		// TODO Auto-generated method stub
-		return null;
+		return hibernate.getTotalTypes(type);
 	}
 
 	@Override
 	public int getTotalEntryPoints() throws UnimplementedFeatureException,
 			DataSourceException {
-		// TODO Auto-generated method stub
-		return 0;
+		return hibernate.getTotalSegments();
 	}
 
 	@Override
 	public Collection<DasType> getTypes() throws DataSourceException {
-		// TODO Auto-generated method stub
-		return null;
+		Hibernate2MyDas h2m= new Hibernate2MyDas();
+        List<DasType> dasTypes = new ArrayList<DasType>();
+        List<Type> types = hibernate.getTypes();
+        for (Type type:types)
+        	dasTypes.add (h2m.map(type));
+        return dasTypes;
 	}
 
 	@Override

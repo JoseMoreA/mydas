@@ -126,7 +126,7 @@ public class Hibernate2MyDas {
 		return response;
 	}
 
-	private DasType map(Type type) {
+	public DasType map(Type type) {
 		DasType response=null;
 		response = new DasType(type.getTypeId(), type.getCategory(), type.getCvId(), type.getLabel());
 		return response;

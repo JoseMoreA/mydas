@@ -504,8 +504,154 @@ public class WritebackDataSourceTestCase extends TestCase {
 		assertLocalContains(resp,"</DASGFF>");
 
 	}
+	
+	public void testFeatureCommand(){
+		String segmentId="two";
+
+		List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		parameters.add(new NameValuePair("segment",segmentId));
+		WebRequestSettings webRequestSettings=null;
+		try{
+			webRequestSettings = new WebRequestSettings(new URL(this.baseUrl+"/writeback/features"));
+		} catch (MalformedURLException e) {
+			fail("Problem creating the URL");
+		}
+		webRequestSettings.setHttpMethod(HttpMethod.GET);
+		webRequestSettings.setRequestParameters(parameters);
+		WebClient webClient = new WebClient();
+		webClient.setThrowExceptionOnFailingStatusCode(false);
+		Page page=null;
+		try {
+			page = webClient.getPage(webRequestSettings);
+		} catch (FailingHttpStatusCodeException e) {
+			fail("It got a status code exception");
+		} catch (IOException e) {
+			fail("Input/output problems while getting the response page ");
+		}
+
+		assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
+		String resp=page.getWebResponse().getContentAsString();
+		assertLocalContains(resp,"<DASGFF>");
+		assertLocalContains(resp,"<GFF");
+		assertLocalContains(resp,"<SEGMENT id=\"two\"");
+		assertLocalContains(resp,"<FEATURE id=\"http://otherserver.com/twoFeatureIdOne\"");
+		assertLocalContains(resp,"<NOTE>USER=tester</NOTE>");
+		assertLocalContains(resp,"<NOTE>VERSION=3</NOTE>");
+		assertLocalContains(resp,"<FEATURE id=\"http://otherserver.com/TheFeature\"");
+		assertLocalContains(resp,"<NOTE>VERSION=1</NOTE>");
+		assertLocalContains(resp,"<FEATURE id=\"http://otherserver.com/twoFeatureIdTwo\""); 
+		assertLocalContains(resp,"</FEATURE>");
+		assertLocalContains(resp,"</SEGMENT>");
+		assertLocalContains(resp,"</GFF>");
+		assertLocalContains(resp,"</DASGFF>");
+		assertLocalNoContains(resp,"<NOTE>VERSION=2</NOTE>");
+	}
+	public void testEntryPointsRequest(){
+
+		WebRequestSettings webRequestSettings=null;
+		try{
+			webRequestSettings = new WebRequestSettings(new URL(this.baseUrl+"/writeback/entry_points"));
+		} catch (MalformedURLException e) {
+			fail("Problem creating the URL");
+		}
+		webRequestSettings.setHttpMethod(HttpMethod.GET);
+		WebClient webClient = new WebClient();
+		webClient.setThrowExceptionOnFailingStatusCode(false);
+		Page page=null;
+		try {
+			page = webClient.getPage(webRequestSettings);
+		} catch (FailingHttpStatusCodeException e) {
+			fail("It got a status code exception");
+		} catch (IOException e) {
+			fail("Input/output problems while getting the response page ");
+		}
+		assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
+		String resp=page.getWebResponse().getContentAsString();
+		assertLocalContains(resp,"<?xml version=\"1.0\" standalone=\"no\"?>");
+		assertLocalContains(resp,"<DASEP>");
+		assertLocalContains(resp,"<ENTRY_POINTS href=\"http://localhost:8080/das/writeback/entry_points\" version=\"Version 1.1\" total=\"3\" start=\"1\" end=\"3\">");
+		assertLocalContains(resp,"<SEGMENT id=\"one\" start=\"1\" stop=\"34\" version=\"Up-to-date\" type=\"Protein Sequence\" orientation=\"+\">UniProt,Protein Sequence</SEGMENT>");
+		assertLocalContains(resp,"<SEGMENT id=\"two\" start=\"1\" stop=\"340\" version=\"Up-to-date\" type=\"Protein Sequence\" orientation=\"+\">UniProt,Protein Sequence</SEGMENT>");
+		assertLocalContains(resp,"<SEGMENT id=\"three\" start=\"0\" stop=\"0\" version=\"FROM_DELETION\" type=\"Protein Sequence\" orientation=\"+\">UniProt,Protein Sequence</SEGMENT>");
+		assertLocalContains(resp,"</ENTRY_POINTS>");
+		assertLocalContains(resp,"</DASEP>");
+	}
+	public void testTypesCommand(){
+		WebRequestSettings webRequestSettings=null;
+		try{
+			webRequestSettings = new WebRequestSettings(new URL(this.baseUrl+"/writeback/types"));
+		} catch (MalformedURLException e) {
+			fail("Problem creating the URL");
+		}
+		webRequestSettings.setHttpMethod(HttpMethod.GET);
+		WebClient webClient = new WebClient();
+		webClient.setThrowExceptionOnFailingStatusCode(false);
+		Page page=null;
+		try {
+			page = webClient.getPage(webRequestSettings);
+		} catch (FailingHttpStatusCodeException e) {
+			fail("It got a status code exception");
+		} catch (IOException e) {
+			fail("Input/output problems while getting the response page ");
+		}
+		assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
+		String resp=page.getWebResponse().getContentAsString();
+		assertLocalContains(resp,"<?xml version=\"1.0\" standalone=\"no\"?>");
+		assertLocalContains(resp,"<DASTYPES>");
+		assertLocalContains(resp,"<SEGMENT label=\"Complete datasource summary\">");
+		assertLocalContains(resp,"<TYPE id=\"oneFeatureTypeIdOne\" cvId=\"CV:00001\" category=\"oneFeatureCategoryOne\">2</TYPE>");
+		assertLocalContains(resp,"<TYPE id=\"twoFeatureTypeIdTwo\" cvId=\"CV:000021\" category=\"twoFeatureCategoryTwo\">1</TYPE>");
+		assertLocalContains(resp,"<TYPE id=\"twoFeatureTypeIdOne\" cvId=\"CV:00002\" category=\"twoFeatureCategoryOne\">2</TYPE>");
+		assertLocalContains(resp,"</SEGMENT>");
+		assertLocalContains(resp,"</DASTYPES>");
+	}
+	
+	public void testFeaturesCommandFeatureids(){
+		//String feature_id="http://otherserver.com/twoFeatureIdOne";
+
+//		List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+	//	parameters.add(new NameValuePair("feature_id",feature_id));
+		WebRequestSettings webRequestSettings=null;
+		try{
+			webRequestSettings = new WebRequestSettings(new URL(this.baseUrl+"/writeback/features?feature_id=http://otherserver.com/twoFeatureIdTwo;feature_id=unknown"));
+		} catch (MalformedURLException e) {
+			fail("Problem creating the URL");
+		}
+		webRequestSettings.setHttpMethod(HttpMethod.GET);
+	//	webRequestSettings.setRequestParameters(parameters);
+		WebClient webClient = new WebClient();
+		webClient.setThrowExceptionOnFailingStatusCode(false);
+		Page page=null;
+		try {
+			page = webClient.getPage(webRequestSettings);
+		} catch (FailingHttpStatusCodeException e) {
+			fail("It got a status code exception");
+		} catch (IOException e) {
+			fail("Input/output problems while getting the response page ");
+		}
+		assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
+		String resp=page.getWebResponse().getContentAsString();
+//		beginAt("/test/features?feature_id=oneFeatureIdOne;feature_id=unknown");
+		assertLocalContains(resp,"<?xml version=\"1.0\" standalone=\"no\"?>");
+		assertLocalContains(resp,"<SEGMENT id=\"two\" start=\"1\" stop=\"340\" version=\"Up-to-date\" label=\"two_label\">");
+		assertLocalContains(resp,"<FEATURE id=\"http://otherserver.com/twoFeatureIdTwo\" label=\"two Feature Label Two\">");
+		assertLocalContains(resp,"<TYPE id=\"twoFeatureTypeIdTwo\" cvId=\"CV:000021\" category=\"twoFeatureCategoryTwo\">two Feature DasType Label Two</TYPE>");
+		assertLocalContains(resp,"<METHOD id=\"twoFeatureMethodIdTwo\" cvId=\"ECO:23456\">two Feature Method Label Two</METHOD>");
+		assertLocalContains(resp,"START>150</START>");
+		assertLocalContains(resp,"<END>200</END>");
+		assertLocalContains(resp,"<SCORE>2.345</SCORE>");
+		assertLocalContains(resp,"<NOTE>This is a note relating to feature two of segment two.</NOTE>");
+		assertLocalContains(resp,"<LINK href=\"http://code.google.com/p/mydas/\">mydas project home page.</LINK>");
+		assertLocalContains(resp,"</FEATURE>");
+		assertLocalContains(resp,"</SEGMENT>");
+		assertLocalContains(resp,"<UNKNOWNFEATURE id=\"unknown\" /");
+	}
+	
 	private void assertLocalContains(String text,String subtext){
 		assertTrue("The text ["+subtext+"] was not found in ["+text+"]",text.contains(subtext));
+	}
+	private void assertLocalNoContains(String text,String subtext){
+		assertFalse("The text ["+subtext+"] was found in ["+text+"]",text.contains(subtext));
 	}
 
 }
