@@ -225,7 +225,7 @@ public class HibernateManager {
 			throw new WritebackException("The feature couldn't be added",wbe);
 		}
 		session.getTransaction().commit();		
-		return result;
+		return this.getSegmentFromId(segment.getIdSegment());
 	}
 	public Segment updateFeaturesFromSegment(Segment segment,boolean addIfnotInDB,boolean updateIfDifferent) throws WritebackException{
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -262,7 +262,7 @@ public class HibernateManager {
 			throw new WritebackException("The feature couldn't be added",wbe);
 		}
 		session.getTransaction().commit();		
-		return result;
+		return this.getSegmentFromId(segment.getIdSegment());
 	}
 	public Segment deleteFeaturesFromSegment(Segment segment,boolean addIfnotInDB) throws WritebackException{
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -325,7 +325,7 @@ public class HibernateManager {
 			throw new WritebackException("The feature couldn't be added",wbe);
 		}
 
-		return result;
+		return this.getSegmentFromId(segment.getIdSegment());
 	}
 	@SuppressWarnings("unchecked")
 	public Segment getSegmentFromId(String segmentId) {
@@ -382,7 +382,7 @@ public class HibernateManager {
 		session.beginTransaction();
 		Segment result = (Segment) session.createQuery("SELECT s FROM Segment as s JOIN s.features as f WITH f.featureId=?").setString(0, featureId).uniqueResult();
 		if (result!=null){
-			Iterator<Feature> iterator=session.createQuery("SELECT f FROM Segment as s JOIN s.features as f WITH f.featureId=?" ).setString(0, featureId).list().iterator();
+			Iterator<Feature> iterator=session.createQuery("SELECT f FROM Segment as s JOIN s.features as f WITH f.featureId=? ORDER BY f.version" ).setString(0, featureId).list().iterator();
 			result.setFeatures(new HashSet<Feature>());
 			while (iterator.hasNext()){
 				result.addFeature((Feature)iterator.next());

@@ -27,7 +27,6 @@ import uk.ac.ebi.mydas.exceptions.WritebackException;
 import uk.ac.ebi.mydas.extendedmodel.DasUnknownFeatureSegment;
 import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
 import uk.ac.ebi.mydas.model.DasEntryPoint;
-import uk.ac.ebi.mydas.model.DasEntryPointOrientation;
 import uk.ac.ebi.mydas.model.DasType;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.Hibernate2MyDas;
 import uk.ac.ebi.mydas.writeback.datasource.hibernate.HibernateManager;
@@ -120,6 +119,8 @@ public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDa
 			CoordinateErrorException, DataSourceException {
 		Hibernate2MyDas h2m= new Hibernate2MyDas();
 		Segment resultSegment = hibernate.getSegmentFromIdAndRange(segmentId,start,stop);
+		if(resultSegment==null)
+			 throw new BadReferenceObjectException(segmentId, "Not found");
 		return h2m.map(resultSegment);
 	}
 
@@ -148,6 +149,8 @@ public class Writeback implements WritebackDataSource, RangeHandlingAnnotationDa
 			throws BadReferenceObjectException, DataSourceException {
 		Hibernate2MyDas h2m= new Hibernate2MyDas();
 		Segment resultSegment = hibernate.getSegmentFromId(segmentId);
+		if(resultSegment==null)
+			 throw new BadReferenceObjectException(segmentId, "Not found");
 		return h2m.map(resultSegment);
 	}
 

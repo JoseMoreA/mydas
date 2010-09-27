@@ -30,6 +30,8 @@ import uk.ac.ebi.mydas.writeback.datasource.model.Users;
 
 
 public class WritebackHibernateTestCase extends TestCase {
+	public static String[] featuresIds= new String[2];
+	
 	public void testSavingType() {
 		HibernateManager hibernate = new HibernateManager(); 
 		Type type = new Type();
@@ -177,8 +179,10 @@ public class WritebackHibernateTestCase extends TestCase {
 		}
 
 		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
+		
+		assertLocalContains(result.getFeatureId(),"http://writeback/");
+		WritebackHibernateTestCase.featuresIds[0]=result.getFeatureId();
 
-		assertEquals("http://writeback/0", result.getFeatureId());
 		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheNewTarget");
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
 		assertEquals(result.getType().getLabel(),"JustGuessing");
@@ -267,7 +271,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
-			if (temp.getFeatureId().equals("http://writeback/5"))
+			if (!temp.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0]))
 				result=temp;
 		}
 		if (result==null)
@@ -275,7 +279,9 @@ public class WritebackHibernateTestCase extends TestCase {
 
 		//		Feature result=resultSegment.getFeatures().iterator().next();//hibernate.addFeature(feature);
 
-		assertNotSame("http://writeback/0", result.getFeatureId());
+		assertLocalContains(result.getFeatureId(),"http://writeback/");
+		WritebackHibernateTestCase.featuresIds[1]=result.getFeatureId();
+		
 		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheSecondNewTarget");
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
 		assertEquals(result.getType().getLabel(),"JustGuessing");
@@ -289,7 +295,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		HibernateManager hibernate = new HibernateManager(); 
 
 		Feature feature=new Feature();
-		feature.setFeatureId("http://writeback/0");
+		feature.setFeatureId(WritebackHibernateTestCase.featuresIds[0]);
 
 		feature.setLabel("theEditedlabel");
 		feature.setOrientation(Orientation.ORIENTATION_NOT_APPLICABLE);
@@ -371,12 +377,12 @@ public class WritebackHibernateTestCase extends TestCase {
 		Feature result=null;
 		while (iterator.hasNext()){
 			Feature temp=iterator.next();//hibernate.addFeature(feature);
-			if (temp.getFeatureId().equals("http://writeback/0")&&temp.getVersion()>1)
+			if (temp.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0])&&temp.getVersion()>1)
 				result=temp;
 		}
 		if (result==null)
 			fail("there is not an edition of the feature");
-		assertEquals("http://writeback/0", result.getFeatureId());
+		assertEquals(WritebackHibernateTestCase.featuresIds[0], result.getFeatureId());
 		assertEquals("theEditedlabel", result.getLabel());
 		assertEquals(((Target)result.getTargets().iterator().next()).getLabel(),"TheNewTarget");
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
@@ -566,7 +572,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("the segment", resultSegment.getLabel());
 
 		for (Feature feature:resultSegment.getFeatures()){
-			if (feature.getFeatureId().equals("http://writeback/0")){
+			if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0])){
 				assertEquals(new Integer(2),feature.getVersion());
 				assertEquals("theEditedlabel",feature.getLabel());
 				assertEquals(new Integer(10),feature.getStart());
@@ -574,7 +580,7 @@ public class WritebackHibernateTestCase extends TestCase {
 				assertEquals("12345",feature.getType().getTypeId());
 				assertEquals("swissprot",feature.getType().getCategory());
 				assertEquals("JustGuessing",feature.getType().getLabel());
-			}else if (feature.getFeatureId().equals("http://writeback/5")){
+			}else if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[1])){
 				assertEquals(new Integer(1),feature.getVersion());
 				assertEquals("thesecondlabel",feature.getLabel());
 				assertEquals(new Integer(20),feature.getStart());
@@ -600,7 +606,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("the segment", resultSegment.getLabel());
 
 		for (Feature feature:resultSegment.getFeatures()){
-			if (feature.getFeatureId().equals("http://writeback/0")){
+			if (feature.getFeatureId().equals(featuresIds[0])){
 				assertEquals(new Integer(2),feature.getVersion());
 				assertEquals("theEditedlabel",feature.getLabel());
 				assertEquals(new Integer(10),feature.getStart());
@@ -615,7 +621,7 @@ public class WritebackHibernateTestCase extends TestCase {
 	}
 	public void testQueringFeatureHistory(){
 		HibernateManager hibernate = new HibernateManager(); 
-		Segment resultSegment = hibernate.getFeatureHistoryFromId("http://writeback/0");
+		Segment resultSegment = hibernate.getFeatureHistoryFromId(WritebackHibernateTestCase.featuresIds[0]);
 
 		assertNotNull(resultSegment);
 
@@ -625,7 +631,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("the segment", resultSegment.getLabel());
 		int times=0;
 		for (Feature feature:resultSegment.getFeatures()){
-			if (feature.getFeatureId().equals("http://writeback/0")){
+			if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0])){
 				times++;
 				assertEquals(new Integer(10),feature.getStart());
 				assertEquals(new Integer(100),feature.getStop());
@@ -656,15 +662,14 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("firstSegment", seg.getSegmentId());
 
 		for (DasFeature feature: seg.getFeatures()){
-			if (feature.getFeatureId().equals("http://writeback/0")){
-				//TODO: Tests notes
+			if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0])){
 				assertEquals("theEditedlabel",feature.getFeatureLabel());
 				assertEquals(10,feature.getStartCoordinate());
 				assertEquals(100,feature.getStopCoordinate());
 				assertEquals("12345",feature.getType().getId());
 				assertEquals("swissprot",feature.getType().getCategory());
 				assertEquals("JustGuessing",feature.getType().getLabel());
-			}else if (feature.getFeatureId().equals("http://writeback/5")){
+			}else if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[1])){
 				//				assertEquals(new Integer(1),feature.getVersion());
 				assertEquals("thesecondlabel",feature.getFeatureLabel());
 				assertEquals(20,feature.getStartCoordinate());
@@ -700,7 +705,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals("the segment", resultSegment.getLabel());
 
 		for (Feature feature:resultSegment.getFeatures()){
-			if (feature.getFeatureId().equals("http://writeback/0")){
+			if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[0])){
 				assertEquals(new Integer(2),feature.getVersion());
 				assertEquals("theEditedlabel",feature.getLabel());
 				assertEquals(new Integer(10),feature.getStart());
@@ -708,7 +713,7 @@ public class WritebackHibernateTestCase extends TestCase {
 				assertEquals("12345",feature.getType().getTypeId());
 				assertEquals("swissprot",feature.getType().getCategory());
 				assertEquals("JustGuessing",feature.getType().getLabel());
-			}else if (feature.getFeatureId().equals("http://writeback/5")){
+			}else if (feature.getFeatureId().equals(WritebackHibernateTestCase.featuresIds[1])){
 				assertEquals(new Integer(1),feature.getVersion());
 				assertEquals("thesecondlabel",feature.getLabel());
 				assertEquals(new Integer(20),feature.getStart());
@@ -723,6 +728,9 @@ public class WritebackHibernateTestCase extends TestCase {
 				fail("Got a feature different to expected. ("+feature.getId()+")");
 			}
 		}
+	}
+	private void assertLocalContains(String text,String subtext){
+		assertTrue("The text ["+subtext+"] was not found in ["+text+"]",text.contains(subtext));
 	}
 
 }

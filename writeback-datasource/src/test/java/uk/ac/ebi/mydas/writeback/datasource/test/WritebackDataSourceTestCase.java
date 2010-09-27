@@ -348,10 +348,10 @@ public class WritebackDataSourceTestCase extends TestCase {
 		assertLocalContains(resp,"\" label=\"two Feature Label One\">");
 		assertLocalContains(resp,"<TYPE id=\"twoFeatureTypeIdOne\" cvId=\"CV:00002\" category=\"twoFeatureCategoryOne\">two Feature DasType Label One</TYPE>");
 		assertLocalContains(resp,"<METHOD id=\"twoFeatureMethodIdOne\" cvId=\"ECO:23456\">two Feature Method Label One</METHOD>");
-		assertLocalContains(resp,"<START>50</START>");
-		assertLocalContains(resp,"<END>100</END>");
-		assertLocalContains(resp,"<SCORE>1.2345</SCORE>");
-		assertLocalContains(resp,"<NOTE>This is a note relating to feature one of segment two.</NOTE>");
+		assertLocalContains(resp,"<START>55</START>");
+		assertLocalContains(resp,"<END>105</END>");
+		assertLocalContains(resp,"<SCORE>1.5345</SCORE>");
+		assertLocalContains(resp,"<NOTE>Editing the note!.</NOTE>");
 		assertLocalContains(resp,"<NOTE>USER=tester</NOTE>");
 		assertLocalContains(resp,"<LINK href=\"http://code.google.com/p/mydas/\">mydas project home page.</LINK>");
 		assertLocalContains(resp,"</FEATURE>");
