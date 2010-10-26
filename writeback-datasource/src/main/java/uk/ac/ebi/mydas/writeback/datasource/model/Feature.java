@@ -17,7 +17,7 @@ public class Feature {
 	private Orientation orientation;
 	private Phase phase;
 	private Set<String> notes;
-	private Map<URL,String> links;
+	private Map<String,String> links;
 	private Set<Target> targets;
 	private Set<String> parents;
 	private Set<String> parts;
@@ -130,10 +130,10 @@ public class Feature {
 	public void setNotes(Set<String> notes) {
 		this.notes = notes;
 	}
-	public Map<URL, String> getLinks() {
+	public Map<String, String> getLinks() {
 		return links;
 	}
-	public void setLinks(Map<URL, String> links) {
+	public void setLinks(Map<String, String> links) {
 		this.links = links;
 	}
 	public Set<Target> getTargets() {

@@ -1,13 +1,17 @@
 package uk.ac.ebi.mydas.writeback.datasource.hibernate;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import uk.ac.ebi.mydas.exceptions.DataSourceException;
 import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
 import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasFeatureOrientation;
@@ -58,7 +62,7 @@ public class MyDas2Hibernate {
 		response.setDeleted(feature.getFeatureLabel().equals("DELETE"));
 		response.setFeatureId(feature.getFeatureId());
 		response.setLabel(feature.getFeatureLabel());
-		response.setLinks(feature.getLinks());
+		response.setLinks(mapLinks(feature.getLinks()));
 		response.setMethod(map(feature.getMethod()));
 		response.setNotes(mapNotes(feature.getNotes()));
 		response.setOrientation(map(feature.getOrientation()));
@@ -75,6 +79,13 @@ public class MyDas2Hibernate {
 		response.setVersion(mapVersion(feature.getNotes()));
 		response.setHref(mapHref(feature.getNotes()));
 		return response;
+	}
+	private Map<String, String> mapLinks(Map<URL, String> links) {
+		Map<String, String> newlinks=new HashMap<String, String>();
+		for (URL key:links.keySet()){
+			newlinks.put(key.toString(), links.get(key));
+		}
+		return newlinks;
 	}
 
 	private String mapHref(Collection<String> notes) {

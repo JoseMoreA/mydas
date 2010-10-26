@@ -55,7 +55,7 @@
 		</set>
 		<map name="links" table="LINKS">
 			<key column="id" />
-			<map-key column="URI" type="java.net.URL" />
+			<map-key column="URI" type="string" />
 			<element column="label" type="string" />
 		</map>
 		<set name="parents" table="PARENTS" lazy="true">

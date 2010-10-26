@@ -1,8 +1,12 @@
 package uk.ac.ebi.mydas.writeback.datasource.hibernate;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
 
 import uk.ac.ebi.mydas.exceptions.DataSourceException;
 import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
@@ -46,7 +50,7 @@ public class Hibernate2MyDas {
 												map(feature.getOrientation()),
 												map(feature.getPhase()), 
 												mapNotes(feature.getNotes(),feature), 
-												feature.getLinks(), 
+												mapLinks(feature.getLinks()), 
 												mapTargets(feature.getTargets()), 
 												mapStrings(feature.getParents()), 
 												mapStrings(feature.getParts())));
@@ -58,6 +62,17 @@ public class Hibernate2MyDas {
 	}
 
 	
+	private Map<URL, String> mapLinks(Map<String, String> links) throws DataSourceException {
+		Map<URL, String> newlinks=new HashMap<URL, String>();
+		for (String key:links.keySet()){
+			try {
+				newlinks.put(new URL(key), links.get(key));
+			} catch (MalformedURLException e) {
+				throw new DataSourceException("The URL in the map was malformed.",e);
+			}
+		}
+		return newlinks;
+	}
 
 	private Collection<String> mapNotes(Set<String> notes,Feature feature) {
 		Collection<String> allNotes=mapStrings(notes);

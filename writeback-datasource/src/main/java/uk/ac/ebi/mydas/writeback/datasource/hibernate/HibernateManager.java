@@ -335,7 +335,7 @@ public class HibernateManager {
 		if (result==null){
 			return null;
 		}else{
-			Iterator<Feature> iterator=session.createSQLQuery("SELECT f.* from feature f, (select max(f.version),f.featureid from segment_feature sf, feature f,segment s where sf.feature_id=f.id and sf.segment_id=s.id and s.idsegment=? group by f.featureid) f2 where f.version=f2.max and f.featureid=f2.featureid" ).addEntity(Feature.class).setString(0, segmentId).list().iterator();
+			Iterator<Feature> iterator=session.createSQLQuery("SELECT f.* from FEATURE f, (select max(f.version) as maxi,f.featureid from SEGMENT_FEATURE sf, FEATURE f,SEGMENT s where sf.feature_id=f.id and sf.segment_id=s.id and s.idsegment=? group by f.featureid) f2 where f.version=f2.maxi and f.featureid=f2.featureid" ).addEntity(Feature.class).setString(0, segmentId).list().iterator();
 			result.setFeatures(new HashSet<Feature>());
 			while (iterator.hasNext()){
 				result.addFeature((Feature)iterator.next());
@@ -367,7 +367,7 @@ public class HibernateManager {
 		if (result==null){
 			return null;
 		}else{
-			Iterator<Feature> iterator=session.createSQLQuery("SELECT f.* from feature f, (select max(f.version),f.featureid from segment_feature sf, feature f,segment s where sf.feature_id=f.id and sf.segment_id=s.id and s.idsegment=? group by f.featureid) f2 where f.version=f2.max and f.featureid=f2.featureid and f.start>="+start+" AND f.stop<="+stop ).addEntity(Feature.class).setString(0, segmentId).list().iterator();
+			Iterator<Feature> iterator=session.createSQLQuery("SELECT f.* from FEATURE f, (select max(f.version) as maxi,f.featureid from SEGMENT_FEATURE sf, FEATURE f,SEGMENT s where sf.feature_id=f.id and sf.segment_id=s.id and s.idsegment=? group by f.featureid) f2 where f.version=f2.maxi and f.featureid=f2.featureid and f.start>="+start+" AND f.stop<="+stop ).addEntity(Feature.class).setString(0, segmentId).list().iterator();
 			result.setFeatures(new HashSet<Feature>());
 			while (iterator.hasNext()){
 				result.addFeature((Feature)iterator.next());

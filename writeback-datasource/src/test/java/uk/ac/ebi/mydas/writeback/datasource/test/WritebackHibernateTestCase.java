@@ -143,13 +143,9 @@ public class WritebackHibernateTestCase extends TestCase {
 		notes.add("first note");
 		feature.setNotes(notes);
 
-		Map<URL,String> links=new HashMap<URL,String>();
-		try {
-			links.put(new URL("http://www.uct.ac.za"), "UCT");
-			links.put(new URL("http://www.ebi.ac.uk"), "EBI");
-		} catch (MalformedURLException e) {
-			fail("Malformed URL");
-		}
+		Map<String,String> links=new HashMap<String,String>();
+		links.put("http://www.uct.ac.za", "UCT");
+		links.put("http://www.ebi.ac.uk", "EBI");
 		feature.setLinks(links);
 
 		Set<String> parents= new HashSet<String>();
@@ -187,9 +183,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
 		assertEquals(result.getType().getLabel(),"JustGuessing");
 		assertEquals((String)result.getNotes().iterator().next(),"first note");
-		try {
-			assertEquals("UCT", result.getLinks().get(new URL("http://www.uct.ac.za")));
-		} catch (MalformedURLException e) {}
+		assertEquals("UCT", result.getLinks().get("http://www.uct.ac.za"));
 		assertEquals((String)result.getParts().iterator().next(),"first part");
 	}
 
@@ -238,13 +232,8 @@ public class WritebackHibernateTestCase extends TestCase {
 		notes.add("second note");
 		feature.setNotes(notes);
 
-		Map<URL,String> links=new HashMap<URL,String>();
-		try {
-			links.put(new URL("http://www.second.ac.za"), "second");
-			links.put(new URL("http://www.ebi.ac.uk"), "EBI");
-		} catch (MalformedURLException e) {
-			fail("Malformed URL");
-		}
+		Map<String,String> links=new HashMap<String,String>();
+		links.put("http://www.second.ac.za", "second");
 		feature.setLinks(links);
 
 
@@ -286,9 +275,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
 		assertEquals(result.getType().getLabel(),"JustGuessing");
 		assertEquals((String)result.getNotes().iterator().next(),"second note");
-		try {
-			assertEquals("second", result.getLinks().get(new URL("http://www.second.ac.za")));
-		} catch (MalformedURLException e) {}
+		assertEquals("second", result.getLinks().get("http://www.second.ac.za"));
 	}
 
 	public void testEditingExistingFeature(){
@@ -338,13 +325,9 @@ public class WritebackHibernateTestCase extends TestCase {
 		notes.add("first edited note");
 		feature.setNotes(notes);
 
-		Map<URL,String> links=new HashMap<URL,String>();
-		try {
-			links.put(new URL("http://www.uct.ac.za"), "UCT");
-			links.put(new URL("http://www.ebi.ac.uk"), "EBI");
-		} catch (MalformedURLException e) {
-			fail("Malformed URL");
-		}
+		Map<String,String> links=new HashMap<String,String>();
+		links.put("http://www.uct.ac.za", "UCT");
+		links.put("http://www.ebi.ac.uk", "EBI");
 		feature.setLinks(links);
 
 		Set<String> parents= new HashSet<String>();
@@ -388,9 +371,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals(result.getMethod().getLabel(),"MoreGuessing");
 		assertEquals(result.getType().getLabel(),"JustGuessing");
 		assertEquals((String)result.getNotes().iterator().next(),"first edited note");
-		try {
-			assertEquals("UCT", result.getLinks().get(new URL("http://www.uct.ac.za")));
-		} catch (MalformedURLException e) {}
+		assertEquals("UCT", result.getLinks().get("http://www.uct.ac.za"));
 		assertEquals((String)result.getParts().iterator().next(),"first part");
 	}
 	public void testEditingNewFeature(){
@@ -440,13 +421,9 @@ public class WritebackHibernateTestCase extends TestCase {
 		notes.add("another note");
 		feature.setNotes(notes);
 
-		Map<URL,String> links=new HashMap<URL,String>();
-		try {
-			links.put(new URL("http://www.uct.ac.za"), "UCT");
-			links.put(new URL("http://www.ebi.ac.uk"), "EBI");
-		} catch (MalformedURLException e) {
-			fail("Malformed URL");
-		}
+		Map<String,String> links=new HashMap<String,String>();
+		links.put("http://www.uct.ac.za", "UCT");
+		links.put("http://www.ebi.ac.uk", "EBI");
 		feature.setLinks(links);
 
 		Segment segment=new Segment();
@@ -482,9 +459,7 @@ public class WritebackHibernateTestCase extends TestCase {
 		assertEquals(result.getMethod().getLabel(),"ByGuessing");
 		assertEquals(result.getType().getLabel(),"testing");
 		assertEquals((String)result.getNotes().iterator().next(),"another note");
-		try {
-			assertEquals("UCT", result.getLinks().get(new URL("http://www.uct.ac.za")));
-		} catch (MalformedURLException e) {}
+		assertEquals("UCT", result.getLinks().get("http://www.uct.ac.za"));
 	}
 	public void testDeletingFeatureFromExistingSegment(){
 		HibernateManager hibernate = new HibernateManager(); 
