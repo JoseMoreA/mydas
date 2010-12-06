@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-= MyDas Tutorials =
+= myDas Tutorials =
 
 A set of tutorials have been created with the purpose of helping to understand how to create DAS data sources with myDas.
 
