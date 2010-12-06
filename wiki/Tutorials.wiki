@@ -1,13 +1,14 @@
-#summary Learning how to use !MyDas
+#summary Learning how to use MyDas
+#labels Featured
 
 = myDas Tutorials =
 
-A set of tutorials have been created with the purpose of helping to understand how to create DAS data sources with myDas.
+A set of tutorials have been created with the purpose of helping to understand how to create DAS data sources with !MyDas.
 
 
 = Prerequisites =
 
-To create a MyDas server and therefore to follow the tutorials, you should ensure that you have the following installed and configured on your computer:
+To create a !MyDas server and therefore to follow the tutorials, you should ensure that you have the following installed and configured on your computer:
 
   * Sun Java SDK 1.5 (or later) available from http://java.sun.com
   * Ensure the JAVA_HOME environment variable is set correctly and JAVA_HOME/bin is included in your PATH environment variable.  Run `java -version` to ensure that the correct version of Java is available on the command line.
@@ -16,6 +17,6 @@ To create a MyDas server and therefore to follow the tutorials, you should ensur
 
 
 = Tutorials =
-  * [MyDASTutorial Beginers]: Getting myDas to work and checking the example data source
+  * [MyDASTutorial Beginers]: Getting !MyDas to work and checking the example data source
   * [MyDASTutorial2ndPart Intermediate]: Developing your own Data Source
   * [MyDASTutorial3rdPart Advanced]: Developing a Data Source from a database
