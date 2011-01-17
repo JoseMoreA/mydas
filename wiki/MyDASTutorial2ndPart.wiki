@@ -254,7 +254,12 @@ public class SeparatedByPipesParser {
 										null);
 	}
 }}}
-
+  # The last method to add is `getTypes()` in order to return the private attribute types.
+{{{
+	public Collection<DasType> getTypes() {
+		return types;
+	}
+}}}
 ==== Implement one of the MyDAS Data Sources Interfaces ====
 For this example we are going to implement the AnnotationDataSource. Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesDataSource.java`. The content of an empty class that implements this Interface is below, and it contains the classes to import, and the definition of the empty methods forced to be implemented by that interface.
 {{{
@@ -281,6 +286,8 @@ import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
 import uk.ac.ebi.mydas.model.DasComponentFeature;
 import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasType;
+import uk.ac.ebi.mydas.model.DasEntryPoint;
+
 import uk.ac.ebi.mydas.configuration.PropertyType;
 
 
