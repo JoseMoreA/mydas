@@ -531,7 +531,7 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 		
 	}
 }}}
-  # The last 4 methods have nothing special and follow the same reasoning that the previous tutorial([MyDASTutorial2ndPart]):
+  # The last methods have nothing special and follow the same reasoning that the previous tutorial([MyDASTutorial2ndPart]):
 {{{
 	public Collection<DasType> getTypes() throws DataSourceException {
 		return ensembl.getTypes();
@@ -548,6 +548,18 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 	public void registerCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
 	}
+	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+	
+	public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+	
+	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+
 }}}
 
 === MyDAS configuration ===
