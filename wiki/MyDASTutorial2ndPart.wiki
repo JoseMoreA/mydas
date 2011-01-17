@@ -487,17 +487,17 @@ Now lets go top down implementing all the methods of this Data Source.
 }}}
  ** *Entry point methods*: The entry points capability is not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:
 {{{
-    public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) throws UnimplementedFeatureException, DataSourceException {
-        throw new UnimplementedFeatureException("No implemented");
-    }
-
-    public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
-        throw new UnimplementedFeatureException("No implemented");
-    }
-
-    public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
-        throw new UnimplementedFeatureException("No implemented");
-    }
+	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+	
+	public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
+	
+	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
+		throw new UnimplementedFeatureException("No implemented");
+	}
 }}}
 
 ==== Configure MyDAS with the new Data Source ====
