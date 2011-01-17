@@ -325,8 +325,19 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 }
 
 }}}
+Firstly, we should define the attributes of the class. The first three attributes (`svCon`, `globalParameters` and `config`) are basically keeping the external variables acquired in the `init()` in the local scope for potential requests. The `cacheManager` has the same purpose but its value is registered in the method `registerCacheManager`. `path` is the string with the path of the file to extract all the info of the data source. Finally, `segments` and `types` are the collections that contain the information of the datasource in memory.
+{{{
+	private ServletContext svCon;
+	private Map<String, PropertyType> globalParameters;
+	private DataSourceConfiguration config;
+	private CacheManager cacheManager = null;
+	private String path;
+	private Collection<DasAnnotatedSegment> segments;
+	private Collection<DasType> types;
+}}}
+
 Now lets go top down implementing all the methods of this Data Source.
-  ** *init()*: This method is called when the data source is loaded, so it the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is going to be the data source property `pipes_file` in the configuration file.
+  ** *init()*: This method is called when the data source is loaded, so the goal of this method should be to prepare the data source to receive the queries; in our case it means to parse the file and keep the model in memory. We assume that the file to be loaded is going to be the data source property `pipes_file` in the configuration file.
   The parameters of this method have to be save as attributes of this class(you have to create those attributes). The parser is now invoked and the model(segments and types) is also saved as parameter. Exceptions are catch and throw in case something goes wrong.
 {{{
 	public void init(ServletContext servletContext,
