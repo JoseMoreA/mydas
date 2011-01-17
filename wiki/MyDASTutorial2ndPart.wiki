@@ -367,7 +367,7 @@ Now lets go top down implementing all the methods of this Data Source.
 		this.svCon = servletContext;
 		this.globalParameters = globalParameters;
 		this.config = dataSourceConfig;
-		path = config.getDataSourceProperties().get("pipes_file");
+		path = config.getDataSourceProperties().get("pipes_file").getValue();
 		try {
 			SeparatedByPipesParser parser = new SeparatedByPipesParser(new FileInputStream(servletContext.getRealPath(path)));
 			segments = parser.parse();
