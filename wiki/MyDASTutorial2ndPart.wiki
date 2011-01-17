@@ -567,6 +567,12 @@ Now lets go top down implementing all the methods of this Data Source.
 
 If everything goes right you have created a new data source from scratch, so now you can start again the server using maven to compile the new files and using the new configuration.
 
+You can check that the information display for MyDas corresponds to the one in the file. For instance you can try to go to the following links:
+  * [http://localhost:8080/das/examplepipes/features?segment=5]
+  * [http://localhost:8080/das/examplepipes/features?feature_id=ENSG00000228416]
+  * [http://localhost:8080/das/examplepipes/features?feature_id=ENST00000413363]
+  * [http://localhost:8080/das/examplepipes/features?feature_id=ENSE00001747247]
+
 The final files can be directly download from:
   * [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples/SeparatedByPipesDataSource.java]
   * [http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples/SeparatedByPipesParser.java]
