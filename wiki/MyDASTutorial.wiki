@@ -6,7 +6,7 @@
 
 === Download and Configure the Template Project ===
 
-  * *Download* [http://mydas.googlecode.com/files/MyDasTemplate-1.6.1.zip MyDasTemplate-1.6.1.zip] from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
+  * *Download* [http://mydas.googlecode.com/files/MyDasTemplate-1.6.2.zip MyDasTemplate-1.6.2.zip] from the Downloads page and unzip in an appropriate location.  You now have a template project that you can configure in your favorite IDE to develop your own DAS data sources.  
   * *Edit the location for data caching* in the file `[MyDasTemplate]/src/main/resources/oscache.properties`
     ** In the `oscache.properties` file, set the property `cache.path` to a valid, writable folder on your filesystem.
 
