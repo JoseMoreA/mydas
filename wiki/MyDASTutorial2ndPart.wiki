@@ -281,12 +281,14 @@ import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
 import uk.ac.ebi.mydas.model.DasComponentFeature;
 import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasType;
+import uk.ac.ebi.mydas.model.PropertyType;
+
 
 
 public class SeparatedByPipesDataSource implements AnnotationDataSource {
 
 	public void init(ServletContext servletContext,
-			Map<String, String> globalParameters,
+			Map<String, PropertyType> globalParameters,
 			DataSourceConfiguration dataSourceConfig)
 			throws DataSourceException {
 	}
@@ -341,7 +343,7 @@ Now lets go top down implementing all the methods of this Data Source.
   The parameters of this method have to be save as attributes of this class(you have to create those attributes). The parser is now invoked and the model(segments and types) is also saved as parameter. Exceptions are catch and throw in case something goes wrong.
 {{{
 	public void init(ServletContext servletContext,
-			Map<String, String> globalParameters,
+			Map<String, PropertyType> globalParameters,
 			DataSourceConfiguration dataSourceConfig)
 			throws DataSourceException {
 		this.svCon = servletContext;
@@ -521,7 +523,7 @@ Now lets go top down implementing all the methods of this Data Source.
     ** Tag `<datasource>`, attribute `doc_href`: http://mydas.googlecode.com
     ** Tag `<maintainer>`, attribute `email`: `[Your email]`
     ** Tag `<version>`, attribute `uri`: examplepipes
-    ** Tag `<version>`, attribute `created`: 2010-03-19
+    ** Tag `<version>`, attribute `created`: `Today`
     ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.SeparatedByPipesDataSource
     ** Tag `<coordinates>`, attribute `uri`: `http://www.dasregistry.org/coordsys/CS_DS311`
     ** Tag `<coordinates>`, attribute `source`: Chromosome
