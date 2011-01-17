@@ -51,7 +51,7 @@ For this demo we can assume some values for all the annotations, the method will
 And given that we don't know the score, phase and orientation, we will assume those values as not applicable.
 
 === Implementing the Data Source ===
-Now lets go to work.  The task of implementing the data source can be divided in three parts:
+Now lets start working.  The task of implementing the data source can be divided in three parts:
   # Implement a parser of the file.
   # Implement one of the MyDAS Data Sources Interfaces.
   # Configure MyDAS with the new Data Source.
@@ -62,13 +62,13 @@ Pros and cons? the whole file in memory will response quicker but the bigger the
 
 Maybe an intermediate approach with a preprocessing stage, and subsequents specialized processes per query, can be a better way, however it will require to focus in details that are not in the scope of this tutorial.
 
-The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to starting coding.
+The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to start coding.
 
 So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
 
 
 ==== Implement a parser of the file ====
-  # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and opened to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
+  # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and open it to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
   # Add the empty class declaration with his package and the classes to import. You can add those imports now or whenever they are required:
 {{{
 package uk.ac.ebi.mydas.examples;
@@ -157,7 +157,7 @@ public class SeparatedByPipesParser {
 		return newSegment;
 	}
 }}} 
-  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean, we first look in the current feature for tis subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
+  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean, we first look in the current feature for its subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
 {{{
 	private DasComponentFeature getExon(	String exonID, 
 						String start, 
@@ -256,7 +256,7 @@ public class SeparatedByPipesParser {
 }}}
 
 ==== Implement one of the MyDAS Data Sources Interfaces ====
-For this example we are going to implement the AnnotationDataSource, to start doing create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesDataSource.java`. The content of an empty class that implements this Interface is below, and it contains the classes to import, and the definition of the empty methods forced to be implemented by that interface.
+For this example we are going to implement the AnnotationDataSource. Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesDataSource.java`. The content of an empty class that implements this Interface is below, and it contains the classes to import, and the definition of the empty methods forced to be implemented by that interface.
 {{{
 package uk.ac.ebi.mydas.examples;
 
