@@ -40,7 +40,7 @@ We also know from this file the information that our data source has to provide,
 {{{
 <TYPE id="Exon" cvId="SO:0000147">Exon</TYPE>
 }}}
-Note that the numbers at cvId are valid Ontology Ids from the Sequence Ontology.
+Note that the numbers at cvId are valid Ontology Ids from the Sequence Ontology [http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=SO SO].
 
 The other information that we have implicit in this file is that there is a hierarchy in those components. A chromosome contains genes, a gene contains transcripts, an transcript contains exons. 
 
