@@ -323,17 +323,17 @@ public class SeparatedByPipesDataSource implements AnnotationDataSource {
 
 	public void registerCacheManager(CacheManager cacheManager) {
 	}
-    public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) 
+	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) 
 			throws UnimplementedFeatureException, DataSourceException {
-    }
+	}
 
-    public String getEntryPointVersion() 
+	public String getEntryPointVersion() 
 			throws UnimplementedFeatureException, DataSourceException {
-    }
+	}
 
-    public int getTotalEntryPoints() 
+	public int getTotalEntryPoints() 
 			throws UnimplementedFeatureException, DataSourceException {
-    }
+	}
 
 }
 
