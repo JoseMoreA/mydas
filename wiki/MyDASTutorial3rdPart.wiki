@@ -160,7 +160,7 @@ public class EnsemblTestManager {
 		return segments;
 	}
 }}}
-  # The methods `getSegment()`, `getGene()`, `getTranscript()` and `getExon()` are the same as in [MyDASTutorial2ndPart], or even easier because here we will receive the start and end as integers :
+  # The methods `getGene()`, `getTranscript()` and `getExon()` are the same as in [MyDASTutorial2ndPart], or even easier because here we will receive the start and end as integers :
 {{{
 	private DasComponentFeature getExon(	String exonID, 
 						int startI, 
@@ -235,15 +235,31 @@ public class EnsemblTestManager {
 										null, 
 										null);
 	}
-
+}}}
+  # The method `getSegment()` has a modification to be able to capture the length of the segment from the database. To do this we created a private method to query the length for the specific segment.
+{{{
 
 	private DasAnnotatedSegment getSegment(Collection<DasAnnotatedSegment> segments,String segmentId) throws DataSourceException {
 		for (DasAnnotatedSegment segment:segments)
 			if (segment.getSegmentId().equals(segmentId))
 				return segment;
-		DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,1,"FROM_PIPE_FILE",segmentId, new ArrayList<DasFeature>());
+		Integer length = this.getSegmentLength(segmentId);
+		DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,length,"FROM_PIPE_FILE",segmentId, new ArrayList<DasFeature>());
 		segments.add(newSegment);
 		return newSegment;
+	}
+	private Integer getSegmentLength(String segmentId){
+		String sql="SELECT length FROM seq_region WHERE name='"+segmentId+"' and coord_system_id=2";
+		try{
+			Statement s = connection.createStatement ();
+			s.executeQuery (sql);
+			ResultSet rs = s.getResultSet ();
+			while (rs.next ()) 
+				return rs.getInt ("length");
+		} catch (SQLException e) {
+			return 1;
+		}
+		return 1;
 	}
 
 }}} 
