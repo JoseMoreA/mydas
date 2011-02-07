@@ -1,0 +1,10 @@
+#summary how to implement a reference server + entry points and maxbins capabilities
+#labels Phase-Support
+
+= Introduction =
+
+In this tutorial we will explain how to create a reference data source that implements other capabilities included in DAS but that are optional, and because of that have been ignored in the other tutorials.
+
+= A reference Server =
+
+MyDas also allows to implement a data source that provides the sequence as a reference for other data sources, including itself because in MyDAS a reference server it is by inheritance an annotation data source.
