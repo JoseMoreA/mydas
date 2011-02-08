@@ -18,3 +18,19 @@ Some times it is important to provide the ids of the complete segments that can 
 Often a DAS client is limited to display a number of features when in reality a segemnt can have a lot more; think for example, in a client displaying the chromosome 1 and wanted to show its genes as its annotations, there are around 4200 genes in this chromosome, a popular screen configuration have 1280x1024 pixeles, therefore it is phisically impossible to draw all the genes in the same track for this chormosome.
 The DAS capability *maxbins* allow to request a X number of the most representative features in a segment.
 The problem is that just the owner of the data source can define what 'representative' means for their data. For instance in the case of the genes, a medical related database migth want to prioritize genes connected with a disease, but a different data source can define its discriminating criterion in a very different way.
+
+As seen in previous tuturials the methods to implement in !MyDas in order to get the features of a segment are defined as:
+{{{
+	public DasAnnotatedSegment getFeatures(
+		String segmentId, Integer maxbins)
+		throws BadReferenceObjectException, DataSourceException {
+	}
+
+	public Collection<DasAnnotatedSegment> getFeatures(
+		Collection<String> featureIdCollection, Integer maxbins)
+		throws UnimplementedFeatureException, DataSourceException {
+	}
+
+}}}
+
+In both cases
