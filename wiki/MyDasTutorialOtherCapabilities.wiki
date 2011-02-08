@@ -21,16 +21,14 @@ The problem is that just the owner of the data source can define what 'represent
 
 As seen in previous tuturials the methods to implement in !MyDas in order to get the features of a segment are defined as:
 {{{
-	public DasAnnotatedSegment getFeatures(
-		String segmentId, Integer maxbins)
+	public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbins)
 		throws BadReferenceObjectException, DataSourceException {
 	}
 
-	public Collection<DasAnnotatedSegment> getFeatures(
-		Collection<String> featureIdCollection, Integer maxbins)
+	public Collection<DasAnnotatedSegment> getFeatures(Collection<String> featureIdCollection, Integer maxbins)
 		throws UnimplementedFeatureException, DataSourceException {
 	}
 
 }}}
 
-In both cases
+In both cases there is an Integerattribute called -maxbins-, this value indicates how many features the client wants to receive for the requested segment, and again is decision of the datasource how to choose the response set.
