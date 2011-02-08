@@ -13,7 +13,7 @@ In this tutorial we will explain how to create a reference data source that impl
 
 Some times it is important to provide the ids of the complete segments that can be accessed in a data source. This is specially remarkable for reference servers, in order to bring an easy way to let the user/client to know what can be found in this data source. Usually the entry points are the Uniprot ids for protein data sources and chromosomes/contigs/genes for genomic data sources.
 
-Developing an annotation data source implies to implement the methods ''getEntryPoints'', ''getEntryPointVersion'' and getTotalEntryPoints as seen here:
+Developing an annotation data source implies to implement the methods `getEntryPoints`, `getEntryPointVersion` and `getTotalEntryPoints` as seen here:
 
 {{{
 	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) 
