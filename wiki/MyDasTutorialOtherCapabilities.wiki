@@ -3,7 +3,7 @@
 
 = !MyDas Tutorial - Other Capabilities =
 
-In this tutorial we will explain how to create a reference data source that implements other capabilities included in DAS but that are optional, and because of that have been ignored in the other tutorials. This tutorial assumes that you have comleted the [MyDASTutorial3rdPart¦Advanced Tutorial] some of the methods developed there are going to be reused
+In this tutorial we will explain how to create a reference data source that implements other capabilities included in DAS but that are optional, and because of that have been ignored in the other tutorials. This tutorial assumes that you have comleted the [MyDASTutorial3rdPart Advanced Tutorial] some of the methods developed there are going to be reused here.
 
 == A reference Server ==
 
