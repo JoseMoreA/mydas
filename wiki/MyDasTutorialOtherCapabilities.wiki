@@ -9,8 +9,8 @@ In this tutorial we will explain how to create a reference data source that impl
 
 !MyDas also allows to implement a data source that provides the sequence as a reference for other data sources, including itself because in !MyDas a reference server it is by inheritance an annotation data source.
 
-Let's start by making a copy of the data source created in the [MyDASTutorial3rdPart Advanced Tutorial], call it EnsemblTestReferenceDataSource.java 
-Change the Interface to implement from RangeHandlingAnnotationDataSource to ReferenceDataSource:
+Let's start by making a copy of the data source created in the [MyDASTutorial3rdPart Advanced Tutorial], call it !EnsemblTestReferenceDataSource.java 
+Change the Interface to implement from !RangeHandlingAnnotationDataSource to !ReferenceDataSource:
 
 {{{
 public class EnsemblTestReferenceDataSource implements ReferenceDataSource
@@ -23,7 +23,7 @@ This interfase force us to implement the method `getSequence`:
 	}
 }}}
 
-To get the sequence we have to query the database, therefore we will edit the Java class that is controlling the DB connection: EnsemblTestManager.java; Create a new method called getSequence with a signature as:
+To get the sequence we have to query the database, therefore we will edit the Java class that is controlling the DB connection: !EnsemblTestManager.java; Create a new method called getSequence with a signature as:
 {{{
 public DasSequence getSequence(String segmentId)
 }}}
@@ -63,7 +63,7 @@ And then, the implementation of the method in the data source is as simple as:
 	}
 }}}
 
-Now that we have this is just a matter of registering this data source in the MyDas configuration file, as in previous examples edit the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` and add a data source. The added data source should look similar to:
+Now that we have this is just a matter of registering this data source in the !MyDas configuration file, as in previous examples edit the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` and add a data source. The added data source should look similar to:
 {{{
         <datasource uri="ensemblReferenceTest"
                     title="ensemblReferenceTest"
