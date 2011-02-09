@@ -63,6 +63,51 @@ And then, the implementation of the method in the data source is as simple as:
 	}
 }}}
 
+Now that we have this is just a matter of registering this data source in the MyDas configuration file, as in previous examples edit the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` and add a data source. The added data source should look similar to:
+{{{
+        <datasource uri="ensemblReferenceTest"
+                    title="ensemblReferenceTest"
+                    description="Reference data source from ensembl database"
+                    doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples">
+			<maintainer email="youremail@server.com" />
+
+			<version uri="ensemblReferenceTest" created="2011-02-08">
+	            <class>uk.ac.ebi.mydas.examples.EnsemblTestReferenceDatasource</class>
+				<coordinates 	uri="CS_DS94"
+								source="Gene_ID"
+								authority="Ensembl"
+								taxid="9606"
+								test_range="ENSG00000160916">Ensembl,Gene_ID,Homo sapiens</coordinates>
+				<capability	type="das1:sources"
+						query_uri="http://localhost:8080/das/examplegff" />
+				<capability	type="das1:types"
+						query_uri="http://localhost:8080/das/examplegff/types" />
+				<capability	type="das1:features"
+						query_uri="http://localhost:8080/das/examplegff/features" />
+				<capability	type="das1:feature-by-id"
+						query_uri="http://localhost:8080/das/examplegff/features" />
+				<capability	type="das1:stylesheet"
+						query_uri="http://localhost:8080/das/examplegff/stylesheet" />
+				<capability	type="das1:unknown-feature"	/>
+				<capability	type="das1:sequence"	/>
+				<capability	type="das1:maxbins"	/>
+				<capability	type="das1:entry_points"	/>
+			</version>
+
+            <dna-command-enabled>true</dna-command-enabled>
+            <features-strictly-enclosed>true</features-strictly-enclosed>
+            <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
+            <include-types-with-zero-count>true</include-types-with-zero-count>
+        </datasource>
+
+}}}
+Notice that besides `sequence` we have also include the capabilities `maxbins` and `entry_points` that will be developed further in this tutorial.
+
+Now you can get the sequence of the chromosomes:
+  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=5]
+  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=x]
+  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=unknown]
+
 == `entry points` Capability ==
 
 Some times it is important to provide the ids of the complete segments that can be accessed in a data source. This is specially remarkable for reference servers, in order to bring an easy way to let the user/client to know what can be found in this data source. Usually the entry points are the Uniprot ids for protein data sources and chromosomes/contigs/genes for genomic data sources.
