@@ -223,4 +223,81 @@ As seen in previous tuturials the methods to implement in !MyDas in order to get
 
 }}}
 
-In both cases there is an Integerattribute called -maxbins-, this value indicates how many features the client wants to receive for the requested segment, and again is decision of the datasource how to choose the response set.
+In both cases there is an Integer attribute called `maxbins`, this value indicates how many features the client wants to receive for the requested segment, and again is decision of the provider how to choose the response set.
+
+The arbitrary criterion chosen for this example is the size of the genes, to do this we will order the results of the SQL by the size wich is calculated as the difference between the start and stop coordinates in the SQL itself, so now the `getSubmodelBySegmentId` method will receive an extra parameter for maxbins and can be implemented as:
+{{{
+	public DasAnnotatedSegment getSubmodelBySegmentId(String segmentId, int start, int stop, int maxbins) throws DataSourceException, BadReferenceObjectException{
+		String sql="SELECT " +
+		" sr.name AS chr, " +
+		" gsi.stable_id AS gene_id, " +
+		" g.seq_region_start AS gene_start, " +
+		" g.seq_region_end AS gene_end, " +
+		" tsi.stable_id AS trascript_id, " +
+		" t.seq_region_start AS transcript_start, " +
+		" t.seq_region_end AS transcript_end, " +
+		" esi.stable_id AS exon_id, " +
+		" e.seq_region_start AS exon_start, " +
+		" e.seq_region_end AS exon_end, " +
+		"(g.seq_region_end-g.seq_region_start) AS size" +
+		"FROM  " +
+		" seq_region sr, " +
+		" gene_stable_id gsi, " +
+		" gene g, " +
+		" transcript t, " +
+		" transcript_stable_id tsi, " +
+		" exon_transcript et, " +
+		" exon e, " +
+		" exon_stable_id esi  " +
+		"WHERE  " +
+		" gsi.gene_id = g.gene_id and " + 
+		" g.gene_id = t.gene_id and  " +
+		" t.transcript_id = tsi.transcript_id and " + 
+		" t.transcript_id = et.transcript_id and  " +
+		" et.exon_id = e.exon_id and  " +
+		" e.exon_id = esi.exon_id and  " +
+		" g.seq_region_id = sr.seq_region_id and " +
+		" sr.coord_system_id = 2 and " +
+		" sr.name ='"+segmentId+"' ";
+		if (start!=-1 && stop!=-1)
+			sql += " and g.seq_region_start>"+start+" and g.seq_region_end<"+stop;
+		sql += " ORDER BY size";
+		Collection<DasAnnotatedSegment>segments= getSubmodelBySQL(sql,maxbins);
+		if (segments!=null && segments.size()>0)
+			return segments.iterator().next();
+		else
+			throw new BadReferenceObjectException("Unknown Chromosome", segmentId);
+	}
+}}}
+Just to keep compatibility with previous tutorial we can add a method with no `maxbins` attribute that will call the above method with a value that means that there is not maxbins value (-1) 
+{{{
+	public DasAnnotatedSegment getSubmodelBySegmentId(String segmentId, int start, int stop) throws DataSourceException, BadReferenceObjectException{
+		return getSubmodelBySegmentId(segmentId, start, stop,-1);
+	}
+}}} 
+Using this methods the results are going to be ordered, how ever we haven't filtered to use the desired number of features, in order to do that we can change the `getSubmodelBySQL` method by restricting the loop to the number of maxbins:
+{{{
+	public Collection<DasAnnotatedSegment> getSubmodelBySQL(String sql,int maxbins) throws DataSourceException{
+		Collection<DasAnnotatedSegment> segments=null;
+		try {
+			Statement s = connection.createStatement ();
+			s.executeQuery (sql);
+			ResultSet rs = s.getResultSet ();
+			while (rs.next () && maxbins!=0) {
+				maxbins--;
+				if (segments==null)
+					segments= new ArrayList<DasAnnotatedSegment>();
+				DasAnnotatedSegment segment = this.getSegment(segments,rs.getString ("chr"));
+				DasComponentFeature gene= this.getGene(rs.getString ("gene_id"),rs.getInt("gene_start"),rs.getInt("gene_end"),segment);
+				DasComponentFeature transcript= this.getTranscript(rs.getString ("trascript_id"),rs.getInt("transcript_start"),rs.getInt("transcript_end"),gene);
+				this.getExon(rs.getString ("exon_id"),rs.getInt("exon_start"),rs.getInt("exon_end"),transcript);
+			}
+			rs.close ();
+			s.close ();
+		} catch (SQLException e) {
+			throw new DataSourceException("Problems executing the sql query",e);
+		}
+		return segments;
+	}
+}}}
+We are here taking advantage of the selected value for no-maxbins which is -1 and in this loop will be negative without reaching the stopping condition (been equal to zero), however if a maxbins number is given it will be used a descending counter.
