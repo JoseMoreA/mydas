@@ -159,7 +159,14 @@ This SQL will be located in the class `EnsemblTestManager.java` in a method call
 			ResultSet rs = s.getResultSet ();
 			entryPoints = new ArrayList<DasEntryPoint>();
 			while (rs.next ()) {
-				entryPoints.add(new DasEntryPoint(rs.getString("name"), 1, rs.getInt("length"), "Chromosome", getDatabase(), DasEntryPointOrientation.NO_INTRINSIC_ORIENTATION, "Chromosome", true));
+				entryPoints.add(new DasEntryPoint(
+					rs.getString("name"), 
+					1, rs.getInt("length"), 
+					"Chromosome", 
+					getDatabase(), 
+					DasEntryPointOrientation.NO_INTRINSIC_ORIENTATION, 
+					"Chromosome", 
+					true));
 			}
 			rs.close ();
 			s.close ();
@@ -171,7 +178,14 @@ This SQL will be located in the class `EnsemblTestManager.java` in a method call
 }}}
 instances of the entry points are being created at the same moment to added in the list in the line:
 {{{
-entryPoints.add(new DasEntryPoint(rs.getString("name"), 1, rs.getInt("length"), "Chromosome", getDatabase(), DasEntryPointOrientation.POSITIVE_ORIENTATION, "is a chromosome", true));
+entryPoints.add(new DasEntryPoint(
+	rs.getString("name"), 
+	1, rs.getInt("length"), 
+	"Chromosome", 
+	getDatabase(), 
+	DasEntryPointOrientation.NO_INTRINSIC_ORIENTATION, 
+	"Chromosome", 
+	true));
 }}}
 We are calling the constructor of the DasEntryPoint providing the next values:
   * segmentId -> `rs.getString("name")` : value obtained from the DB for the name of the chromosome.
