@@ -72,7 +72,7 @@ Now that we have this is just a matter of registering this data source in the !M
 			<maintainer email="youremail@server.com" />
 
 			<version uri="ensemblReferenceTest" created="2011-02-08">
-	            <class>uk.ac.ebi.mydas.examples.EnsemblTestReferenceDatasource</class>
+	            <class>uk.ac.ebi.mydas.examples.EnsemblTestReferenceDataSource</class>
 				<coordinates 	uri="CS_DS94"
 								source="Gene_ID"
 								authority="Ensembl"
@@ -95,7 +95,6 @@ Now that we have this is just a matter of registering this data source in the !M
 			</version>
 
             <dna-command-enabled>true</dna-command-enabled>
-            <features-strictly-enclosed>true</features-strictly-enclosed>
             <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
             <include-types-with-zero-count>true</include-types-with-zero-count>
         </datasource>
@@ -138,6 +137,56 @@ And in the file `EnsemblTestReferenceDatasource.java` the `getEntryPointVersion`
 {{{
 	public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
 		return ensembl.getDatabase();
+	}
+}}}
+
+The entry points of our data source are the chromosomes available. Besides the regular chromosomes(1-22 + X + Y) Ensembl database includes other structures of this level, for instance the mitochondrial chromosome. To get this list we have to query the `seq_region` in its chromosomal scope which is the coordinate system 2. The SQL is:
+{{{
+SELECT * FROM seq_region WHERE seq_region.coord_system_id =2;
+}}}
+This SQL will be located in the class `EnsemblTestManager.java` in a method called `getEntryPoints`. We will create a private attribute to store in memory the list of entry points, in this way the query will be executed just once, and the next time an entry point request is received can be obtained from memory. The code to add is:
+{{{
+	private Collection<DasEntryPoint> entryPoints=null;
+
+	public Collection<DasEntryPoint> getEntryPoints() throws DataSourceException{
+		if (entryPoints!=null)
+			return entryPoints;
+		String sql="";
+		sql="SELECT * FROM seq_region WHERE seq_region.coord_system_id =2;";
+		try {
+			Statement s = connection.createStatement ();
+			s.executeQuery (sql);
+			ResultSet rs = s.getResultSet ();
+			entryPoints = new ArrayList<DasEntryPoint>();
+			while (rs.next ()) {
+				entryPoints.add(new DasEntryPoint(rs.getString("name"), 1, rs.getInt("length"), "Chromosome", getDatabase(), DasEntryPointOrientation.NO_INTRINSIC_ORIENTATION, "Chromosome", true));
+			}
+			rs.close ();
+			s.close ();
+		} catch (SQLException e) {
+			throw new DataSourceException("Problems executing the sql query",e);
+		}
+		return entryPoints;
+	}
+}}}
+instances of the entry points are being created at the same moment to added in the list in the line:
+{{{
+entryPoints.add(new DasEntryPoint(rs.getString("name"), 1, rs.getInt("length"), "Chromosome", getDatabase(), DasEntryPointOrientation.POSITIVE_ORIENTATION, "is a chromosome", true));
+}}}
+We are calling the constructor of the DasEntryPoint providing the next values:
+  * segmentId -> rs.getString("name") : value obtained from the DB for the name of the chromosome.
+  * startCoordinate -> 1 : we assume all the chromosomes starts in the position 1. It might be a false assumption in the case of the clone chromosomes or cases like that.
+  * stopCoordinate -> rs.getInt("length") : given the previous assumption the stop coordinate is equivalent to the length of the chromosome.
+  * type -> "Chromosome" : We are not specifying the types of chromosomes that we are returning
+  * version -> getDatabase() : Re-using the method to get the database that we are using which implies the version of Ensemble release that we are using.
+  * orientation -> DasEntryPointOrientation.POSITIVE_ORIENTATION : just to express that at chromosomal level the sequence is always given in the positive direction.
+  * description -> "is a chromosome" : free description of the entry point, could be more elaborated and include the id and its coordinates.
+  * hasSubparts -> true : just to recall the fact that when we define this datasource we define the contigs as parts of the chromosome
+
+The last method we have to implement is getTotalEntryPoints, which is specially important in data sources with many entry points because !MyDas uses this method for validation of the range for the pagination of entry points. An easy way to implement this in our data source is:
+{{{
+	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
+		return ensembl.getEntryPoints().size();
 	}
 }}}
 
