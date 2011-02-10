@@ -120,9 +120,24 @@ Developing an annotation data source implies to implement the methods `getEntryP
 	}
 	public String getEntryPointVersion() 
 		throws UnimplementedFeatureException, DataSourceException {
-        }
+	}
 	public int getTotalEntryPoints() 
 		throws UnimplementedFeatureException, DataSourceException {
+	}
+}}}
+
+In the previous tutorial we have just throw the corresponding exception to inform that this capability have not been implemented. Here we will see that this implementation can be very simple. To start we can use the version of the database we are using as the version for the entry points, in other cases it may be use the date of publication, etc. so, in the `EnsemblTestManager.java` file we should put the database as a private String attribute and provide a public getter method for it:
+{{{
+	private String database = "homo_sapiens_core_56_37a";
+
+	public String getDatabase(){
+		return database;
+	}
+}}}
+And in the file `EnsemblTestReferenceDatasource.java` the `getEntryPointVersion` method should be overwritten as:
+{{{
+	public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
+		return ensembl.getDatabase();
 	}
 }}}
 
