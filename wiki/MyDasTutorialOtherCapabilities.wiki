@@ -141,6 +141,7 @@ And in the file `EnsemblTestReferenceDatasource.java` the `getEntryPointVersion`
 	}
 }}}
 
+
 == `maxbins` Capability ==
 
 Often a DAS client is limited to display a number of features when in reality a segemnt can have a lot more; think for example, in a client displaying the chromosome 1 and wanted to show its genes as its annotations, there are around 4200 genes in this chromosome, a popular screen configuration have 1280x1024 pixeles, therefore it is phisically impossible to draw all the genes in the same track for this chormosome.
