@@ -283,12 +283,17 @@ Using this methods the results are going to be ordered, how ever we haven't filt
 			Statement s = connection.createStatement ();
 			s.executeQuery (sql);
 			ResultSet rs = s.getResultSet ();
+			DasComponentFeature previousGene=null;
 			while (rs.next () && maxbins!=0) {
-				maxbins--;
 				if (segments==null)
 					segments= new ArrayList<DasAnnotatedSegment>();
 				DasAnnotatedSegment segment = this.getSegment(segments,rs.getString ("chr"));
 				DasComponentFeature gene= this.getGene(rs.getString ("gene_id"),rs.getInt("gene_start"),rs.getInt("gene_end"),segment);
+				if (previousGene!=gene){
+					maxbins--;
+					previousGene = gene;
+				}
+
 				DasComponentFeature transcript= this.getTranscript(rs.getString ("trascript_id"),rs.getInt("transcript_start"),rs.getInt("transcript_end"),gene);
 				this.getExon(rs.getString ("exon_id"),rs.getInt("exon_start"),rs.getInt("exon_end"),transcript);
 			}
