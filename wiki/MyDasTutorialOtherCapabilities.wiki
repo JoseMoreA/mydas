@@ -174,14 +174,14 @@ instances of the entry points are being created at the same moment to added in t
 entryPoints.add(new DasEntryPoint(rs.getString("name"), 1, rs.getInt("length"), "Chromosome", getDatabase(), DasEntryPointOrientation.POSITIVE_ORIENTATION, "is a chromosome", true));
 }}}
 We are calling the constructor of the DasEntryPoint providing the next values:
-  * segmentId -> rs.getString("name") : value obtained from the DB for the name of the chromosome.
+  * segmentId -> `rs.getString("name")` : value obtained from the DB for the name of the chromosome.
   * startCoordinate -> 1 : we assume all the chromosomes starts in the position 1. It might be a false assumption in the case of the clone chromosomes or cases like that.
-  * stopCoordinate -> rs.getInt("length") : given the previous assumption the stop coordinate is equivalent to the length of the chromosome.
-  * type -> "Chromosome" : We are not specifying the types of chromosomes that we are returning
-  * version -> getDatabase() : Re-using the method to get the database that we are using which implies the version of Ensemble release that we are using.
-  * orientation -> DasEntryPointOrientation.POSITIVE_ORIENTATION : just to express that at chromosomal level the sequence is always given in the positive direction.
-  * description -> "is a chromosome" : free description of the entry point, could be more elaborated and include the id and its coordinates.
-  * hasSubparts -> true : just to recall the fact that when we define this datasource we define the contigs as parts of the chromosome
+  * stopCoordinate -> `rs.getInt("length")` : given the previous assumption the stop coordinate is equivalent to the length of the chromosome.
+  * type -> `"Chromosome"` : We are not specifying the types of chromosomes that we are returning
+  * version -> `getDatabase()` : Re-using the method to get the database that we are using which implies the version of Ensemble release that we are using.
+  * orientation -> `DasEntryPointOrientation.POSITIVE_ORIENTATION` : just to express that at chromosomal level the sequence is always given in the positive direction.
+  * description -> `"is a chromosome"` : free description of the entry point, could be more elaborated and include the id and its coordinates.
+  * hasSubparts -> `true` : just to recall the fact that when we define this data source we define the contigs as parts of the chromosome.
 
 The last method we have to implement is getTotalEntryPoints, which is specially important in data sources with many entry points because !MyDas uses this method for validation of the range for the pagination of entry points. An easy way to implement this in our data source is:
 {{{
