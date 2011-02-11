@@ -1,0 +1,10 @@
+#summary Implementing a reference data source
+
+= !MyDas Tutorial - Reference Data Sources =
+
+In this tutorial we will explain how to create a reference data source.This tutorial assumes that you are familiarized with the basic concepts of implementing data sources in !MyDas. It will reuse the same example as in the [MyDASTutorial Basic Tutorial].
+
+
+== A Reference Server ==
+
+!MyDas also allows to implement a data source that provides the sequence as a reference for other data sources, including itself because in !MyDas a reference server it is by inheritance an annotation data source.
