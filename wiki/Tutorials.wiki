@@ -20,3 +20,6 @@ To create a !MyDas server and therefore to follow the tutorials, you should ensu
   * [MyDASTutorial Beginers]: Getting !MyDas to work and checking the example data source
   * [MyDASTutorial2ndPart Intermediate]: Developing your own Data Source
   * [MyDASTutorial3rdPart Advanced]: Developing a Data Source from a database
+
+Two new tutorials have been created to facilitate the implementation of functionalites that were not explored in the previous tutorials:
+  * [MyDasTutorialReference Reference Data Source]
