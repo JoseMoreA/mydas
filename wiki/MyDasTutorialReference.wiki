@@ -161,3 +161,9 @@ Taking advantage of having process the fasta file we can also provide the entry 
 		return "1.0"; 
 	}
 }}}
+
+Now you can check that everything is working by running the jetty server again, and checking the next URLs:
+  * [http://localhost:8080/das/referencegff/sequence?segment=AF107208.1]
+  * [http://localhost:8080/das/referencegff/sequence?segment=U54701.1:10,20]
+  * [http://localhost:8080/das/referencegff/entry_points]
+  * [http://localhost:8080/das/referencegff/entry_points?rows=2-5]
