@@ -268,6 +268,6 @@ Now is just a matter of passing the maxbins parameter in the data source, so, op
 }}}
 
 So after restarting the server you will be able to query using maxbins like:
-  * [http://localhost:8080/das/ensemblReferenceTest/features?segment=5;maxbins=2]
-  * [http://localhost:8080/das/ensemblReferenceTest/features?segment=5;maxbins=5]
-  * [http://localhost:8080/das/ensemblReferenceTest/features?segment=5;maxbins=10]
+  * [http://localhost:8080/das/ensemblTest/features?segment=5;maxbins=2]
+  * [http://localhost:8080/das/ensemblTest/features?segment=5;maxbins=5]
+  * [http://localhost:8080/das/ensemblTest/features?segment=5;maxbins=10]
