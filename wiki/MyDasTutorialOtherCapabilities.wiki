@@ -3,113 +3,43 @@
 
 = !MyDas Tutorial - Other Capabilities =
 
-In this tutorial we will explain how to create a reference data source that implements other capabilities included in DAS but that are optional, and because of that have been ignored in the other tutorials. This tutorial assumes that you have comleted the [MyDASTutorial3rdPart Advanced Tutorial] some of the methods developed there are going to be reused here.
+In this tutorial we will explain how to implements other capabilities included in DAS but that are optional, and because of that have been ignored in the other tutorials. This tutorial assumes that you have completed the [MyDASTutorial3rdPart Advanced Tutorial] some of the methods developed there are going to be reused here.
 
-== A reference Server ==
-
-!MyDas also allows to implement a data source that provides the sequence as a reference for other data sources, including itself because in !MyDas a reference server it is by inheritance an annotation data source.
-
-Let's start by making a copy of the data source created in the [MyDASTutorial3rdPart Advanced Tutorial], call it !EnsemblTestReferenceDataSource.java 
-Change the Interface to implement from !RangeHandlingAnnotationDataSource to !ReferenceDataSource:
-
+To start lets edit the configuration file to indicate that the ensemblTest data source implements `entry_points` and `maxbins` capabilities:
 {{{
-public class EnsemblTestReferenceDataSource implements ReferenceDataSource
-}}}
+        <datasource uri="ensemblTest"
+                    title="Ensembl Test"
+                    description="Data source test using the ensmbl database"
+                    doc_href="http://mydas.googlecode.com"
+                    mapmaster="http://mapmaster.esemblTest">
+			<maintainer email="gsalazar@ebi.ac.uk" />
 
-This interfase force us to implement the method `getSequence`:
-{{{
-	public DasSequence getSequence(String segmentId) throws BadReferenceObjectException, DataSourceException {
-		return null;
-	}
-}}}
-
-To get the sequence we have to query the database, therefore we will edit the Java class that is controlling the DB connection: !EnsemblTestManager.java; Create a new method called getSequence with a signature as:
-{{{
-public DasSequence getSequence(String segmentId)
-}}}
-The sequence information in the Ensembl database is in the table `dna` but it requires the `seq_region_id` which in tha case of chromosomes can be found in the table seq_region with a query like `SELECT * FROM seq_region WHERE coord_system_id = 2;`; from there we can create a combined SQL like:
-{{{
-SELECT * FROM chromosome WHERE name=5;
-}}}
-And then our method will be something like:
-{{{
-	public DasSequence getSequence(String segmentId) throws DataSourceException, BadReferenceObjectException {
-		DasSequence seq=null;
-		String sql="";
-		sql="SELECT * FROM chromosome WHERE name="+segmentId;
-		try {
-			Statement s = connection.createStatement ();
-			s.executeQuery (sql);
-			ResultSet rs = s.getResultSet ();
-			if (rs.next ()) {
-				seq= new DasSequence(segmentId,rs.getString("SEQUENCE"),1,"homo_sapiens_core_56_37a", "Chromosome "+segmentId);
-			}else{
-				throw new BadReferenceObjectException("The segment ["+segmentId+"] was not found in this reference server", segmentId);
-			}
-			rs.close ();
-			s.close ();
-		} catch (SQLException e) {
-			throw new DataSourceException("Problems executing the sql query",e);
-		}
-		return seq;
-	}
-
-}}}
-
-And then, the implementation of the method in the data source is as simple as:
-{{{
-	public DasSequence getSequence(String segmentId) throws BadReferenceObjectException, DataSourceException {
-		return ensembl.getSequence(segmentId);
-	}
-}}}
-
-Now that we have this is just a matter of registering this data source in the !MyDas configuration file, as in previous examples edit the file `[MyDasTemplate]/src/main/webapp/MydasServerConfig.xml` and add a data source. The added data source should look similar to:
-{{{
-        <datasource uri="ensemblReferenceTest"
-                    title="ensemblReferenceTest"
-                    description="Reference data source from ensembl database"
-                    doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/java/uk/ac/ebi/mydas/examples">
-			<maintainer email="youremail@server.com" />
-
-			<version uri="ensemblReferenceTest" created="2011-02-08">
-	            <class>uk.ac.ebi.mydas.examples.EnsemblTestReferenceDataSource</class>
-				<coordinates 	uri="CS_DS94"
+			<version uri="ensemblTest" created="2010-04-01">
+	            <class>uk.ac.ebi.mydas.examples.EnsemblTestDataSource</class>
+				<coordinates 	uri="http://www.dasregistry.org/dasregistry/coordsys/CS_DS94"
 								source="Gene_ID"
 								authority="Ensembl"
 								taxid="9606"
 								test_range="ENSG00000160916">Ensembl,Gene_ID,Homo sapiens</coordinates>
-				<capability	type="das1:sources"
-						query_uri="http://localhost:8080/das/examplegff" />
-				<capability	type="das1:types"
-						query_uri="http://localhost:8080/das/examplegff/types" />
-				<capability	type="das1:features"
-						query_uri="http://localhost:8080/das/examplegff/features" />
-				<capability	type="das1:feature-by-id"
-						query_uri="http://localhost:8080/das/examplegff/features" />
-				<capability	type="das1:stylesheet"
-						query_uri="http://localhost:8080/das/examplegff/stylesheet" />
-				<capability	type="das1:unknown-feature"	/>
-				<capability	type="das1:sequence"	/>
-				<capability	type="das1:maxbins"	/>
-				<capability	type="das1:entry_points"	/>
+				<capability type="das1:sources"		 	query_uri="http://localhost:8080/das/ensemblTest" />
+				<capability type="das1:types"			query_uri="http://localhost:8080/das/ensemblTest/types" />
+				<capability type="das1:features"		query_uri="http://localhost:8080/das/ensemblTest/features" />
+				<capability type="das1:feature-by-id"	query_uri="http://localhost:8080/das/ensemblTest/features" />
+				<capability type="das1:stylesheet"		query_uri="http://localhost:8080/das/ensemblTest/stylesheet" />
+				<capability type="das1:unknown-feature"	/>
+				<capability     type="das1:maxbins"     />
+				<capability     type="das1:entry_points"        />
 			</version>
 
             <dna-command-enabled>true</dna-command-enabled>
             <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
             <include-types-with-zero-count>true</include-types-with-zero-count>
         </datasource>
-
 }}}
-Notice that besides `sequence` we have also include the capabilities `maxbins` and `entry_points` that will be developed further in this tutorial.
-
-Now you can get the sequence of the chromosomes:
-  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=5]
-  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=x]
-  * [http://localhost:8080/das/ensemblReferenceTest/sequence?segment=unknown]
 
 == `entry points` Capability ==
 
-Some times it is important to provide the ids of the complete segments that can be accessed in a data source. This is specially remarkable for reference servers, in order to bring an easy way to let the user/client to know what can be found in this data source. Usually the entry points are the Uniprot ids for protein data sources and chromosomes/contigs/genes for genomic data sources.
+Some times it is important to provide the ids of the segments that a data source hava annotations about. This is specially remarkable for reference servers, in order to bring an easy way to let the user/client to know what can be found in this data source. Usually the entry points are the Uniprot ids for protein data sources and chromosomes/contigs/genes for genomic data sources.
 
 Developing an annotation data source implies to implement the methods `getEntryPoints`, `getEntryPointVersion` and `getTotalEntryPoints` as seen here:
 
@@ -133,7 +63,7 @@ In the previous tutorial we have just throw the corresponding exception to infor
 		return database;
 	}
 }}}
-And in the file `EnsemblTestReferenceDatasource.java` the `getEntryPointVersion` method should be overwritten as:
+And in the file `EnsemblTestDataSource.java` the `getEntryPointVersion` method should be overwritten as:
 {{{
 	public String getEntryPointVersion() throws UnimplementedFeatureException, DataSourceException {
 		return ensembl.getDatabase();
@@ -149,8 +79,11 @@ This SQL will be located in the class `EnsemblTestManager.java` in a method call
 	private Collection<DasEntryPoint> entryPoints=null;
 
 	public Collection<DasEntryPoint> getEntryPoints() throws DataSourceException{
-		if (entryPoints!=null)
+		if (entryPoints!=null){
+			if ((start != null) && (stop != null)) 
+				return ((ArrayList<DasEntryPoint>)entryPoints).subList(start, stop);
 			return entryPoints;
+		}
 		String sql="";
 		sql="SELECT * FROM seq_region WHERE seq_region.coord_system_id =2;";
 		try {
@@ -173,10 +106,12 @@ This SQL will be located in the class `EnsemblTestManager.java` in a method call
 		} catch (SQLException e) {
 			throw new DataSourceException("Problems executing the sql query",e);
 		}
+		if ((start != null) && (stop != null)) 
+			return ((ArrayList<DasEntryPoint>)entryPoints).subList(start, stop);
 		return entryPoints;
 	}
 }}}
-instances of the entry points are being created at the same moment to added in the list in the line:
+Instances of the entry points are being created at the same moment to added in the list in the line:
 {{{
 entryPoints.add(new DasEntryPoint(
 	rs.getString("name"), 
@@ -197,17 +132,25 @@ We are calling the constructor of the DasEntryPoint providing the next values:
   * description -> `"is a chromosome"` : free description of the entry point, could be more elaborated and include the id and its coordinates.
   * hasSubparts -> `true` : just to recall the fact that when we define this data source we define the contigs as parts of the chromosome.
 
+And then, in the data source we just have to call this method in the correspondent method:
+{{{
+	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) throws UnimplementedFeatureException, DataSourceException {
+		return ensembl.getEntryPoints(start,stop);
+	}
+}}}
 The last method we have to implement is getTotalEntryPoints, which is specially important in data sources with many entry points because !MyDas uses this method for validation of the range for the pagination of entry points. An easy way to implement this in our data source is:
 {{{
 	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
-		return ensembl.getEntryPoints().size();
+		return ensembl.getEntryPoints(null,null).size();
 	}
 }}}
-
+Now we can restart the server and check the capability working:
+  * [http://localhost:8080/das/ensemblTest/entry_points]
+  * [http://localhost:8080/das/ensemblTest/entry_points?rows=10-15]
 
 == `maxbins` Capability ==
 
-Often a DAS client is limited to display a number of features when in reality a segemnt can have a lot more; think for example, in a client displaying the chromosome 1 and wanted to show its genes as its annotations, there are around 4200 genes in this chromosome, a popular screen configuration have 1280x1024 pixeles, therefore it is phisically impossible to draw all the genes in the same track for this chormosome.
+Often a DAS client is limited to display a number of features when in reality a segemnt can have a lot more; think for example, in a client displaying the chromosome 1 and wanted to show its genes as its annotations, there are around 4200 genes in this chromosome, a popular screen configuration have 1280x1024 pixeles, therefore it is phisically impossible to draw all the genes in the same track for this chromosome.
 The DAS capability *maxbins* allow to request a X number of the most representative features in a segment.
 The problem is that just the owner of the data source can define what 'representative' means for their data. For instance in the case of the genes, a medical related database migth want to prioritize genes connected with a disease, but a different data source can define its discriminating criterion in a very different way.
 
