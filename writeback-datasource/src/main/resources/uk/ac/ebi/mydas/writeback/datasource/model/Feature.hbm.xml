@@ -56,7 +56,7 @@
 		<map name="links" table="LINKS">
 			<key column="id" />
 			<map-key column="URI" type="string" />
-			<element column="label" type="string" />
+			<element column="label" type="text" />
 		</map>
 		<set name="parents" table="PARENTS" lazy="true">
 			<key column="FEATURE_ID" />
