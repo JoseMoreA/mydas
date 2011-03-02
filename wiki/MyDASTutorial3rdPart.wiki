@@ -590,7 +590,8 @@ For this we can make a copy of the configuration created in [MyDASTutorial2ndPar
         <datasource uri="examplepipes"
                     title="separatedByPipes"
                     description="Data source testing a new parser"
-                    doc_href="http://mydas.googlecode.com">
+                    doc_href="http://mydas.googlecode.com"
+                    mapmaster="http://mymapmaster.com">
 			<maintainer email="gsalazar@ebi.ac.uk" />
 
 			<version uri="examplepipes" created="2010-03-19">
@@ -611,13 +612,13 @@ For this we can make a copy of the configuration created in [MyDASTutorial2ndPar
 				<capability	type="das1:stylesheet"
 						query_uri="http://localhost:8080/das/examplegff/stylesheet" />
 				<capability	type="das1:unknown-feature"	/>
+			<property key="pipes_file" value="testGenes.txt" />
 			</version>
 
             <dna-command-enabled>true</dna-command-enabled>
             <features-strictly-enclosed>true</features-strictly-enclosed>
             <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
             <include-types-with-zero-count>true</include-types-with-zero-count>
-			<property key="pipes_file" value="testGenes.txt" />
         </datasource>
 }}}
 
