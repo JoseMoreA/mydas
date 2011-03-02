@@ -517,7 +517,8 @@ Now lets go top down implementing all the methods of this Data Source.
         <datasource uri="examplegff"
                     title="fickett-tss"
                     description="GFF2 Example Annotation Data Source"
-                    doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/resources/fickett-tss.gff">
+                    doc_href="http://mydas.googlecode.com/svn/trunk/mydas/MyDasTemplate/src/main/resources/fickett-tss.gff"
+                    mapmaster="http://mymapmaster.com">
 			<maintainer email="youremail@server.com" />
 
 			<version uri="examplegff" created="2010-03-19">
@@ -538,13 +539,13 @@ Now lets go top down implementing all the methods of this Data Source.
 				<capability	type="das1:stylesheet"
 						query_uri="http://localhost:8080/das/examplegff/stylesheet" />
 				<capability	type="das1:unknown-feature"	/>
+	    <property key="gff_file" value="CHROMOSOME_MtDNA.gff" />
 			</version>
 
             <dna-command-enabled>true</dna-command-enabled>
             <features-strictly-enclosed>true</features-strictly-enclosed>
             <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
             <include-types-with-zero-count>true</include-types-with-zero-count>
-	    <property key="gff_file" value="CHROMOSOME_MtDNA.gff" />
         </datasource>
 
 }}}
