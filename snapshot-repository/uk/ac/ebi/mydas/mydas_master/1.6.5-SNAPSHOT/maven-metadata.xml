@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>uk.ac.ebi.mydas</groupId>
+  <artifactId>mydas_master</artifactId>
+  <version>1.6.5-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20110318.165335</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20110318165335</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.6.5-20110318.165335-1</value>
+        <updated>20110318165335</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
