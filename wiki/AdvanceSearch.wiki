@@ -1,0 +1,64 @@
+#summary How to use the Advance Search extension in MyDas
+
+= Advance Search =
+one of the features of the  [http://www.biodas.org/wiki/DAS1.6E#DAS_search DAS1.6E] is the possibility of executing elaborated searches through a data source. the specification includes the query language and the responses follow the same structure that the feature command responses.
+
+
+= Indexing =
+MyDas implements the advance search by using [http://lucene.apache.org/java/docs/index.html LUCENE], this search engine works by creating an indexed file to allow rapid acces to the information. MyDas allows the creation of the index as another DAS command, although some configuration steps are necessary and the indexing process can take several hours depending of how many features the data source contains.
+
+The first step is to create a keyword in order to avoid undesired runs of the indexing process. To do this open the configuration file MyDasServerConfig.xml and edit/create a new global property with key equal to `keyphrase` and value is your chosen keyword, for instance `confirmation`:
+{{{
+
+<mydasserver xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://mydas.googlecode.com/svn/trunk/mydas/server_core/src/main/resources/mydasserverconfig.xsd">
+    <!-- The global element holds details of configuration common to the entire server. -->
+    <global>
+        <property key="keyphrase" value="confirmation"/>
+
+...
+
+}}}
+
+Now as you might have more than one datasource in the same MyDas server, you now have to indicate in the same file which data source will support the Advance Search capability, so i order to do this, you just have to add the next capability element to the selected data source:
+{{{
+<capability type="das1:advanced-search" />
+}}}
+So, for instance the data source configuration of the other capabilities [MyDasTutorialOtherCapabilities Tutorial] will look like that one the new capability is added:
+{{{
+        <datasource uri="ensemblTest"
+                    title="Ensembl Test"
+                    description="Data source test using the ensmbl database"
+                    doc_href="http://mydas.googlecode.com"
+                    mapmaster="http://mapmaster.esemblTest">
+			<maintainer email="gsalazar@ebi.ac.uk" />
+
+			<version uri="ensemblTest" created="2010-04-01">
+	            <class>uk.ac.ebi.mydas.examples.EnsemblTestDataSource</class>
+				<coordinates 	uri="http://www.dasregistry.org/dasregistry/coordsys/CS_DS94"
+								source="Gene_ID"
+								authority="Ensembl"
+								taxid="9606"
+								test_range="ENSG00000160916">Ensembl,Gene_ID,Homo sapiens</coordinates>
+				<capability type="das1:sources"		 	query_uri="http://localhost:8080/das/ensemblTest" />
+				<capability type="das1:types"			query_uri="http://localhost:8080/das/ensemblTest/types" />
+				<capability type="das1:features"		query_uri="http://localhost:8080/das/ensemblTest/features" />
+				<capability type="das1:feature-by-id"	query_uri="http://localhost:8080/das/ensemblTest/features" />
+				<capability type="das1:stylesheet"		query_uri="http://localhost:8080/das/ensemblTest/stylesheet" />
+				<capability type="das1:unknown-feature"	/>
+				<capability     type="das1:maxbins"     />
+				<capability     type="das1:entry_points"        />
+				<capability type="das1:advanced-search" />
+			</version>
+
+            <dna-command-enabled>true</dna-command-enabled>
+            <use-feature-id-for-feature-label>true</use-feature-id-for-feature-label>
+            <include-types-with-zero-count>true</include-types-with-zero-count>
+        </datasource>
+}}}
+To start the indexing process the command `indexer` has to be invoked as an URL including the defined keyphrase, so for example for a localhost server, the URL will look like:
+{{{
+http://localhost:8080/das-srv/das/indexing?keyphrase=confirmation
+}}}
+
+*Warning*: This process  can take from minutes to several hours depending of how much information your data source has.
