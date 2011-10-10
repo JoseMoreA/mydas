@@ -20,7 +20,7 @@ The first step is to create a keyword in order to avoid undesired runs of the in
 
 }}}
 
-Now as you might have more than one datasource in the same MyDas server, you now have to indicate in the same file which data source will support the Advance Search capability, so i order to do this, you just have to add the next capability element to the selected data source:
+Now as you might have more than one datasource in the same !MyDas server, you now have to indicate in the same file which data source will support the Advance Search capability, so i order to do this, you just have to add the next capability element to the selected data source:
 {{{
 <capability type="das1:advanced-search" />
 }}}
