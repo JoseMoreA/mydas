@@ -1,7 +1,7 @@
 #summary How to use the Advance Search extension in MyDas
 
 = Advance Search =
-one of the features of the  [http://www.biodas.org/wiki/DAS1.6E#DAS_search DAS1.6E] is the possibility of executing elaborated searches through a data source. the specification includes the query language and the responses follow the same structure that the feature command responses.
+one of the features of the  [http://www.biodas.org/wiki/DAS1.6E#DAS_search DAS1.6E] is the possibility of executing elaborated searches through a data source. The specification includes the query language and the responses. The responses follow the same structure as the standard DAS feature command responses.
 
 
 = Indexing =
