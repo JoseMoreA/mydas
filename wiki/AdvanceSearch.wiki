@@ -58,7 +58,7 @@ So, for instance the data source configuration of the other capabilities [MyDasT
 }}}
 To start the indexing process the command `indexer` has to be invoked as an URL including the defined keyphrase, so for example for a localhost server, the URL might look like:
 {{{
-http://localhost:8080/das/indexing?keyphrase=confirmation
+http://localhost:8080/das/indexer?keyphrase=confirmation
 }}}
 
 *Warning*: This process  can take from minutes to several hours depending of how much information your data source has.
