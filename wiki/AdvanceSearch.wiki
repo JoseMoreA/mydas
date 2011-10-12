@@ -7,7 +7,8 @@ one of the features of the  [http://www.biodas.org/wiki/DAS1.6E#DAS_search DAS1.
 = Indexing =
 !MyDas implements the advance search by using [http://lucene.apache.org/java/docs/index.html LUCENE], this search engine works by creating an indexed file to allow rapid acces to the information. !MyDas allows the creation of the index as another DAS command, although some configuration steps are necessary and the indexing process can take several hours depending of how many features the data source contains.
 
-The first step is to create a password/keyphrase in order to avoid undesired runs of the indexing process. To do this open the configuration file !MyDasServerConfig.xml and edit/create a new global property with key equal to `keyphrase` and value is your chosen keyword, for instance `confirmation`:
+The first step is to create a password/keyphrase in order to avoid undesired runs of the indexing process. To do this open the configuration file !MyDasServerConfig.xml and edit/create a new global property with key equal to `keyphrase` and value is your chosen keyword, for instance `confirmation`.
+The path where the index is going to be created has to be indicated in the same way, where the key is now `indexerpath` and value is a writeble directory in your system.
 {{{
 
 <mydasserver xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -15,6 +16,7 @@ The first step is to create a password/keyphrase in order to avoid undesired run
     <!-- The global element holds details of configuration common to the entire server. -->
     <global>
         <property key="keyphrase" value="confirmation"/>
+        <property key="indexerpath" value="/tmp"/>
 
 ...
 
