@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>uk.ac.ebi.mydas</groupId>
+  <artifactId>mydas</artifactId>
+  <version>1.6.9-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20111104111941</lastUpdated>
+  </versioning>
+</metadata>
