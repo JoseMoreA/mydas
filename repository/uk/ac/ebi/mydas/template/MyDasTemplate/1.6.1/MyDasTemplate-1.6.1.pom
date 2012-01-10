@@ -29,7 +29,7 @@
         <dependency>
             <groupId>uk.ac.ebi.mydas</groupId>
             <artifactId>mydas</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.5</version>
         </dependency>
 
         <dependency>
@@ -108,4 +108,20 @@
         </plugins>
         <finalName>MyDasTemplate</finalName>
     </build>
+    <distributionManagement>
+  <!-- use the following if you're not using a snapshot version. -->
+  <repository>
+    <id>repoMydasTemplate</id>
+    <name>Repository Name</name>
+    <url>https://mydas.googlecode.com/svn/repository</url>
+    
+  </repository>
+  <!-- use the following if you ARE using a snapshot version. -->
+<!--   <snapshotRepository> -->
+<!--     <id>repo</id> -->
+<!--     <name>Repository Name</name> -->
+<!--     <url>scp://host/path/to/repo</url> -->
+<!--   </snapshotRepository> -->
+</distributionManagement>
+    
 </project>
