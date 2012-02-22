@@ -511,13 +511,18 @@ Now lets go top down implementing all the methods of this Data Source.
 
 }}}
 
-** *rows methods*: The rows capability is also not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:{{{
+** *rows methods*: The rows capability is also not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:
+
+{{{
+
 	public Collection<DasAnnotatedSegment> getFeatures(
 			Collection<String> featureIdCollection, Integer maxbins, Range rows)
 			throws UnimplementedFeatureException, DataSourceException {
 		throw new UnimplementedFeatureException("No implemented");
 	}
+
 }}}
+
 ==== Configure MyDAS with the new Data Source ====
 
   * Get the file. In this example we will use the file located at [http://mydas.googlecode.com/files/testGenes.txt]. Download it and saved in the folder `[MyDasTemplate]/src/main/webapp/`
