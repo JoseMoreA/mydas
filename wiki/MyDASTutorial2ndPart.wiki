@@ -64,7 +64,7 @@ Maybe an intermediate approach with a preprocessing stage, and subsequents speci
 
 The approach to follow here will be parsing the file and keeping a model in memory. It is quite similar to the one used for the gff example, so you might one to have a look on the previous tutorial[MyDASTutorial (1st Tutorial)] before to start coding.
 
-So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments an annotations.
+So, lets start coding a parser for this file. The goal of the parser is to get the info loaded in memory using the model of MyDAS to represent segments and annotations.
 
 
 ==== Implement a parser of the file ====
