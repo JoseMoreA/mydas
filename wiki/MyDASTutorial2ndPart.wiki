@@ -473,10 +473,12 @@ Now lets go top down implementing all the methods of this Data Source.
 	public Integer getTotalCountForType(DasType type)
 			throws DataSourceException {
 		int count=0;
-		for (DasAnnotatedSegment segment:segments)
-			for(DasFeature feature:segment.getFeatures())
+		for (DasAnnotatedSegment segment:segments){
+			for(DasFeature feature:segment.getFeatures()){
 				if(type.getId().equals(feature.getType().getId()))
 					count++;
+}
+}
 		return count;
 	}
 }}}
