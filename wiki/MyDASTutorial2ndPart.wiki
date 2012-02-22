@@ -496,6 +496,7 @@ Now lets go top down implementing all the methods of this Data Source.
 }}}
  ** *Entry point methods*: The entry points capability is not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:
 {{{
+
 	public Collection<DasEntryPoint> getEntryPoints(Integer start, Integer stop) throws UnimplementedFeatureException, DataSourceException {
 		throw new UnimplementedFeatureException("No implemented");
 	}
@@ -507,6 +508,7 @@ Now lets go top down implementing all the methods of this Data Source.
 	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
 		throw new UnimplementedFeatureException("No implemented");
 	}
+
 }}}
 
 ** *rows methods*: The rows capability is also not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:{{{
