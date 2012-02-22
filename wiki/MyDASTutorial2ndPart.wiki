@@ -511,7 +511,7 @@ Now lets go top down implementing all the methods of this Data Source.
 
 }}}
 
-** *rows methods*: The rows capability is also not going to be developed in this tutorial, therefore all the related methods should throw the correspondent exception like that:
+** *rows methods*: The rows capability (paginated response of the features command e.g. rows=1-10) is also not going to be developed in this tutorial, therefore the following method should throw the correspondent exception:
 
 {{{
 
