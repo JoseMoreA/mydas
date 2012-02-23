@@ -412,7 +412,8 @@ import uk.ac.ebi.mydas.model.DasComponentFeature;
 import uk.ac.ebi.mydas.model.DasFeature;
 import uk.ac.ebi.mydas.model.DasType;
 import uk.ac.ebi.mydas.model.DasEntryPoint;
-
+import uk.ac.ebi.mydas.model.Range;
+import uk.ac.ebi.mydas.configuration.PropertyType;
 
 
 public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
