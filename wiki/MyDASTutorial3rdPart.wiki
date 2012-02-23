@@ -580,6 +580,26 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
 	public int getTotalEntryPoints() throws UnimplementedFeatureException, DataSourceException {
 		throw new UnimplementedFeatureException("No implemented");
 	}
+      
+        @Override
+        public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbins,
+                        Range rows) throws BadReferenceObjectException,
+                        DataSourceException, UnimplementedFeatureException {
+                throw new UnimplementedFeatureException("No implemented");
+        }
+
+        @Override
+        public Collection<DasAnnotatedSegment> getFeatures(
+                        Collection<String> featureIdCollection, Integer maxbins, Range rows)
+                        throws UnimplementedFeatureException, DataSourceException {
+                throw new UnimplementedFeatureException("No implemented");
+        }
+	@Override
+        public DasAnnotatedSegment getFeatures(
+                        String featureId, int start, int stop, Integer maxbins, Range rows)
+                        throws UnimplementedFeatureException, DataSourceException {
+                throw new UnimplementedFeatureException("No implemented");
+        }
 
 }}}
 
