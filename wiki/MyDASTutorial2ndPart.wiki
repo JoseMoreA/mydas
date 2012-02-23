@@ -590,6 +590,7 @@ Now lets go top down implementing all the methods of this Data Source.
     ** Tag `<coordinates>`, attribute `taxid`: 9606
     ** Tag `<coordinates>`, attribute `Authority`: GRCh
     ** Tag `<coordinates>`, content: GRCh_37,Chromosome,Homo sapiens
+    ** Tag `<coordinates>`, attribute `test_range`: 5
     ** Tag `<property>`, attribute `key`: pipes_file
     ** Tag `<property>`, attribute `value`: testGenes.txt
     ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/examplepipes/` instead of `http://localhost:8080/das/examplegff/`
