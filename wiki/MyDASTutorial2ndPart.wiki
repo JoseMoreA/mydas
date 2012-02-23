@@ -532,14 +532,14 @@ Now lets go top down implementing all the methods of this Data Source.
         public DasAnnotatedSegment getFeatures(String segmentId, Integer maxbins,
                         Range rows) throws BadReferenceObjectException,
                         DataSourceException, UnimplementedFeatureException {
-                
+                throw new UnimplementedFeatureException("No implemented");
         }
 
         @Override
         public Collection<DasAnnotatedSegment> getFeatures(
                         Collection<String> featureIdCollection, Integer maxbins, Range rows)
                         throws UnimplementedFeatureException, DataSourceException {
-                
+                throw new UnimplementedFeatureException("No implemented");
         }
 
 
