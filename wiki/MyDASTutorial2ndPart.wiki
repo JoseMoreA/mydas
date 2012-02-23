@@ -588,6 +588,7 @@ Now lets go top down implementing all the methods of this Data Source.
     ** Tag `<coordinates>`, attribute `uri`: `http://www.dasregistry.org/coordsys/CS_DS311`
     ** Tag `<coordinates>`, attribute `source`: Chromosome
     ** Tag `<coordinates>`, attribute `taxid`: 9606
+    ** Tag `<coordinates>`, attribute `Authority`: GRCh
     ** Tag `<coordinates>`, content: GRCh_37,Chromosome,Homo sapiens
     ** Tag `<property>`, attribute `key`: pipes_file
     ** Tag `<property>`, attribute `value`: testGenes.txt
