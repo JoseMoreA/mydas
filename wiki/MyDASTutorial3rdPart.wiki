@@ -468,14 +468,14 @@ public class EnsemblTestDataSource implements RangeHandlingAnnotationDataSource{
   # The constructor should create an instance of the manager and save locally the parameters:
 {{{
 	public void init(ServletContext servletContext,
-			Map<String, String> globalParameters,
-			DataSourceConfiguration dataSourceConfig)
-			throws DataSourceException {
-		this.svCon = servletContext;
-		this.globalParameters = globalParameters;
-		this.config = dataSourceConfig;
-		ensembl=new EnsemblTestManager();
-	}
+                        Map<String, PropertyType> globalParameters,
+                        DataSourceConfiguration dataSourceConfig)
+                        throws DataSourceException {
+                this.svCon = servletContext;
+                this.globalParameters = globalParameters;
+                this.config = dataSourceConfig;
+                ensembl=new EnsemblTestManager();
+        }
 }}}
   # The destroy method will close the database connection of the ensemble manager:
 {{{
