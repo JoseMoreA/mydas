@@ -114,7 +114,8 @@ public class SeparatedByPipesParser {
                 types.add(geneType);
                 types.add(transcriptType);
                 types.add(exonType);
-                method = new DasMethod("not_recorded","not_recorded","ECO:0000037");        
+               method = new DasMethod("combinatorial analysis used in automatic assertion","combinatorial analysis used in automatic assertion","ECO:0000213");
+      
         }
 }}}
   # Now we have to go though the whole file line by line. To do that you can create the next method:
