@@ -68,54 +68,49 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import uk.ac.ebi.mydas.exceptions.BadReferenceObjectException;
 import uk.ac.ebi.mydas.exceptions.DataSourceException;
-import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
-import uk.ac.ebi.mydas.model.DasComponentFeature;
-import uk.ac.ebi.mydas.model.DasFeature;
-import uk.ac.ebi.mydas.model.DasMethod;
-import uk.ac.ebi.mydas.model.DasType;
+import uk.ac.ebi.mydas.model.*;
 
 public class EnsemblTestManager {
-	private ArrayList<DasType> types;
-	private DasType geneType,transcriptType,exonType;
-	private DasMethod method;
-	private Connection connection;
-}
+        private ArrayList<DasType> types;
+        private DasType geneType,transcriptType,exonType;
+        private DasMethod method;
+        private Connection connection;
 }}}
   # The constructor should connect to the database and let it open for next queries. As in the previous tutorial we are going create the types here, because we already know them.
 {{{
 	public EnsemblTestManager() throws DataSourceException{
-		//Initialize types
-		geneType= new DasType("Gene", null, "SO:0000704", "Gene");
-		transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
-		exonType= new DasType("Exon", null, "SO:0000147", "Exon");
-		types= new ArrayList<DasType>();
-		types.add(geneType);
-		types.add(transcriptType);
-		types.add(exonType);
-		method = new DasMethod("not_recorded","not_recorded","ECO:0000037");
+                //Initialize types
+                geneType= new DasType("Gene", null, "SO:0000704", "Gene");
+                transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
+                exonType= new DasType("Exon", null, "SO:0000147", "Exon");
+                types= new ArrayList<DasType>();
+                types.add(geneType);
+                types.add(transcriptType);
+                types.add(exonType);
+                method = new DasMethod("combinatorial analysis used in automatic assertion","combinatorial analysis used in automatic assertion","ECO:0000213");
 
 
-		connection = null;
-		String userName = "anonymous";
-		String password = "";
-		String url = "jdbc:mysql://ensembldb.ensembl.org:5306/homo_sapiens_core_56_37a";
-		try {
-			Class.forName ("com.mysql.jdbc.Driver").newInstance ();
-			connection = DriverManager.getConnection (url, userName, password);
-		} catch (InstantiationException e) {
-			throw new DataSourceException("Problems loading the MySql driver",e);
-		} catch (IllegalAccessException e) {
-			throw new DataSourceException("Problems loading the MySql driver",e);
-		} catch (ClassNotFoundException e) {
-			throw new DataSourceException("Problems loading the MySql driver",e);
-		} catch (SQLException e) {
-			throw new DataSourceException("Problems conecting to the ensembl database",e);
-		}
-	}
-
+                connection = null;
+                String userName = "anonymous";
+                String password = "";
+                String url = "jdbc:mysql://ensembldb.ensembl.org:5306/homo_sapiens_core_56_37a";
+                try {
+                        Class.forName ("com.mysql.jdbc.Driver").newInstance ();
+                        connection = DriverManager.getConnection (url, userName, password);
+                } catch (InstantiationException e) {
+                        throw new DataSourceException("Problems loading the MySql driver",e);
+                } catch (IllegalAccessException e) {
+                        throw new DataSourceException("Problems loading the MySql driver",e);
+                } catch (ClassNotFoundException e) {
+                        throw new DataSourceException("Problems loading the MySql driver",e);
+                } catch (SQLException e) {
+                        throw new DataSourceException("Problems conecting to the ensembl database",e);
+                }
+        }  
 }}} 
   # As this connection cannot be open forever we should provide a method to close it
 {{{
@@ -129,225 +124,189 @@ public class EnsemblTestManager {
   # To facilitate the work when we will implementing the data source the method of this class will return objects following the model of MyDAS and the strategy to do this is very similar to the one in [MyDASTutorial2ndPart], the difference is that now the info is been recover from a database query:
 {{{
 	public Collection<DasAnnotatedSegment> getSubmodelBySQL(String sql) 
-			throws DataSourceException{
-		Collection<DasAnnotatedSegment> segments=null;
-			try {
-				Statement s = connection.createStatement ();
-				s.executeQuery (sql);
-				ResultSet rs = s.getResultSet ();
-				while (rs.next ()) {
-					if (segments==null)
-						segments= new ArrayList<DasAnnotatedSegment>();
-					DasAnnotatedSegment segment = this.getSegment(segments,rs.getString ("chr"));
-					DasComponentFeature gene= this.getGene(	rs.getString ("gene_id"),
-										rs.getInt("gene_start"),
-										rs.getInt("gene_end"),
-										segment);
-					DasComponentFeature transcript= this.getTranscript(	rs.getString ("trascript_id"), 
-												rs.getInt("transcript_start"), 
-												rs.getInt("transcript_end"), 
-												gene);
-					this.getExon(	rs.getString ("exon_id"), 
-							rs.getInt("exon_start"), 
-							rs.getInt("exon_end"), 
-							transcript);
-				}
-				rs.close ();
-				s.close ();
-			} catch (SQLException e) {
-				throw new DataSourceException("Problems executing the sql query",e);
-			}
-		return segments;
-	}
+                        throws DataSourceException{
+                Collection<DasAnnotatedSegment> segments=null;
+              
+                        try {
+                                Statement s = connection.createStatement ();
+                                s.executeQuery (sql);
+                                ResultSet rs = s.getResultSet ();
+                                while (rs.next ()) {
+                                        if (segments==null)
+                                                segments= new ArrayList<DasAnnotatedSegment>();
+                                        DasAnnotatedSegment segment = this.getSegment(segments,rs.getString ("chr"));
+                                        DasFeature gene= this.getFeature( rs.getString ("gene_id"),
+                                                                                rs.getInt("gene_start"),
+                                                                                rs.getInt("gene_end"),
+                                                                                geneType, null, segment);
+                                        
+                                        DasFeature transcript= this.getFeature(     rs.getString ("trascript_id"), 
+                                                                                                rs.getInt("transcript_start"), 
+                                                                                                rs.getInt("transcript_end"), 
+                                                                                                transcriptType,gene, segment);
+                                        gene.getParts().add(transcript.getFeatureId());
+                                        DasFeature exon=this.getFeature(   rs.getString ("exon_id"), 
+                                                        rs.getInt("exon_start"), 
+                                                        rs.getInt("exon_end"), 
+                                                        transcriptType, transcript, segment);
+                                     
+                                          transcript.getParts().add(transcript.getFeatureId());
+                                }
+                                rs.close ();
+                                s.close ();
+                        } catch (SQLException e) {
+                                throw new DataSourceException("Problems executing the sql query",e);
+                        }
+                return segments;
+        }
+ 
 }}}
-  # The methods `getGene()`, `getTranscript()` and `getExon()` are the same as in [MyDASTutorial2ndPart], or even easier because here we will receive the start and end as integers :
+  # The method `getFeature()` is similar to [MyDASTutorial2ndPart], it's easier because here we will receive the start and end as integers but slightly more complicated as we have to take into account multiple segments (not just Chromosome 5) and so we pass the segment in as a parameter to both the getFeature and getFeatureWithId method:
 {{{
-	private DasComponentFeature getExon(	String exonID, 
-						int startI, 
-						int stopI, 
-						DasComponentFeature transcript) 
-	throws DataSourceException {
-		for (DasComponentFeature feature:transcript.getReportableSubComponents())
-			if(feature.getFeatureId().equals(exonID))
-				return feature;
-		return transcript.addSubComponent(	exonID, 
-							startI, 
-							stopI, 
-							startI, 
-							stopI, 
-							exonID, 
-							this.exonType, 
-							exonID, 
-							exonID, 
-							method, 
-							null, 
-							null, 
-							null, 
-							null, 
-							null);
-	}
-	private DasComponentFeature getTranscript(	String transcriptID, 
-							int startI,  
-							int stopI,  
-							DasComponentFeature gene)
- 	throws DataSourceException {
+	private DasFeature getFeature(    String featureId,
+                                                int start,
+                                                int stop, DasType type, DasFeature parent, DasAnnotatedSegment segment) 
+        throws DataSourceException {
+            //return the feature if it already exists
+                DasFeature feature=this.getFeatureWithId(featureId, segment);
+                if(feature!=null)return feature;
+           
+                
+                DasFeatureOrientation orientation= DasFeatureOrientation.ORIENTATION_SENSE_STRAND;
+		
+		DasPhase phase= DasPhase.PHASE_NOT_APPLICABLE;
+		Double score=null;
+                HashSet parents=new HashSet();
+                if(parent!=null){
+                parents.add(parent.getFeatureId());
+                }
+                DasFeature gene=new DasFeature(featureId,featureId,type, method, start, stop , score,orientation,phase, null, null, null, parents, new HashSet());
+               // System.out.println("adding gene:"+gene);
+                segment.getFeatures().add(gene);
+                return gene;
+        }
 
-		for (DasComponentFeature feature:gene.getReportableSubComponents())
-			if(feature.getFeatureId().equals(transcriptID))
-				return feature;
-		return gene.addSubComponent(	transcriptID, 
-						startI, 
-						stopI, 
-						startI, 
-						stopI, 
-						transcriptID, 
-						this.transcriptType, 
-						transcriptID, 
-						transcriptID, 
-						method, 
-						null, 
-						null, 
-						null, 
-						null, 
-						null);
-	}
-	private DasComponentFeature getGene(	String geneID,
-						int startI,
-						int stopI, 
-						DasAnnotatedSegment segment) 
-	throws DataSourceException {
-		for (DasFeature feature:segment.getFeatures())
-			if(feature.getFeatureId().equals(geneID))
-				return (DasComponentFeature)feature;
-		return segment.getSelfComponentFeature().addSubComponent(	geneID, 
-										startI, 
-										stopI, 
-										startI,
-										stopI, 
-										geneID, 
-										geneType, 
-										geneID, 
-										geneID, 
-										method, 
-										null, 
-										null, 
-										null, 
-										null, 
-										null);
-	}
+private DasFeature getFeatureWithId(String featureId, DasAnnotatedSegment segment){
+            for(DasFeature feature:segment.getFeatures()){
+                if(feature.getFeatureId().equals(featureId)){
+                    return feature;
+                }
+            }
+            return null;
+        }
 }}}
   # The method `getSegment()` has a modification to be able to capture the length of the segment from the database. To do this we created a private method to query the length for the specific segment.
 {{{
 
 	private DasAnnotatedSegment getSegment(Collection<DasAnnotatedSegment> segments,String segmentId) throws DataSourceException {
-		for (DasAnnotatedSegment segment:segments)
-			if (segment.getSegmentId().equals(segmentId))
-				return segment;
-		Integer length = this.getSegmentLength(segmentId);
-		DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,length,"FROM_PIPE_FILE",segmentId, new ArrayList<DasFeature>());
-		segments.add(newSegment);
-		return newSegment;
-	}
-	private Integer getSegmentLength(String segmentId){
-		String sql="SELECT length FROM seq_region WHERE name='"+segmentId+"' and coord_system_id=2";
-		try{
-			Statement s = connection.createStatement ();
-			s.executeQuery (sql);
-			ResultSet rs = s.getResultSet ();
-			while (rs.next ()) 
-				return rs.getInt ("length");
-		} catch (SQLException e) {
-			return 1;
-		}
-		return 1;
-	}
+                for (DasAnnotatedSegment segment:segments)
+                        if (segment.getSegmentId().equals(segmentId))
+                                return segment;
+                Integer length = this.getSegmentLength(segmentId);
+                DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,length,"1.0",segmentId, new ArrayList<DasFeature>());
+                segments.add(newSegment);
+                return newSegment;
+        }
+        private Integer getSegmentLength(String segmentId){
+                String sql="SELECT length FROM seq_region WHERE name='"+segmentId+"' and coord_system_id=2";
+                try{
+                        Statement s = connection.createStatement ();
+                        s.executeQuery (sql);
+                        ResultSet rs = s.getResultSet ();
+                        while (rs.next ()) 
+                                return rs.getInt ("length");
+                } catch (SQLException e) {
+                        return 1;
+                }
+                return 1;
+        }
 
 }}} 
   # Now we have to built the SQL for the different queries. For the one that queries a segment we will allow to specify a start and end point to get the features of a part of a chromosome and not necessarily the whole chromosome, to do this, we add an extra condition to the `WHERE` clause of the original SQL. In the case that the request is for the whole chromosome, we define a condition where the `start` and `end` parameters should be equal to -1.
 {{{
 	public DasAnnotatedSegment getSubmodelBySegmentId(String segmentId, int start, int stop) 
-			throws DataSourceException, BadReferenceObjectException{
-		String sql="SELECT " +
-		" sr.name AS chr, " +
-		" gsi.stable_id AS gene_id, " +
-		" g.seq_region_start AS gene_start, " +
-		" g.seq_region_end AS gene_end, " +
-		" tsi.stable_id AS trascript_id, " +
-		" t.seq_region_start AS transcript_start, " +
-		" t.seq_region_end AS transcript_end, " +
-		" esi.stable_id AS exon_id, " +
-		" e.seq_region_start AS exon_start, " +
-		" e.seq_region_end AS exon_end " +
-		"FROM  " +
-		" seq_region sr, " +
-		" gene_stable_id gsi, " +
-		" gene g, " +
-		" transcript t, " +
-		" transcript_stable_id tsi, " +
-		" exon_transcript et, " +
-		" exon e, " +
-		" exon_stable_id esi  " +
-		"WHERE  " +
-		" gsi.gene_id = g.gene_id and " + 
-		" g.gene_id = t.gene_id and  " +
-		" t.transcript_id = tsi.transcript_id and " + 
-		" t.transcript_id = et.transcript_id and  " +
-		" et.exon_id = e.exon_id and  " +
-		" e.exon_id = esi.exon_id and  " +
-		" g.seq_region_id = sr.seq_region_id and " +
-		" sr.coord_system_id = 2 and " +
-		" sr.name ='"+segmentId+"' ";
-		if (start!=-1 && stop!=-1)
-			sql += " and g.seq_region_start>"+start+" and g.seq_region_end<"+stop;
-		Collection<DasAnnotatedSegment>segments= getSubmodelBySQL(sql);
-		if (segments!=null && segments.size()>0)
-			return segments.iterator().next();
-		else
-			throw new BadReferenceObjectException("Unknown Chromosome", segmentId);
-	}
+                        throws DataSourceException, BadReferenceObjectException{
+                String sql="SELECT " +
+                " sr.name AS chr, " +
+                " gsi.stable_id AS gene_id, " +
+                " g.seq_region_start AS gene_start, " +
+                " g.seq_region_end AS gene_end, " +
+                " tsi.stable_id AS trascript_id, " +
+                " t.seq_region_start AS transcript_start, " +
+                " t.seq_region_end AS transcript_end, " +
+                " esi.stable_id AS exon_id, " +
+                " e.seq_region_start AS exon_start, " +
+                " e.seq_region_end AS exon_end " +
+                "FROM  " +
+                " seq_region sr, " +
+                " gene_stable_id gsi, " +
+                " gene g, " +
+                " transcript t, " +
+                " transcript_stable_id tsi, " +
+                " exon_transcript et, " +
+                " exon e, " +
+                " exon_stable_id esi  " +
+                "WHERE  " +
+                " gsi.gene_id = g.gene_id and " + 
+                " g.gene_id = t.gene_id and  " +
+                " t.transcript_id = tsi.transcript_id and " + 
+                " t.transcript_id = et.transcript_id and  " +
+                " et.exon_id = e.exon_id and  " +
+                " e.exon_id = esi.exon_id and  " +
+                " g.seq_region_id = sr.seq_region_id and " +
+                " sr.coord_system_id = 2 and " +
+                " sr.name ='"+segmentId+"' ";
+                if (start!=-1 && stop!=-1)
+                        sql += " and g.seq_region_start<="+stop+" and g.seq_region_end>="+start;
+                Collection<DasAnnotatedSegment>segments= getSubmodelBySQL(sql);
+                if (segments!=null && segments.size()>0)
+                        return segments.iterator().next();
+                else
+                        throw new BadReferenceObjectException("Unknown Chromosome", segmentId);
+        }
 }}}
   # A similar method to get features by their id is required. In this case the addition to the SQL should be looking for the id in 3 different fields(for gene, transcript and exon). the method should be something like:
 {{{
 	public Collection<DasAnnotatedSegment> getSubmodelByFeatureId(Collection<String> featureIdCollection) throws DataSourceException{
-		String sql="SELECT " +
-		" sr.name AS chr, " +
-		" gsi.stable_id AS gene_id, " +
-		" g.seq_region_start AS gene_start, " +
-		" g.seq_region_end AS gene_end, " +
-		" tsi.stable_id AS trascript_id, " +
-		" t.seq_region_start AS transcript_start, " +
-		" t.seq_region_end AS transcript_end, " +
-		" esi.stable_id AS exon_id, " +
-		" e.seq_region_start AS exon_start, " +
-		" e.seq_region_end AS exon_end " +
-		"FROM  " +
-		" seq_region sr, " +
-		" gene_stable_id gsi, " +
-		" gene g, " +
-		" transcript t, " +
-		" transcript_stable_id tsi, " +
-		" exon_transcript et, " +
-		" exon e, " +
-		" exon_stable_id esi  " +
-		"WHERE  " +
-		" gsi.gene_id = g.gene_id and " + 
-		" g.gene_id = t.gene_id and  " +
-		" t.transcript_id = tsi.transcript_id and " + 
-		" t.transcript_id = et.transcript_id and  " +
-		" et.exon_id = e.exon_id and  " +
-		" e.exon_id = esi.exon_id and  " +
-		" g.seq_region_id = sr.seq_region_id and " +
-		" sr.coord_system_id = 2 and (";
-		String or ="";
-		for (String featureId:featureIdCollection){
-			sql +=	or +" gsi.stable_id = '"+featureId + 
-				"' or tsi.stable_id = '"+featureId + 
-				"' or esi.stable_id = '"+featureId+ "'" ;
-			or ="or";
-		}
-		sql += ")";
-		return getSubmodelBySQL(sql);
-	}
+                String sql="SELECT " +
+                " sr.name AS chr, " +
+                " gsi.stable_id AS gene_id, " +
+                " g.seq_region_start AS gene_start, " +
+                " g.seq_region_end AS gene_end, " +
+                " tsi.stable_id AS trascript_id, " +
+                " t.seq_region_start AS transcript_start, " +
+                " t.seq_region_end AS transcript_end, " +
+                " esi.stable_id AS exon_id, " +
+                " e.seq_region_start AS exon_start, " +
+                " e.seq_region_end AS exon_end " +
+                "FROM  " +
+                " seq_region sr, " +
+                " gene_stable_id gsi, " +
+                " gene g, " +
+                " transcript t, " +
+                " transcript_stable_id tsi, " +
+                " exon_transcript et, " +
+                " exon e, " +
+                " exon_stable_id esi  " +
+                "WHERE  " +
+                " gsi.gene_id = g.gene_id and " + 
+                " g.gene_id = t.gene_id and  " +
+                " t.transcript_id = tsi.transcript_id and " + 
+                " t.transcript_id = et.transcript_id and  " +
+                " et.exon_id = e.exon_id and  " +
+                " e.exon_id = esi.exon_id and  " +
+                " g.seq_region_id = sr.seq_region_id and " +
+                " sr.coord_system_id = 2 and (";
+                String or ="";
+                for (String featureId:featureIdCollection){
+                        sql +=  or +" gsi.stable_id = '"+featureId + 
+                                "' or tsi.stable_id = '"+featureId + 
+                                "' or esi.stable_id = '"+featureId+ "'" ;
+                        or ="or";
+                }
+                sql += ")";
+                return getSubmodelBySQL(sql);
+        }
 }}}
   # As in the previous tutorial the list of types is predefined, and therefore, the method to get types is as simple as returning that array:
 {{{
@@ -355,32 +314,32 @@ public class EnsemblTestManager {
 		return types;
 	}
 }}}
-  # Finally we require to count how many annotations of an specific type are. For that reason we query the database counting for entryes of different ids for each type:
+  # Finally we require to count how many annotations of a specific type are. For that reason we query the database counting for entryes of different ids for each type:
 {{{
 	public Integer getTotalCountForType(String typeId)
-			throws DataSourceException {
-		String sql="";
-		Integer count =0;
-		if (typeId.equalsIgnoreCase("Gene"))
-			sql="SELECT count(stable_id) as num FROM gene_stable_id;";
-		else if (typeId.equalsIgnoreCase("Transcript"))
-			sql="SELECT count(stable_id) as num FROM transcript_stable_id;";
-		else if (typeId.equalsIgnoreCase("Exon"))
-			sql="SELECT count(stable_id) as num FROM exon_stable_id;";
-		try {
-			Statement s = connection.createStatement ();
-			s.executeQuery (sql);
-			ResultSet rs = s.getResultSet ();
-			if (rs.next ()) {
-				count=rs.getInt("num");
-			}
-			rs.close ();
-			s.close ();
-		} catch (SQLException e) {
-			throw new DataSourceException("Problems executing the sql query",e);
-		}
-		return count;
-	}
+                        throws DataSourceException {
+                String sql="";
+                Integer count =0;
+                if (typeId.equalsIgnoreCase("Gene"))
+                        sql="SELECT count(stable_id) as num FROM gene_stable_id;";
+                else if (typeId.equalsIgnoreCase("Transcript"))
+                        sql="SELECT count(stable_id) as num FROM transcript_stable_id;";
+                else if (typeId.equalsIgnoreCase("Exon"))
+                        sql="SELECT count(stable_id) as num FROM exon_stable_id;";
+                try {
+                        Statement s = connection.createStatement ();
+                        s.executeQuery (sql);
+                        ResultSet rs = s.getResultSet ();
+                        if (rs.next ()) {
+                                count=rs.getInt("num");
+                        }
+                        rs.close ();
+                        s.close ();
+                } catch (SQLException e) {
+                        throw new DataSourceException("Problems executing the sql query",e);
+                }
+                return count;
+        }
 }}}
 
 === The Data Source ===
