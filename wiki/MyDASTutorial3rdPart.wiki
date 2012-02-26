@@ -150,7 +150,7 @@ public class EnsemblTestManager {
                                                         rs.getInt("exon_end"), 
                                                         transcriptType, transcript, segment);
                                      
-                                          transcript.getParts().add(transcript.getFeatureId());
+                                          transcript.getParts().add(exon.getFeatureId());
                                 }
                                 rs.close ();
                                 s.close ();
