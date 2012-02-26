@@ -46,7 +46,7 @@ The other information that we have implicit in this file is that there is a hier
 
 For this demo we can assume some values for all the annotations, the method will be
 {{{
-<METHOD id="not_recorded" cvId="ECO:0000037">not_recorded</METHOD> 
+<METHOD id="combinatorial analysis used in automatic assertion" cvId="ECO:0000213">combinatorial analysis used in automatic assertion</METHOD>
 }}}
 And given that we don't know the score, phase and orientation, we will assume those values as not applicable.
 
@@ -71,21 +71,18 @@ So, lets start coding a parser for this file. The goal of the parser is to get t
   # Create a file in `[MyDasTemplate]/src/main/java/uk/ac/ebi/mydas/examples/` called `SeparatedByPipesParser.java` and open it to edit with the editor of your choice(vi, write, eclipse, intelliJ, etc.)
   # Add the empty class declaration with his package and the classes to import. You can add those imports now or whenever they are required:
 {{{
-package uk.ac.ebi.mydas.examples;
+ package uk.ac.ebi.mydas.examples;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import uk.ac.ebi.mydas.exceptions.DataSourceException;
-import uk.ac.ebi.mydas.model.DasAnnotatedSegment;
-import uk.ac.ebi.mydas.model.DasComponentFeature;
-import uk.ac.ebi.mydas.model.DasFeature;
-import uk.ac.ebi.mydas.model.DasMethod;
-import uk.ac.ebi.mydas.model.DasType;
+import uk.ac.ebi.mydas.model.*;
 
 
 public class SeparatedByPipesParser {
@@ -99,160 +96,101 @@ public class SeparatedByPipesParser {
     The code for this will be something like:
 {{{
 	private Scanner scanner;
-	private ArrayList<DasAnnotatedSegment> segments;
-	private ArrayList<DasType> types;
-	private DasType chromosomeType,geneType,transcriptType,exonType;
-	private DasMethod method;
+        private ArrayList<DasAnnotatedSegment> segments;
+        private ArrayList<DasType> types;
+        private DasType chromosomeType,geneType,transcriptType,exonType;
+        private DasMethod method;
+        private Collection<DasFeature> features=new ArrayList<DasFeature>();
+        
 }}}
   # Code the constructor of the class. It should receive an InputStream, instantiate the scanner with the stream, create the empty lists for types and segments and create the types and method to use through the source.
 {{{
 	public SeparatedByPipesParser(InputStream gffdoc) throws DataSourceException{
-		scanner= new Scanner(gffdoc);
-		segments= new ArrayList<DasAnnotatedSegment>();
-		types= new ArrayList<DasType>();
-		geneType= new DasType("Gene", null, "SO:0000704", "Gene");
-		transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
-		exonType= new DasType("Exon", null, "SO:0000147", "Exon");
-		types.add(geneType);
-		types.add(transcriptType);
-		types.add(exonType);
-		method = new DasMethod("not_recorded","not_recorded","ECO:0000037");
-	}
+                scanner= new Scanner(gffdoc);
+                types= new ArrayList<DasType>();
+                geneType= new DasType("Gene", null, "SO:0000704", "Gene");
+                transcriptType= new DasType("Transcript", null, "SO:0000673", "Transcript");
+                exonType= new DasType("Exon", null, "SO:0000147", "Exon");
+                types.add(geneType);
+                types.add(transcriptType);
+                types.add(exonType);
+                method = new DasMethod("not_recorded","not_recorded","ECO:0000037");        
+        }
 }}}
   # Now we have to go though the whole file line by line. To do that you can create the next method:
 {{{
 	public Collection<DasAnnotatedSegment> parse() throws Exception{
-		try {
-			//first use a Scanner to get each line
-			while ( scanner.hasNextLine() ){
-				processLine( scanner.nextLine() );
-			}
-		} finally {
-			//ensure the underlying stream is always closed
-			scanner.close();
-		}
-		return this.segments;
-	}
+            segments=new ArrayList<DasAnnotatedSegment>();
+                try {
+                        //first use a Scanner to get each line
+                        while ( scanner.hasNextLine() ){
+                                processLine( scanner.nextLine() );
+                        }
+                } finally {
+                        //ensure the underlying stream is always closed
+                        scanner.close();
+                }
+                DasAnnotatedSegment segment=new DasAnnotatedSegment("5", 1,1000000000,"1.0", "5", features); 
+                segments.add(segment);
+                return segments;
+        }
 }}}
   # As you can see the previous code makes use of the method `processLine()` which we haven't created, so thats our next step. A line of this file is a a set of fields divided by pipes (`|`) as is described before, so we can process a line by splitting it by pipes. The acquired data is used then, to call the methods to get/create the segment(chromosome) and features(gene, transcript or exon).
 {{{
 	private void processLine(String aLine) throws Exception{
-		String[] parts = aLine.split("\\|");
-		if (parts.length<11)
-			throw new Exception("Parsing Error: A line doesn't have the right number of fields ["+aLine+"]");
-		DasAnnotatedSegment segment = this.getSegment(parts[1]);
-		DasComponentFeature gene= this.getGene(parts[2],parts[3],parts[4],segment);
-		DasComponentFeature transcript= this.getTranscript(parts[5],parts[6],parts[7],gene);
-		this.getExon(parts[8],parts[9],parts[10],transcript);
-	}
+                String[] parts = aLine.split("\\|");
+                if (parts.length<11)
+                        throw new Exception("Parsing Error: A line doesn't have the right number of fields ["+aLine+"]");
+                
+                DasFeature gene= this.getFeature(parts[2],parts[3],parts[4], geneType, null);
+                //System.out.println("gene="+gene);
+                DasFeature transcript= this.getFeature(parts[5],parts[6],parts[7],transcriptType, gene);
+                gene.getParts().add(transcript.getFeatureId());
+                //System.out.println("transcript="+transcript);
+        DasFeature exon = this.getFeature(parts[8],parts[9],parts[10],exonType, transcript);
+        transcript.getParts().add(exon.getFeatureId());
+         //System.out.println("exon="+exon);
+         
+        }
 }}}
-  # To get a segment we start by looking in the current list of segments in case this segment has been created already. If is found is returned. If not a new segment is created using the id of the chromosome. And then, added to the list and returned. the file is not giving us too much information about the chromosome, so we are using default values in most of its fields.
-{{{
-	private DasAnnotatedSegment getSegment(String segmentId) throws DataSourceException {
-		for (DasAnnotatedSegment segment:segments)
-			if (segment.getSegmentId().equals(segmentId))
-				return segment;
-		DasAnnotatedSegment newSegment = new DasAnnotatedSegment(segmentId,1,1,"FROM_PIPE_FILE",segmentId, new ArrayList<DasFeature>());
-		segments.add(newSegment);
-		return newSegment;
-	}
-}}} 
-  # Now we need the methods to get gene, transcript and exon.The strategy is the same than the getSegment method, I mean, we first look in the current feature for its subcomponents, and if is found is returned, if not a new instance is created and added. The code for those 3 methods is:
-{{{
-	private DasComponentFeature getExon(	String exonID, 
-						String start, 
-						String stop, 
-						DasComponentFeature transcript) 
-	throws DataSourceException {
-		for (DasComponentFeature feature:transcript.getReportableSubComponents())
-			if(feature.getFeatureId().equals(exonID))
-				return feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the exon "+exonID+" should be numeric",nfe);
-		}
-		return transcript.addSubComponent(	exonID, 
-							startI, 
-							stopI, 
-							startI, 
-							stopI, 
-							exonID, 
-							this.exonType, 
-							exonID, 
-							exonID, 
-							method, 
-							null, 
-							null, 
-							null, 
-							null, 
-							null);
-	}
-	private DasComponentFeature getTranscript(	String transcriptID, 
-							String start,  
-							String stop,  
-							DasComponentFeature gene)
- 	throws DataSourceException {
 
-		for (DasComponentFeature feature:gene.getReportableSubComponents())
-			if(feature.getFeatureId().equals(transcriptID))
-				return feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the transcript "+transcriptID+" should be numeric",nfe);
-		}
-		return gene.addSubComponent(	transcriptID, 
-						startI, 
-						stopI, 
-						startI, 
-						stopI, 
-						transcriptID, 
-						this.transcriptType, 
-						transcriptID, 
-						transcriptID, 
-						method, 
-						null, 
-						null, 
-						null, 
-						null, 
-						null);
-	}
-	private DasComponentFeature getGene(	String geneID,
-						String start,
-						String stop, 
-						DasAnnotatedSegment segment) 
-	throws DataSourceException {
-		for (DasFeature feature:segment.getFeatures())
-			if(feature.getFeatureId().equals(geneID))
-				return (DasComponentFeature)feature;
-		int startI=0,stopI=0;
-		try {
-			startI=Integer.parseInt(start);
-			stopI=Integer.parseInt(stop);
-		}catch (NumberFormatException nfe){
-			throw new DataSourceException("PARSE ERROR: The coordinates for the gene "+geneID+" should be numeric",nfe);
-		}
-		return segment.getSelfComponentFeature().addSubComponent(	geneID, 
-										startI, 
-										stopI, 
-										startI,
-										stopI, 
-										geneID, 
-										geneType, 
-										geneID, 
-										geneID, 
-										method, 
-										null, 
-										null, 
-										null, 
-										null, 
-										null);
-	}
+  # Now we need the methods to create a gene, transcript and exon. As they only differ in the DasType we can use the same method to create a feature. First look in our feature list for that we have already and if is found is returned, if not a new instance is created and added. The code for the feature method and the check if feature exists is below:
+{{{
+	private DasFeature getFeature(    String geneID,
+                                                String start,
+                                                String stop, DasType type, DasFeature parent) 
+        throws DataSourceException {
+            //return the feature if it already exists
+                DasFeature feature=this.getFeatureWithId(geneID);
+                if(feature!=null)return feature;
+                int startI=0,stopI=0;
+                try {
+                        startI=Integer.parseInt(start);
+                        stopI=Integer.parseInt(stop);
+                }catch (NumberFormatException nfe){
+                        throw new DataSourceException("PARSE ERROR: The coordinates for the gene "+geneID+" should be numeric",nfe);
+                }
+                DasFeatureOrientation orientation= DasFeatureOrientation.ORIENTATION_SENSE_STRAND;
+		
+		DasPhase phase= DasPhase.PHASE_READING_FRAME_0;
+		Double score=0.0;
+                HashSet parents=new HashSet();
+                if(parent!=null){
+                parents.add(parent.getFeatureId());
+                }
+                DasFeature gene=new DasFeature(geneID,geneID,type, method, startI, stopI , score,orientation,phase, null, null, null, parents, new HashSet());
+                features.add(gene);
+                return gene;
+        }
+
+        private DasFeature getFeatureWithId(String featureId){
+            for(DasFeature feature:features){
+                if(feature.getFeatureId().equals(featureId)){
+                    return feature;
+                }
+            }
+            return null;
+        }
 }}}
   # The last method to add is `getTypes()` in order to return the private attribute types.
 {{{
