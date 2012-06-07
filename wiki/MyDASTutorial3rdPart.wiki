@@ -582,6 +582,11 @@ For this we can make a copy of the configuration created in [MyDASTutorial2ndPar
     ** Tag `<maintainer>`, attribute `email`: `[Your email]`
     ** Tag `<version>`, attribute `uri`: ensemblTest
     ** Tag `<version>`, attribute `created`: 2010-04-07
+    ** Tag `<coordinates>`, attribute `url`: http://www.dasregistry.org/dasregistry/coordsys/CS_DS40
+    ** Tag `<coordinates>`, attribute `source`: Chromosome
+    ** Tag `<coordinates>`, attribute `version`: 37
+    ** Tag `<coordinates>`, attribute `test_range`: 5:11000000,12000000
+    ** Tag `<coordinates>`, value: Ensembl_37a,Chromosome,Homo sapiens
     ** Tag `<class>`, content: uk.ac.ebi.mydas.examples.!EnsemblTestDataSource
     ** All query attributes of the capabilities elements should have an url starting for `http://localhost:8080/das/ensemblTest`
   * Delete the tag `<property>`
