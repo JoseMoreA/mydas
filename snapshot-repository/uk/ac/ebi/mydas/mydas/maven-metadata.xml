@@ -13,7 +13,8 @@
       <version>1.6.9-SNAPSHOT</version>
       <version>1.6.10-SNAPSHOT</version>
       <version>1.6.10.TEST-SNAPSHOT</version>
+      <version>1.6.11-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20120730142751</lastUpdated>
+    <lastUpdated>20120910153956</lastUpdated>
   </versioning>
 </metadata>
