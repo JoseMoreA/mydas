@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>uk.ac.ebi.mydas.client</groupId>
+  <artifactId>MyDasClient</artifactId>
+  <version>1.6.7</version>
+  <versioning>
+    <versions>
+      <version>1.6.7</version>
+    </versions>
+    <lastUpdated>20121024145735</lastUpdated>
+  </versioning>
+</metadata>
